@@ -1,0 +1,61 @@
+[
+    {
+        "id": "index",
+        "icon": "home",
+        "url": "/admin/",
+        "children": [
+            {
+                "id": "index",
+                "label": "仪表盘",
+                "icon": "dashboard",
+                "url": "/admin/"
+            },
+            {
+                "id": "prize",
+                "label": "奖品设置",
+                "icon": "gift",
+                "url": "/admin/prize/"
+            },
+            {
+                "id": "lucky",
+                "label": "中奖名单",
+                "icon": "list",
+                "url": "/admin/lucky/"
+            },
+            {
+                "id": "imei",
+                "label": "IMEI列表",
+                "icon": "barcode",
+                "url": "/admin/imei/"
+            },
+            {
+                "id": "district",
+                "label": "地区设置",
+                "icon": "globe",
+                "url": "/admin/district/"
+            }
+        ]
+    },
+    {
+        "id": "setting",
+        "icon": "cogs",
+        "url": "/admin/setting/",
+        "access": "sa",
+        "children": [
+            {
+                "id": "index",
+                "label": "系统设置",
+                "icon": "cog",
+                "url": "/admin/setting/",
+                "access": "sa"
+            },
+            {
+                "id": "admin",
+                "label": "后台管理员",
+                "icon": "user-md",
+                "url": "/admin/administrator/",
+                "access": "sa"
+            }
+        ]
+    }
+]
