@@ -9,9 +9,8 @@ class Dispatcher extends PhDispatcher
 {
     public function __construct()
     {
-        var_dump(get_class_methods(new parent));
-        die();
-        parent::__construct();
+        if(method_exists(new parent, "__construct"))
+            parent::__construct();
 
         $eventManager = new PhEventsManager();
 
