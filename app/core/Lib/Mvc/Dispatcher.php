@@ -9,7 +9,7 @@ class Dispatcher extends PhDispatcher
 {
     public function __construct()
     {
-        var_dump(new PhDispatcher());
+        var_dump(new parent);
         die();
         parent::__construct();
 
