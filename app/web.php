@@ -36,7 +36,7 @@ try {
                 'path' => $path,
             );
         }
-    }var_dump($modules);
+    }
     $application->registerModules($modules);
 
     echo $application->handle()->getContent();
