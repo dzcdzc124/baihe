@@ -16,8 +16,8 @@ include __DIR__ . '/functions.php';
 // Read the configuration
 $config = include __DIR__ . '/conf.dev.php';
 $env = getenv('PHP_ENV');
-$isVivo = getenv('vivo');
-if ($isVivo || $env == 'production')
+$isBaihe = getenv('baihe');
+if ($isBaihe || $env == 'production')
     $env = 'prod';
 
 $envConfigFile = __DIR__ . '/conf.' . strtolower($env) . '.php';

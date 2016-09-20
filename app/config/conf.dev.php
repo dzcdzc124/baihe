@@ -28,7 +28,7 @@ return new \Phalcon\Config([
         'migrationsDir'  => APP_PATH . 'migrations/',
         'pluginsDir'     => APP_PATH . 'plugins/',
 
-        'host' => 'act.vivotest.pw',
+        'host' => '127.0.0.1',
         'baseUri' => '/attach',
         'staticUri' => '/attach/static/',
         'staticPath' => WEB_PATH . 'static/',
@@ -78,20 +78,5 @@ return new \Phalcon\Config([
         'mchKey' => '40b4eb3129b7e57bc7b0c2fe12085d68',
         'certPath' => __DIR__ . '/apiclient_cert.pem',
         'keyPath' => __DIR__ . '/apiclient_key.pem',
-    ],
-
-    'sms' => [
-        'url' => 'http://219.130.39.253:8888/WebSvc/SmsService.asmx?wsdl',
-        'account' => '10943731',
-        'password' => 'vivo10943731',
-        'compCode' => '10088',
-    ],
-
-    'games' => [
-        '奔跑吧兄弟4-撕名牌大战' => 'http://info.appstore.vivo.com.cn/detail/496237?source=5',
-        '宾果消消乐' => 'http://info.appstore.vivo.com.cn/detail/59063?source=5',
-        '欢喜斗地主' => 'http://info.appstore.vivo.com.cn/detail/880064?source=5',
-        '火柴人联盟' => 'http://info.appstore.vivo.com.cn/detail/99535?source=5',
-        '饥饿鲨进化' => 'http://info.appstore.vivo.com.cn/detail/78844?source=5',
     ],
 ]);
