@@ -3,10 +3,10 @@
 return new \Phalcon\Config([
     'database' => [
         'adapter' => 'Mysql',
-        'host' => '192.168.100.124',
-        'username' => 'act_x7',
-        'password' => 'PJEiLnDO7otGg07c',
-        'dbname' => 'act_x7',
+        'host' => '127.0.0.1',
+        'username' => 'root',
+        'password' => 'gd0508210',
+        'dbname' => 'act_attach',
         'charset' => 'utf8',
         'persistent' => false,
     ],
@@ -14,12 +14,12 @@ return new \Phalcon\Config([
     'application' => [
         'debug' => false,
 
-        'host' => 'act.vivo.com.cn',
+        'host' => '127.0.0.1',
 
         'cache' => [
             'lifeTime' => 86400,
             'server' => [
-                'host' => '192.168.100.121',
+                'host' => '127.0.0.1',
                 'port' => 6379,
                 'persistent' => false,
                 'index' => 7,

@@ -1,14 +1,14 @@
 <?php
 
 return new \Phalcon\Config([
-    'appName' => 'x7',
+    'appName' => 'attach',
 
     'database' => [
         'adapter' => 'Mysql',
         'host' => '127.0.0.1',
         'username' => 'root',
-        'password' => 'toor',
-        'dbname' => 'act_x7',
+        'password' => '123456',
+        'dbname' => 'act_attach',
         'charset' => 'utf8',
         'persistent' => false,
         'logpath' => APP_PATH . 'cache/logs/',
@@ -29,8 +29,8 @@ return new \Phalcon\Config([
         'pluginsDir'     => APP_PATH . 'plugins/',
 
         'host' => 'act.vivotest.pw',
-        'baseUri' => '/x7',
-        'staticUri' => '/x7/static/',
+        'baseUri' => '/attach',
+        'staticUri' => '/attach/static/',
         'staticPath' => WEB_PATH . 'static/',
         'staticVer' => 'DaeD',
         'staticPrefix' => 'http://demofiles.oss-cn-shenzhen.aliyuncs.com/',
@@ -51,7 +51,7 @@ return new \Phalcon\Config([
         'cache' => [
             'lifeTime' => 86400,
             'server' => [
-                'prefix' => '__x7__',
+                'prefix' => '__attach__',
                 'host' => '127.0.0.1',
                 'port' => 6379,
                 'persistent' => false,

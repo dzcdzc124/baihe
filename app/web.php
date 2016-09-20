@@ -24,8 +24,7 @@ try {
      * Handle the request
      */
     $application = new \Phalcon\Mvc\Application($di);
-    var_dump($application);
-    die();
+
     $moduleBase = $config->application->modulesDir;
     $moduleList = (array) $config->application->modules;
     $modules = array();
