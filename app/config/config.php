@@ -17,8 +17,6 @@ include __DIR__ . '/functions.php';
 $config = include __DIR__ . '/conf.dev.php';
 $env = getenv('PHP_ENV');
 $isBaihe = getenv('baihe');
-var_dump($env);
-var_dump($isBaihe);
 if ($isBaihe || $env == 'production')
     $env = 'prod';
 
