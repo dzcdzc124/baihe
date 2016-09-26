@@ -8,7 +8,7 @@ return new \Phalcon\Config([
         'host' => '127.0.0.1',
         'username' => 'root',
         'password' => '123456',
-        'dbname' => 'act_attach',
+        'dbname' => 'act_pdq',
         'charset' => 'utf8',
         'persistent' => false,
         'logpath' => APP_PATH . 'cache/logs/',
@@ -68,15 +68,4 @@ return new \Phalcon\Config([
 
     'handlers' => ['test'],
 
-    'wechat' => [
-        'appId' => 'wx1860a110b3f0e559',
-        'appSecret' => '888441698bf3b8e2329c0fd08dd946b3',
-        'token' => '66xAhDrWbuP6icSMabAAuZnZ',
-        'encodingAESKey' => 'NIje97Rdn0H1Qmm6JFkLse5VuLWXrhDQkSIJ9mjwmTY',
-
-        'mchId' => '1217736201',
-        'mchKey' => '40b4eb3129b7e57bc7b0c2fe12085d68',
-        'certPath' => __DIR__ . '/apiclient_cert.pem',
-        'keyPath' => __DIR__ . '/apiclient_key.pem',
-    ],
 ]);

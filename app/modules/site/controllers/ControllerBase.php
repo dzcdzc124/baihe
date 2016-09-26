@@ -13,7 +13,7 @@ class ControllerBase extends Controller
     protected $openId;
 
     public function beforeExecuteRoute(Dispatcher $dispatcher)
-    {return;
+    {
         if (parent::beforeExecuteRoute($dispatcher)) {
             $this->openId = WechatHelper::loginRequired();
             $this->view->setVar('openId', $this->openId);

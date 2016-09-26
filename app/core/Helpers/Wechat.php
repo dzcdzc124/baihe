@@ -35,7 +35,7 @@ class Wechat extends HelperBase
         return self::$client;
     }
 
-    public static function loginRequired()
+    public static function loginRequired($scope = 'snsapi_base')
     {
         $sessionName = $cookieName = 'current-auth-openId';
 
@@ -59,11 +59,11 @@ class Wechat extends HelperBase
 
         if (empty($openId)) {
             $currentUrl = $dispatcher->getCurrentURI();
+            //重定向回来后带code参数
             $code = $request->getQuery('code');
-
             if (empty($code)) {
-                $redirectUrl = self::parseRedirectUrl($currentUrl);
-                $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl);
+                $redirectUrl = self::parseRedirectUrl($currentUrl,['scope' => $scope]);
+                $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl, 'code', $scope);
                 Url::redirect($authUrl);
             } else {
                 try {
@@ -81,22 +81,18 @@ class Wechat extends HelperBase
         return $openId;
     }
 
-    public static function parseRedirectUrl($url)
+    public static function parseRedirectUrl($url, $param=[])
     {
         $parts = parse_url($url);
         $host = $parts['host'];
         $path = $parts['path'];
         $query = $parts['query'];
-        if (substr($host, -12) == '.vivo.com.cn') {
-            $subdomain = substr($host, 0, -12);
-            $url = sprintf('http://wx.vivo.com.cn/r/%s%s', $subdomain, $path);
-            if ($query)
-                $url = $url . '?' . $query;
 
-            return $url;
-        } else {
-            return 'http://wx.vivo.com.cn/redirect/?next=' . urlencode($url);
+        if(!empty($param)){
+            $url .= "?".http_build_query($param);
         }
+
+        return urlencode($url);
     }
 
     public static function authToken($openId)
