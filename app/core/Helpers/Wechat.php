@@ -46,7 +46,7 @@ class Wechat extends HelperBase
         $request = self::getShared('request');
 
         $openId = $session->get($sessionName);
-        if (empty($openId)) {
+        /*if (empty($openId)) {
             $cookieAuth = $cookies->get($cookieName);
             $cryptToken = $cookieAuth ? $cookieAuth->getValue() : null;
             try {
@@ -55,7 +55,7 @@ class Wechat extends HelperBase
             } catch (\Exception $e) {
                 $openId = null;
             }
-        }
+        }*/
 
         if (empty($openId)) {
             $currentUrl = $dispatcher->getCurrentURI();
