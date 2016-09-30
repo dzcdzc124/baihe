@@ -33,7 +33,7 @@
     
     </script>
     <link rel="stylesheet" type="text/css" href="<?php echo $basePath; ?>css/mobile.css"/>
-    <title>vivo暑期超值送-7待你来</title>
+    <title></title>
 </head>
 
 <body>

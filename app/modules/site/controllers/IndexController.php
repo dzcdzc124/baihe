@@ -16,6 +16,9 @@ class IndexController extends ControllerBase
             'isWeiXin' => $this->userAgent->isWeixin(),
             'isMobile' => $this->userAgent->isMobile()
         ]);
+
+
+        die(var_dump($this->openId));
     }
 
     private function saveDistrict()
