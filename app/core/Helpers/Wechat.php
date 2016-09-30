@@ -64,7 +64,7 @@ class Wechat extends HelperBase
             if (empty($code)) {
                 $redirectUrl = self::parseRedirectUrl($currentUrl,['scope' => $scope]);
                 $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl, 'code', $scope);
-                die($authUrl);
+                
                 Url::redirect($authUrl);
             } else {
                 try {

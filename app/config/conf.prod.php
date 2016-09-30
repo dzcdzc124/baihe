@@ -27,8 +27,8 @@ return new \Phalcon\Config([
         ],
     ],
     'wechat' => [
-        'appId' => 'wxdee05db36f224903',
-        'appSecret' => '7e883ea741e983b70f30c03aab40328a',
+        'appId' => 'wxcdde906c2ef572c5',
+        'appSecret' => '7252ee70c5b38bf9799c8b74ff71c9e4',
         'token' => '',
         'encodingAESKey' => '',
 
