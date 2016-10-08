@@ -18,7 +18,6 @@ class ModelBase extends Model
             $tableName = substr($className, strrpos($className, '\\') + 1);
             $this->tableName = strtolower(preg_replace('/((?<=[a-z])(?=[A-Z]))/', '_', $tableName));
         }
-
         return $this->tableName;
     }
 

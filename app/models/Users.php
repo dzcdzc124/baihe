@@ -5,8 +5,6 @@ namespace App\Models;
 
 class Prize extends ModelBase
 {
-
-
     public $id;
 
     public $name;

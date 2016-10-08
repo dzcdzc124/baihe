@@ -15,8 +15,8 @@ class ControllerBase extends Controller
     public function beforeExecuteRoute(Dispatcher $dispatcher)
     {
         if (parent::beforeExecuteRoute($dispatcher)) {
-            $this->openId = WechatHelper::loginRequired("snsapi_userinfo");
-            $this->view->setVar('openId', $this->openId);
+            //$this->openId = WechatHelper::loginRequired("snsapi_userinfo");
+            //$this->view->setVar('openId', $this->openId);
 
             return true;
         }

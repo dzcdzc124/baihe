@@ -11,10 +11,10 @@
                 "url": "/admin/"
             },
             {
-                "id": "prize",
-                "label": "奖品设置",
-                "icon": "gift",
-                "url": "/admin/prize/"
+                "id": "order",
+                "label": "订单列表",
+                "icon": "list",
+                "url": "/admin/order/"
             },
             {
                 "id": "lucky",

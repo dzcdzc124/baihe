@@ -1,7 +1,7 @@
 <?php
 
 return new \Phalcon\Config([
-    'appName' => 'attach',
+    'appName' => 'baihe',
 
     'database' => [
         'adapter' => 'Mysql',
@@ -29,8 +29,8 @@ return new \Phalcon\Config([
         'pluginsDir'     => APP_PATH . 'plugins/',
 
         'host' => '127.0.0.1',
-        'baseUri' => '/attach',
-        'staticUri' => '/attach/static/',
+        'baseUri' => '/baihe',
+        'staticUri' => '/baihe/static/',
         'staticPath' => WEB_PATH . 'static/',
         'staticVer' => 'DaeD',
         'staticPrefix' => 'http://demofiles.oss-cn-shenzhen.aliyuncs.com/',
@@ -51,7 +51,7 @@ return new \Phalcon\Config([
         'cache' => [
             'lifeTime' => 86400,
             'server' => [
-                'prefix' => '__attach__',
+                'prefix' => '__baihe__',
                 'host' => '127.0.0.1',
                 'port' => 6379,
                 'persistent' => false,

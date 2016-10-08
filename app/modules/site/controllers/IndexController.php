@@ -3,7 +3,7 @@
 namespace App\Modules\Site\Controllers;
 
 use App\Helpers\Imei as ImeiHelper;
-use App\Models\District;
+use App\Models\Order;
 
 
 class IndexController extends ControllerBase
@@ -17,9 +17,7 @@ class IndexController extends ControllerBase
             'isMobile' => $this->userAgent->isMobile()
         ]);
 
-
-        die(var_dump($this->openId));
-    }
+        die(var_dump(substr('order', strrpos('order', '\\') + 1)));
 
     private function saveDistrict()
     {

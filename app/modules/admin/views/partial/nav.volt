@@ -1,4 +1,4 @@
-{% macro render_tab(title, navs, current_nav, buttons = null) %}
+{% macro render_tab(title, navs, current_nav, buttons = '') %}
 {%- set navs = array_reverse(navs) -%}
 <ul class="nav nav-tabs pull-right">
     {%- for n in navs -%}
@@ -34,4 +34,4 @@
     </li>
 </ul>
 {% endmacro %}
-{{ render_tab(title, navs, current_nav is not empty ? current_nav : 'index', buttons is defined ? buttons : null) }}
+{{ render_tab(title, navs, current_nav is not empty ? current_nav : 'index', buttons is defined ? buttons : '') }}

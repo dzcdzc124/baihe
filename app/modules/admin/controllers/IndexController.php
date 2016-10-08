@@ -16,9 +16,5 @@ class IndexController extends ControllerBase
             'viewTotal' => 0,
         ]);
     }
-
-    public function testAction()
-    {
-        SystemHelper::runTask('sms/send', ['virtualCardId' => 1]);
-    }
+    
 }
