@@ -1,41 +1,41 @@
 <?php
 
-namespace App\Modules\Admin\Controllers\Prize;
+namespace App\Modules\Admin\Controllers;
 
 use App\Helpers\System as SystemHelper;
-use App\Models\Prize;
-use App\Modules\Admin\Forms\Prize as PrizeForm;
+use App\Models\Question;
+use App\Modules\Admin\Forms\Question as QuestionForm;
 
 
-class IndexController extends ControllerBase
+class QuestionController extends ControllerBase
 {
     public function indexAction()
     {
         if ($this->request->isPost()) {
-            $totals = $this->request->getPost('totals');
-            $weights = $this->request->getPost('weights');
+            $questions = $this->request->getPost('questions');
+            $sorts = $this->request->getPost('sorts');
+            $reverses = $this->request->getPost('reverses');
 
-            if (is_array($totals)) {
-                Prize::updateData($totals, $weights);
+            if (is_array($questions)) {
+                Question::updateData($questions, $sorts, $reverses);
             }
 
-            SystemHelper::clearCache('prize_');
+            //SystemHelper::clearCache('Question_');
             $this->serveJson('设置已更新', 0);
         }
 
-        $prizeList = Prize::find([
-            'order' => 'sort DESC',
+        $questionList = Question::find([
+            'order' => 'sort',
         ]);
 
         $this->view->setVars([
-            'prizeList' => $prizeList,
+            'questionList' => $questionList,
         ]);
     }
 
     public function createAction()
     {
         $this->dispatcher->forward([
-            'controller' => 'index',
             'action' => 'update',
         ]);
     }
@@ -43,21 +43,21 @@ class IndexController extends ControllerBase
     public function updateAction()
     {
         $id = (int) $this->request->getQuery('id');
-        $model = Prize::findFirstById($id);
+        $model = Question::findFirstById($id);
         if (empty($model))
-            $model = new Prize;
+            $model = new Question;
 
-        $form = new PrizeForm($model);
+        $form = new QuestionForm($model);
         $form->bind($_POST, $model);
 
         if ($this->request->isPost()) {
             try {
                 if ($form->isValid()) {
                     if ($model->save()) {
-                        SystemHelper::clearCache('prize_');
-                        $this->serveJson('奖品已保存', 0);
+                        //SystemHelper::clearCache('question_');
+                        $this->serveJson('问题已保存', 0);
                     } else {
-                        $this->serveJson('奖品信息无法保存');
+                        $this->serveJson('问题无法保存');
                     }
                 } else {
                     $this->serveJson($form->implodeMessages());

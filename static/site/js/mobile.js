@@ -1,40 +1,30 @@
 //接口地址
 var apiUrl = {
   check:      baseLink + "api/imei/check/",
-  info:       baseLink + "api/imei/info/",
-  award:      baseLink + "api/award/",
-  exchange:   baseLink + "api/exchange/",
 }
 
 
-//本地保存已获取城市数据
-var districtData = {};
 var sending = false;
 
-var loadimg = [
-  basePath + "img/back.png",
-  basePath + "img/cover.png",
-  basePath + "img/shade.png",
-];
 var img_list = [
     basePath + "img/bg.jpg",
-    basePath + "img/logo.jpg",
-    basePath + "img/gift.png",
-    basePath + "img/redpackage.png",
-    basePath + "img/btn.png",
-    basePath + "img/alert.png",
-    basePath + "img/rule1.png",
+    basePath + "img/icon.png",
+    basePath + "img/image1.png",
+    basePath + "img/loading.jpg",
+    basePath + "img/shape1.png",
+    basePath + "img/shape2.png",
 ];
 
-var imgs = document.images;
+/*var imgs = document.images;
 for(var i = 0; i<imgs.length; i++){
-  var src = imgs[i].src || imgs[i].getAttribute("pre");
+  var src = imgs[i].src;
   if( src && !in_array(src, img_list) ){
     img_list.push(src);
   }
-}
+}*/
 
-var autoCity = true;
+var questionNo = 1; //当前题号
+var selecting = false;
 
 var pageControl = (function () {
   var loadObj = null,
@@ -45,7 +35,7 @@ var pageControl = (function () {
       winwidth = 640,       //页面宽
       winheight = 960,      //页面高
       designWidth = 640,    //设计宽
-      designHeight = 1138,  //设计高
+      designHeight = 1050,  //设计高
       slideWidth = 640,     //滑动宽
       slideHeight = 960,    //滑动高
       winscale = 1,         //页面缩放至全部预览
@@ -55,37 +45,21 @@ var pageControl = (function () {
   return {
     init: function(){
       //预加载
-      new preLoad({
-        file_list: loadimg,
+      loadObj = new preLoad({
+        file_list: img_list,
+        process: function(progress){
+          //$(".loader .process span").html(progress);
+        },
         callback: function(){
-          $(".pageloading .loader").removeClass("none");
-
-            loadObj = new preLoad({
-              file_list: img_list,
-              process: function(progress){
-                $(".loader .process span").html(progress);
-              },
-              callback: function(){
-                var imgs = document.images;
-                for(var i = 0; i<imgs.length; i++){
-                  if(!imgs[i].src) {
-                    imgs[i].src = imgs[i].getAttribute("pre");
-                  }
-                }
-
-                $(".part1").addClass("active");
-
-                $(".pageloading").animate({
-                  opacity: 0
-                }, 200, function(){
-                  $(".pageloading").remove();
-                  pageControl.loadComplete();
-                })
-              }
-            })
-
+          $(".pageloading").animate({
+            opacity: 0
+          }, 1000, function(){
+            $(".pageloading").remove();
+            pageControl.loadComplete();
+          })
         }
       })
+
 
       var winsize = getWinSize();
       winwidth = winsize.width;
@@ -146,62 +120,49 @@ var pageControl = (function () {
     loadComplete: function(){      
       $(".refresh").on(eventName.tap, function(){ window.location.reload();})
 
-      var p = GetQueryString("p");
-      if(p){
-        p = Number(p);
-        p = p > 0? p : 1;
-        $(".page"+p).removeClass("none").siblings(".page").addClass("none");
-      }
-
-      pageControl.handleEvent();
+      $(".question-"+questionNo).removeClass('none').animate({
+        "opacity": 1
+      }, 500)
  
-      if(ISWEIXIN && !debug){
-        addShareJs();
-      }
+      pageControl.handleEvent();
 
-      if( new Date().getTime() > new Date("2016-08-15 23:59:59").getTime()){
-        viewControl.alert("~活动已结束~<br>我们下次见");
-      }
       //viewControl.layerShow($(".winner_layer"));
       //viewControl.layerShow($(".reserve_layer"));
       //viewControl.alert("<p>兑奖成功</p>奖品将在20个工作日内寄出<br>请耐心等待");
     },
     handleEvent: function(){
-      //规则
-      $('.part1 .rule').on(eventName.tap, function(){
-        viewControl.layerShow($(".rule_layer"));
-      })
+      //答题
+      $(".questionBox .answer").on(eventName.tap, function(){
+        if( selecting ) return;
 
-      //扫描imei
-      $(".page1 .scan").on(eventName.tap, function(){
-        if(!debug){
-          scanQRCode(function(result){
-            var arr = result.split(",");
-            if( arr[0].toLowerCase() != "code_128"){
-              pageControl.statSave("scan","wrong_imei");
-              viewControl.alert("你扫描的不是IMEI码~<br>请扫描正确的IMEI码");
-              return;
-            }
-            
-            userData.imei = arr[1];
-            $(".connenting").removeClass("none");
-            pageControl.statSave("submit","imei");
-            getPageApi(apiUrl.check,{"imei": userData.imei}, pageControl.checkCallback);
-          })
-        }else{
-          var result = "CODE_128,866282029999511";
-          userData.imeiScan = result;
-          var arr = result.split(",");
-          if( arr[0].toLowerCase() != "code_128"){
-            viewControl.alert("你扫描的不是IMEI码~<br>请扫描正确的IMEI码");
-            return;
-          }
-          $(".page2 .imei").html(arr[1]);
-          $(".part2").removeClass("none").siblings().addClass("none");
+        selecting = true;
+        $(this).addClass("selected").siblings().removeClass("selected");
+        var score = $(this).attr("data-value");
+        $(this).parents(".questionBox").find('input[type=hidden]').val(score);
+        console.log(score);
+
+        if(questionNo < total_question){
+
+          setTimeout(function(){
+            $(".question-"+questionNo).animate({
+              "opacity": 0
+            }, 300, function(){
+              $(this).addClass("none");
+              questionNo++;
+              $(".count span").html(questionNo);
+              $(".question-"+questionNo).removeClass('none').animate({
+                'opacity': 1
+              }, 300, function(){
+                selecting = false;
+              })
+            })
+          }, 400)
+
         }
+
       })
 
-      //提交抽奖
+/*      //提交抽奖
       $(".page2 .submit").on(eventName.tap, function(){
         var result = $(".page2 .form").checkForm();
         if(result.errcode == -1){
@@ -251,7 +212,7 @@ var pageControl = (function () {
         }else{
           pageControl.exchangeCallback({errcode: 0});
         }
-      })
+      })*/
     },
     checkCallback: function(data){
       $(".connenting").addClass("none");
@@ -272,15 +233,6 @@ var pageControl = (function () {
         viewControl.alert(data.errmsg);
       }
     },
-    infoCallback: function(data){
-      if(data.errcode == 0){
-        pageControl.statSave("submit","award");
-        getPageApi( apiUrl.award, {}, pageControl.awardCallback);
-      }else{
-        $(".connenting").addClass("none");
-        viewControl.showMsg(data.errmsg);
-      }
-    },
     awardCallback: function(data){
       $(".connenting").addClass("none");
       console.log(data);
@@ -299,43 +251,6 @@ var pageControl = (function () {
         }
       }else{
         viewControl.showMsg(data.errmsg);
-      }
-    },
-    setResult: function(data){
-      switch( Number(data.prizeType) ){
-        //礼包
-        case 3:
-          $(".page3 .gift").removeClass("none").siblings().addClass("none");
-          $(".page3 .gift .box").html("<p class='fs32'>恭喜您抽中</p><p class='fs32 ellipsis'>《"+ data.gift.data1 +"》</p><p class='fs32'>游戏大礼包!</p><p class='fs32'>兑换码:"+ data.gift.data2 +"</p><br><p class='lh40'>礼包兑换方法已发到您的手机短信</p><p class='lh40'>可以畅玩起来啦!</p>");
-          $(".page3 .gift .box").addClass("bounceInDown animated");
-  
-          break;
-        //红包
-        case 2:
-          var money = data.redpacket.amount/100;
-          $(".page3 .redpackage").removeClass("none").siblings().addClass("none");
-          $(".page3 .redpackage .box").html("<p class='fs40'>恭喜您获得红包!</p><br><p class='money'>￥<span>"+money+"</span></p><br><br><p>恭喜中奖！</p><p>快到vivo智能手机领取红包吧!</p>");
-          $(".page3 .redpackage .box").addClass("bounceInDown animated");
-          
-          break;
-        //x7
-        case 1:
-          $(".page3 .x7").removeClass("none").siblings().addClass("none");
-          $(".page3 .x7 .box .fs36").html("恭喜抽中X7Plus手机一台!");
-          $(".page3 .x7 .box").addClass("bounceInDown animated");
-          setTimeout(function(){
-            $(".page3 .x7 .rainbow, .page3 .x7 .infoBox").animate({
-              opacity: 1
-            }, 800);
-          }, 800);
-          setTimeout(function(){
-            $(".page3 .x7 .confirm").animate({
-              opacity: 1
-            }, 800);
-          }, 2000);
-          break;
-        default: 
-          break;
       }
     },
     exchangeCallback: function(data){

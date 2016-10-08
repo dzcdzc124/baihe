@@ -7,7 +7,7 @@ class Order extends ModelBase
 {
     public $id;
 
-    public $order;
+    public $order_id;
 
     public $prepay_id = '';
 

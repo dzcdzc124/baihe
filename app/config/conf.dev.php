@@ -29,8 +29,8 @@ return new \Phalcon\Config([
         'pluginsDir'     => APP_PATH . 'plugins/',
 
         'host' => '127.0.0.1',
-        'baseUri' => '/baihe',
-        'staticUri' => '/baihe/static/',
+        'baseUri' => '/',
+        'staticUri' => '/static/',
         'staticPath' => WEB_PATH . 'static/',
         'staticVer' => 'DaeD',
         'staticPrefix' => 'http://demofiles.oss-cn-shenzhen.aliyuncs.com/',

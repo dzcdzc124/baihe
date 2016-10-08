@@ -17,10 +17,10 @@
                 "url": "/admin/order/"
             },
             {
-                "id": "lucky",
-                "label": "中奖名单",
-                "icon": "list",
-                "url": "/admin/lucky/"
+                "id": "question",
+                "label": "问题列表",
+                "icon": "question",
+                "url": "/admin/question/"
             },
             {
                 "id": "imei",
