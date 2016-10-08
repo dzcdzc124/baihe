@@ -357,13 +357,19 @@ img {
 }
 .btn {
   width: 222px;
-  height: 65px;
-  background-image: url(../img/btn.png);
-  line-height: 65px;
+  height: 80px;
+  position: absolute;
+  left: 50%;
+  margin-left: -111px;
+  bottom: 200px;
+  line-height: 80px;
   text-align: center;
-  font-size: 32px;
-  color: #b18b5e;
+  font-size: 35px;
+  color: #fff;
   cursor: pointer;
+  background-color: rgba(117, 19, 228, 0.3);
+  border: 2px solid #fff;
+  border-radius: 12px;
 }
 input,
 select {

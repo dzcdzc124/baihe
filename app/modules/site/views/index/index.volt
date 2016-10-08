@@ -73,6 +73,18 @@
     <div class="page questions winscale">
         <img src="<?php echo $basePath; ?>img/image1.png" class="poster">
         <div class="questionList">
+            <div class="questionBox question-0 none">
+                <input type="hidden" name="sex" value="0">
+                <div class="sort tc fs32 bold">　</div>
+                <div class="question table border-box">
+                    <div class="content table-cell va-middle tc">你的性别？</div>
+                </div>
+                
+                <div class="answers">
+                    <div class="answer inline-block" data-value="1">男性</div>
+                    <div class="answer inline-block" data-value="0">女性</div>
+                </div>
+            </div>
             {% for item in questionList %}
             <div class="questionBox question-{{item.id}} none">
                 <input type="hidden" name="results[{{item.sort}}]" value="0">
@@ -91,9 +103,9 @@
                     <div class="answer inline-block" data-value="7">G非常同意</div>
                 </div>
             </div>
-
             {% endfor %}
         </div>
+        <div class="submit btn none opacity-0">提　交</div>
         <div class="count">
             <span>1</span>/{{count(questionList)}}
         </div>

@@ -1,6 +1,6 @@
 //接口地址
 var apiUrl = {
-  check:      baseLink + "api/imei/check/",
+  result:      baseLink + "index/result",
 }
 
 
@@ -23,7 +23,7 @@ for(var i = 0; i<imgs.length; i++){
   }
 }*/
 
-var questionNo = 1; //当前题号
+var questionNo = 0; //当前题号
 var selecting = false;
 
 var pageControl = (function () {
@@ -139,132 +139,84 @@ var pageControl = (function () {
         $(this).addClass("selected").siblings().removeClass("selected");
         var score = $(this).attr("data-value");
         $(this).parents(".questionBox").find('input[type=hidden]').val(score);
-        console.log(score);
+        console.log(pageControl.getResult());
 
         if(questionNo < total_question){
 
           setTimeout(function(){
             $(".question-"+questionNo).animate({
               "opacity": 0
-            }, 300, function(){
+            }, 30, function(){
               $(this).addClass("none");
               questionNo++;
               $(".count span").html(questionNo);
               $(".question-"+questionNo).removeClass('none').animate({
+                'opacity': 1
+              }, 30, function(){
+                selecting = false;
+              })
+            })
+          }, 40)
+
+        }else{
+          setTimeout(function(){
+            $(".questionList").animate({
+              'opacity': 0
+            }, 300, function(){
+              $(this).addClass("none");
+              $(".submit").removeClass('none').animate({
                 'opacity': 1
               }, 300, function(){
                 selecting = false;
               })
             })
           }, 400)
-
-        }
-
-      })
-
-/*      //提交抽奖
-      $(".page2 .submit").on(eventName.tap, function(){
-        var result = $(".page2 .form").checkForm();
-        if(result.errcode == -1){
-          viewControl.alert("您的信息填写不完整<br>请补充");
-          return;
-        }else if(result.errcode != 0){
-          viewControl.alert(result.errmsg);
-          return;
-        }
-
-        var postData = result.data;
-        for(var item in postData){
-          userData[item] = postData[item];
-        }
-        console.log(postData);
-        
-        if(!debug){
-          $(".connenting").removeClass("none");
-          pageControl.statSave("submit","info");
-          getPageApi( apiUrl.info, postData, pageControl.infoCallback);
-        }else{
-          pageControl.awardCallback({errcode: 0, prizeType: getRandom(1,1) ,redpacket:{amount: 105}, gift:{data1: "宾果消消乐", data2: "JEJV13532523"} });
         }
       })
 
-      //提交中奖信息
-      $(".page3 .x7 .confirm").on(eventName.tap, function(){
-        var result = $(".page3 .x7 .box").checkForm();
-        if(result.errcode == -1){
-          viewControl.alert("<p>再坚持1秒</p>请您填写完整信息再提交");
-          return;
-        }else if(result.errcode != 0){
-          viewControl.alert(result.errmsg);
-          return;
+     //提交结果
+      $(".submit").on(eventName.tap, function(){
+        var result = pageControl.getResult();
+        for(var i = 0; i < result.length; i++){
+          if(result[i] == 0){
+            $(".submit").animate({
+              'opacity': 0
+            }, function(){
+              $(this).addClass("none");
+
+              $(".question-"+ (i+1)).css({'opacity': 1}).removeClass('none').siblings().css({'opacity': 0}).addClass('none');
+              $(".questionList").removeClass('none').animate({
+                'opacity': 1
+              }, 300, function(){
+                selecting = false;
+                viewControl.showMsg('请重答这一道题~');
+              })
+            })
+            return;
+          } 
+          result[i] = Number(result[i]);
         }
 
-        var postData = result.data;
-        for(var item in postData){
-          userData[item] = postData[item];
-        }
-        console.log(postData);
+        console.log(result);
+        var sex = $('.question-0').find('input[type=hidden]').val();
         
-        if(!debug){
-          $(".connenting").removeClass("none");
-          pageControl.statSave("submit","exchange");
-          getPageApi( apiUrl.exchange, postData, pageControl.exchangeCallback);
-        }else{
-          pageControl.exchangeCallback({errcode: 0});
-        }
-      })*/
+        $(".connenting").removeClass("none");
+        getPageApi( apiUrl.result, {'result': JSON.stringify(result), 'sex': sex}, pageControl.resultCallback);
+       
+      })
     },
-    checkCallback: function(data){
-      $(".connenting").addClass("none");
-      if(data.errcode == 0){
-        if(typeof data.lucky == "undefined"){
-          $(".page2 .imei").html(userData.imei);
-          $(".part2").removeClass("none").siblings().addClass("none");
-        }else{
-          var type = Number(data.lucky.prizeType);
-          if( $.inArray(type,[1,2,3]) >=0 ){
-            $(".part3").removeClass("none").siblings().addClass("none");
-            pageControl.setResult(data.lucky);
-          }else{
-            viewControl.alert("<p>很遗憾</p>你没有中奖，感谢参与!");
-          }
+    getResult: function(){
+      var result = [];
+      $('.questionList .questionBox').each(function(){
+        if($(this).hasClass('question-0')){
+          return;
         }
-      }else{
-        viewControl.alert(data.errmsg);
-      }
+        result.push($(this).find('input[type=hidden]').val());
+      })
+      return result;
     },
-    awardCallback: function(data){
-      $(".connenting").addClass("none");
-      console.log(data);
-      if(data.errcode == 0){
-        var type = Number(data.prizeType);
-        if( $.inArray(type,[1,2,3]) >=0 ){
-          $(".part2").animate({
-                    "transform": "translate(0, -200%)",
-            "-webkit-transform": "translate(0, -200%)",
-          }, 400, function(){
-            $(".part3").removeClass("none").siblings().addClass("none");
-            pageControl.setResult(data);
-          })
-        }else{
-          viewControl.alert("<p>很遗憾</p>你没有中奖，感谢参与!");
-        }
-      }else{
-        viewControl.showMsg(data.errmsg);
-      }
-    },
-    exchangeCallback: function(data){
-      $(".connenting").addClass("none");
-      if(data.errcode == 0){
-        viewControl.alert("<p>兑奖成功</p>奖品将在20个工作日内寄出<br>请耐心等待");
-        $(".page3 .x7 .confirm").animate({
-          opacity: 0
-        }, 300, function(){
-          $(this).addClass("none");
-        })
-      }else{
-        viewControl.showMsg(data.errmsg);
-      }
+    resultCallback: function(){
+
     },
     statSave: function(action,type){
       if(typeof _hmt != "undefined"){
