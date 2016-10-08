@@ -19,8 +19,6 @@
     var version = "<?php echo $version; ?>";
 
     var userData = {
-        "id": "{{id}}",
-        "name": "{{name}}"
     };
     var total_question = {{count(questionList)}};
 
