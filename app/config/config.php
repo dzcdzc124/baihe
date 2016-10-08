@@ -17,8 +17,11 @@ include __DIR__ . '/functions.php';
 $config = include __DIR__ . '/conf.dev.php';
 $env = getenv('PHP_ENV');
 $isBaihe = getenv('baihe');
-if ($isBaihe || $env == 'production')
+if ($isBaihe || $env == 'production'){
+	error_reporting(E_ALL ^ E_NOTICE);
+	error_reporting(E_ALL ^ E_WARNING);
     $env = 'prod';
+}
 
 $envConfigFile = __DIR__ . '/conf.' . strtolower($env) . '.php';
 if (is_file($envConfigFile)) {
