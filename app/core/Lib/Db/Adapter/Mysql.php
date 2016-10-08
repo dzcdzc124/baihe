@@ -7,7 +7,7 @@ use Phalcon\Db\Adapter\Pdo\Mysql as MysqlAdapter;
 
 class Mysql extends MysqlAdapter
 {
-    public function connect($descriptor = null)
+    public function connect(array $descriptor = null)
     {
         if (is_null($descriptor))
             $descriptor = $this->_descriptor;
