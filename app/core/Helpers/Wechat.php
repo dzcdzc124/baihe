@@ -60,15 +60,13 @@ class Wechat extends HelperBase
         if (empty($openId)) {
             $currentUrl = $dispatcher->getCurrentURI();
             $currentUrl = preg_replace("/:\d+/", "", $currentUrl);
-            var_dump($currentUrl);
+            
             //重定向回来后带code参数
             $code = $request->getQuery('code');
             if (empty($code)) {
                 $redirectUrl = self::parseRedirectUrl($currentUrl,['scope' => $scope]);
                 $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl, 'code', $scope);
-                var_dump($redirectUrl);
-                var_dump($authUrl);
-                die();
+
                 Url::redirect($authUrl);
             } else {
                 try {
