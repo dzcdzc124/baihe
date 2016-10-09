@@ -59,6 +59,7 @@ class Wechat extends HelperBase
 
         if (empty($openId)) {
             $currentUrl = $dispatcher->getCurrentURI();
+            $currentUrl = preg_replace("/:\d+/", "", $currentUrl);
             var_dump($currentUrl);
             //重定向回来后带code参数
             $code = $request->getQuery('code');
