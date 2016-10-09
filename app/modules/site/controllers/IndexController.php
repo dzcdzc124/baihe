@@ -28,6 +28,10 @@ class IndexController extends ControllerBase
         $answer = $this->request->get('result');
         $sex = (int) $this->request->get('sex');
 
+        if( !isset($answer) ){
+            $this->serveJson('请先答题~');
+        }
+
         $answerArray = json_decode($answer);
         //计分规则：奇数项为回避量表，偶数项为焦虑量表。3,15,19,25,29,31,33,35反向计分。22反向计分。
         for ($i = 0; $i < count($answerArray); $i++) {
