@@ -125,7 +125,6 @@
 
 
 <script src="<?php echo $basePath; ?>js/zepto.min.js<?php echo $version; ?>"></script>
-<script src="<?php echo $basePath; ?>js/swiper.min.js<?php echo $version; ?>"></script>
 <script src="<?php echo $basePath; ?>js/common.js<?php echo $version; ?>"></script>
 <script src="<?php echo $basePath; ?>js/mobile.js<?php echo $version; ?>"></script>
     
