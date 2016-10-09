@@ -108,6 +108,18 @@
             <span>1</span>/{{count(questionList)}}
         </div>
     </div>
+
+    <div class="result none opacity-0">
+        <div class="resultBox winscale">
+            <div class="tle tc fs36">- <span></span> -</div>
+            <div class="desc border-box">
+                <dl>
+                   
+                </dl>
+            </div>
+        </div>
+    </div>
+    
     <div class="icon"></div>
 </div>
 

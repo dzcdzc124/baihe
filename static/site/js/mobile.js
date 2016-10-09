@@ -8,6 +8,7 @@ var sending = false;
 
 var img_list = [
     basePath + "img/bg.jpg",
+    basePath + "img/bg2.jpg",
     basePath + "img/icon.png",
     basePath + "img/image1.png",
     basePath + "img/loading.jpg",
@@ -146,17 +147,17 @@ var pageControl = (function () {
           setTimeout(function(){
             $(".question-"+questionNo).animate({
               "opacity": 0
-            }, 30, function(){
+            }, 200, function(){
               $(this).addClass("none");
               questionNo++;
               $(".count span").html(questionNo);
               $(".question-"+questionNo).removeClass('none').animate({
                 'opacity': 1
-              }, 30, function(){
+              }, 200, function(){
                 selecting = false;
               })
             })
-          }, 40)
+          }, 500)
 
         }else{
           setTimeout(function(){
@@ -215,8 +216,28 @@ var pageControl = (function () {
       })
       return result;
     },
-    resultCallback: function(){
+    resultCallback: function(data){
+      $(".connenting").addClass("none");
+      if(data.errcode == 0){
+        $(".resultBox .tle span").html(data.type);
+        var descHtml = '';
+        for(var i in data.desc){
+          descHtml += '<dt>'+data.desc[i].title+'</dt>';
+          descHtml += '<dd>'+data.desc[i].intro+'</dd>';
+        }
+        $(".resultBox .desc dl").html(descHtml);
 
+        $(".questions").animate({
+          'opacity': 0,
+        }, 300, function(){
+          $(this).addClass('none');
+          $('.result').removeClass('none').animate({
+            'opacity': 1
+          }, 300)
+        })
+      }else{
+        viewControl.showMsg(data.errmsg);
+      }
     },
     statSave: function(action,type){
       if(typeof _hmt != "undefined"){
