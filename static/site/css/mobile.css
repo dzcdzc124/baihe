@@ -408,7 +408,12 @@ img {
   height: 16px;
 }
 .result .resultBox .desc dt:not(:first-child) {
-  margin-top: 50px;
+  margin-top: 40px;
+}
+.result .resultBox .desc dd {
+  box-sizing: border-box;
+  margin-left: 30px;
+  width: 450px;
 }
 .btn {
   width: 222px;
