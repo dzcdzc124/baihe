@@ -69,6 +69,7 @@ class Wechat extends HelperBase
 
                 Url::redirect($authUrl);
             } else {
+                die($code);
                 try {
                     $accessToken = self::client()->oAuth->getAccessToken($code);
                     $openId = $accessToken['openid'];
