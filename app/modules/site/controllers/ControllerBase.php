@@ -12,11 +12,16 @@ class ControllerBase extends Controller
 {
     protected $openId;
 
+    protected $isDomain = false;
+
     public function beforeExecuteRoute(Dispatcher $dispatcher)
     {
         if (parent::beforeExecuteRoute($dispatcher)) {
-            //$this->openId = WechatHelper::loginRequired("snsapi_userinfo");
-            //$this->view->setVar('openId', $this->openId);
+            if( strpos($_SERVER["HTTP_HOST"],".com")!==false ){
+                $this->isDomain = true;
+                $this->openId = WechatHelper::loginRequired("snsapi_userinfo");
+                $this->view->setVar('openId', $this->openId);
+            }
 
             return true;
         }
