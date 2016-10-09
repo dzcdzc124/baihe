@@ -46,7 +46,7 @@ class Wechat extends HelperBase
         $request = self::getShared('request');
 
         $openId = $session->get($sessionName);
-        /*if (empty($openId)) {
+        if (empty($openId)) {
             $cookieAuth = $cookies->get($cookieName);
             $cryptToken = $cookieAuth ? $cookieAuth->getValue() : null;
             try {
@@ -55,7 +55,7 @@ class Wechat extends HelperBase
             } catch (\Exception $e) {
                 $openId = null;
             }
-        }*/
+        }
 
         if (empty($openId)) {
             $currentUrl = $dispatcher->getCurrentURI();
@@ -64,12 +64,11 @@ class Wechat extends HelperBase
             //重定向回来后带code参数
             $code = $request->getQuery('code');
             if (empty($code)) {
-                $redirectUrl = self::parseRedirectUrl($currentUrl,['scope' => $scope]);
+                $redirectUrl = self::parseRedirectUrl($currentUrl);
                 $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl, 'code', $scope, $scope);
 
                 Url::redirect($authUrl);
             } else {
-                die($code);
                 try {
                     $accessToken = self::client()->oAuth->getAccessToken($code);
                     $openId = $accessToken['openid'];
@@ -78,7 +77,11 @@ class Wechat extends HelperBase
                 }
 
                 $session->set($sessionName, $openId);
+                //$cookies->set($cookieName, $openId, TIMESTAMP + 86400 * 180);
                 $cookies->set($cookieName, $crypt->encrypt(self::authToken($openId)), TIMESTAMP + 86400 * 180);
+
+                $userinfo = self::client()->oAuth->getUserInfo();
+                die(var_dump($userinfo));
             }
         }
 
@@ -96,7 +99,7 @@ class Wechat extends HelperBase
             $url .= "?".http_build_query($param);
         }
 
-        return urlencode($url);
+        return $url;
     }
 
     public static function authToken($openId)
