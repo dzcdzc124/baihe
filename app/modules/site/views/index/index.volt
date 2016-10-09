@@ -30,7 +30,7 @@
     
     </script>
     <link rel="stylesheet" type="text/css" href="<?php echo $basePath; ?>css/mobile.css"/>
-    <title>PDQ</title>
+    <title>百合网·爱情实验室</title>
 </head>
 
 <body>
