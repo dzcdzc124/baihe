@@ -108,6 +108,23 @@ class OAuth
             return NULL;
     }
 
+    public function getApiTicket(){
+        $accessToken = $this->getApiAccessToken();
+
+        if($accessToken){
+            $parameters = array(
+                'access_token' => $accessToken,
+                'type' => 'jsapi'
+            );
+
+            $res = $this->get('/cgi-bin/ticket/getticket', $parameters);
+            if ($res && empty($res['errcode'])) {
+                return $res;
+            }
+        }
+        return NULL;
+    }
+
     public static function ticket() {
         $ticket = self::getShared('dataBag')->get('ticket', NULL, 'core');
 

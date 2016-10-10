@@ -171,8 +171,6 @@ class Wechat extends HelperBase
     }
 
     public static function ticket(){
-        $dispatcher = self::getShared('dispatcher');
-
         $ticket = Ticket::findByModule('pdq');
         if(empty($ticket)){
             $ticket = new Ticket;
@@ -181,18 +179,12 @@ class Wechat extends HelperBase
         }
 
         if ( ($ticket->expire_at <= TIMESTAMP) ) {
-            $accessToken = self::client()->oAuth->getApiAccessToken();
-            $parameters = array(
-                'access_token' => $accessToken,
-                'type' => 'jsapi'
-            );
-
-            $res = self::httpGet('api.weixin.qq.com', '/cgi-bin/ticket/getticket', $parameters);
-            if ($res && empty($res['errcode'])) {
+            $res = self::client()->oAuth->getApiTicket();
+            if($res){
                 $ticket->value = $res['ticket'];
                 $ticket->expire_at = TIMESTAMP + (int)$res['expires_in'];
-                $ticket->save();
             }
+            $ticket->save();
         }
 
         return $ticket->value ? $ticket->value : NULL;
