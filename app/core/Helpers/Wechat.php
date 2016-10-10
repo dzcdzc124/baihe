@@ -100,7 +100,8 @@ class Wechat extends HelperBase
         if (empty($user) || empty($user->id)) {
             $user = new User;
             $user->openId = $openId;
-            $user->created = $user->updated = TIMESTAMP;
+            $user->created = TIMESTAMP;
+            $user->updated = TIMESTAMP;
         }
 
         if( isset($userInfo['nickname'])){
@@ -174,7 +175,8 @@ class Wechat extends HelperBase
         $ticket = Ticket::findByModule('pdq');
         if(empty($ticket)){
             $ticket = new Ticket;
-            $ticket->created = $ticket->updated = TIMESTAMP;
+            $ticket->created = TIMESTAMP;
+            $ticket->updated = TIMESTAMP;
             $ticket->module = 'pdq';
         }
 
