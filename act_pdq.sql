@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2016-10-08 19:08:18
+Date: 2016-10-10 17:20:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,6 +38,24 @@ CREATE TABLE `administrator` (
 -- Records of administrator
 -- ----------------------------
 INSERT INTO `administrator` VALUES ('2', 'baihe', null, '57f85e$476b4b3324395ac09d46da2d20a37c882320b85a', null, null, '1475894966', '1475894966');
+
+-- ----------------------------
+-- Table structure for jsapi_ticket
+-- ----------------------------
+DROP TABLE IF EXISTS `jsapi_ticket`;
+CREATE TABLE `jsapi_ticket` (
+  `module` varchar(50) NOT NULL,
+  `value` text,
+  `expire_at` timestamp NULL DEFAULT NULL,
+  `created` timestamp NULL DEFAULT NULL,
+  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`module`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of jsapi_ticket
+-- ----------------------------
+INSERT INTO `jsapi_ticket` VALUES ('pdq', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for login_attempt
@@ -70,6 +88,7 @@ INSERT INTO `login_attempt` VALUES ('4', '2', 'baihe', '123445', '127.0.0.1', 'M
 DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
   `order_id` varchar(20) NOT NULL,
   `prepay_id` varchar(64) DEFAULT NULL,
   `module` varchar(20) DEFAULT NULL,
@@ -153,28 +172,32 @@ CREATE TABLE `setting` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for users
+-- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `openId` varchar(90) NOT NULL DEFAULT '',
   `nickname` varchar(90) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
-  `gender` varchar(1) DEFAULT NULL,
+  `sex` varchar(1) DEFAULT NULL,
   `country` varchar(32) DEFAULT NULL,
   `province` varchar(32) DEFAULT NULL,
   `city` varchar(32) DEFAULT NULL,
+  `isPayed` tinyint(4) NOT NULL DEFAULT '0',
   `accessToken` varchar(255) DEFAULT NULL,
+  `tokenExpires` timestamp NULL DEFAULT NULL,
+  `refreshToken` varchar(255) DEFAULT NULL,
   `unionId` varchar(90) DEFAULT NULL,
+  `result` text,
   `data` text,
-  `createTime` int(10) NOT NULL,
-  `updateTime` int(10) NOT NULL,
+  `created` timestamp NULL DEFAULT NULL,
+  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `openId` (`openId`),
-  KEY `nickname` (`nickname`)
+  UNIQUE KEY `openId` (`openId`) USING BTREE,
+  KEY `nickname` (`nickname`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of users
+-- Records of user
 -- ----------------------------

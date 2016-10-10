@@ -180,7 +180,7 @@ class Wechat extends HelperBase
             $ticket->module = 'pdq';
         }
 
-        if ( ($ticket['expire_at'] <= TIMESTAMP) ) {
+        if ( ($ticket->expire_at <= TIMESTAMP) ) {
             $accessToken = self::client()->oAuth->getApiAccessToken();
             $parameters = array(
                 'access_token' => $accessToken,
