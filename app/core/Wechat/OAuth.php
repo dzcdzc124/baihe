@@ -94,6 +94,43 @@ class OAuth
         }
     }
 
+    public function getApiAccessToken() {
+        $timestamp = TIMESTAMP;
+
+        $apiUrl = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s';
+        $apiUrl = sprintf($apiUrl, $this->appId, $this->appSecret);
+        $response = file_get_contents($apiUrl);
+        $data = json_decode($response, TRUE);
+
+        if(isset($data['access_token']))
+            return $data['access_token'];
+        else
+            return NULL;
+    }
+
+    public static function ticket() {
+        $ticket = self::getShared('dataBag')->get('ticket', NULL, 'core');
+
+        if (empty($ticket) || ($ticket['expire_at'] <= TIMESTAMP)) {
+            $accessToken = self::getApiAccessToken();
+            $parameters = array(
+                'access_token' => $accessToken,
+                'type' => 'jsapi'
+            );
+
+            $res = self::httpGet('api.weixin.qq.com', '/cgi-bin/ticket/getticket', $parameters);
+            if ($res && empty($res['errcode'])) {
+                $ticket = array(
+                    'ticket' => $res['ticket'],
+                    'expire_at' => TIMESTAMP + $res['expires_in'],
+                );
+                self::getShared('dataBag')->set('ticket', $ticket, 'core');
+            }
+        }
+
+        return $ticket['ticket'];
+    }
+
     protected function get($url, $parameters = [], $ssl = true)
     {
         $port = $ssl ? 443 : 80;

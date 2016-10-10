@@ -3,7 +3,7 @@
 namespace App\Models;
 
 
-class Prize extends ModelBase
+class User extends ModelBase
 {
     public $id;
 
@@ -21,6 +21,8 @@ class Prize extends ModelBase
 
     public $city;
 
+    public $isPayed = 0;
+
     public $accessToken;
 
     public $tokenExpires;
@@ -30,6 +32,8 @@ class Prize extends ModelBase
     public $unionId;
 
     public $data;
+
+    public $result;
 
     public $created;
 

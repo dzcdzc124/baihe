@@ -3,6 +3,8 @@
 namespace App\Helpers;
 
 use App\Wechat\Wechat as Client;
+use App\Models\User;
+use App\Models\JsapiTicket as Ticket;
 
 
 class Wechat extends HelperBase
@@ -55,6 +57,8 @@ class Wechat extends HelperBase
             } catch (\Exception $e) {
                 $openId = null;
             }
+        }else{
+            return self::login($openId);
         }
 
         if (empty($openId)) {
@@ -81,12 +85,119 @@ class Wechat extends HelperBase
                 $cookies->set($cookieName, $crypt->encrypt(self::authToken($openId)), TIMESTAMP + 86400 * 180);
 
                 $userinfo = self::client()->oAuth->getUserInfo();
-                die(var_dump($userinfo));
+                
+                return self::login($openId, $uuserinfo, $accessToken);
             }
+        }else{
+            return self::login($openId);
         }
 
         return $openId;
     }
+
+    public static function login($openId, $userInfo = [], $accessToken = []){
+        $user = User::findByOpenId($openId);
+        if (empty($user) || empty($user->id)) {
+            $user = new User;
+            $user->openId = $openId;
+            $user->created = $user->updated = TIMESTAMP;
+        }
+
+        if( isset($userInfo['nickname'])){
+            $user->nickname = $userInfo['nickname'];
+        }
+
+        if( isset($userInfo['headimgurl'])){
+            $user->avatar = $userInfo['headimgurl'];
+        }
+
+        if( isset($userInfo['country'])){
+            $user->country = $userInfo['country'];
+        }
+
+        if( isset($userInfo['province'])){
+            $user->province = $userInfo['province'];
+        }
+
+        if( isset($userInfo['city'])){
+            $user->city = $userInfo['city'];
+        }
+
+        if( isset($userInfo['sex'])){
+            $user->sex = $userInfo['sex'];
+            $user->data = json_encode($userInfo);
+        }
+
+        if( isset($userInfo['unionId'])){
+            $user->unionId = $userInfo['unionId'];
+        }
+
+        if( isset($accessToken['access_token'])){
+            $user->accessToken = $accessToken['access_token'];
+        }
+        if( isset($accessToken['refresh_token'])){
+            $user->refreshToken = $accessToken['refresh_token'];
+        }
+        if( isset($accessToken['expires_in'])){
+            $user->tokenExpires = TIMESTAMP + (int)$accessToken['expires_in'];
+        }
+
+        $user->save();
+
+        return $user;
+    }
+
+    public static function sign(){
+        $dispatcher = self::getShared('dispatcher');
+
+        $ticket = self::ticket();
+        $timestamp = TIMESTAMP;
+        $nonceStr = uniqid().uniqid();
+
+        $currentUrl = $dispatcher->getCurrentURI();
+        $currentUrl = preg_replace("/:\d+/", "", $currentUrl);
+
+        $sortStr = "jsapi_ticket={$ticket}&noncestr={$nonceStr}&timestamp={$timestamp}&url={$currentUrl}";
+        $signature = sha1($sortStr);
+
+        return array(
+            'nonceStr' => $nonceStr,
+            'timestamp' => $timestamp,
+            'signature' => $signature,
+            'appId' => self::getShared('config')->wechat->appId
+        );
+
+
+    }
+
+    public static function ticket(){
+        $dispatcher = self::getShared('dispatcher');
+
+        $ticket = Ticket::findByModule('pdq');
+        if(empty($ticket)){
+            $ticket = new Ticket;
+            $ticket->created = $ticket->updated = TIMESTAMP;
+            $ticket->module = 'pdq';
+        }
+
+        if ( ($ticket['expire_at'] <= TIMESTAMP) ) {
+            $accessToken = self::client()->oAuth->getApiAccessToken();
+            $parameters = array(
+                'access_token' => $accessToken,
+                'type' => 'jsapi'
+            );
+
+            $res = self::httpGet('api.weixin.qq.com', '/cgi-bin/ticket/getticket', $parameters);
+            if ($res && empty($res['errcode'])) {
+                $ticket->value = $res['ticket'];
+                $ticket->expire_at = TIMESTAMP + (int)$res['expires_in'];
+                $ticket->save();
+            }
+        }
+
+        return $ticket->value ? $ticket->value : NULL;
+    }
+
 
     public static function parseRedirectUrl($url, $param=[])
     {

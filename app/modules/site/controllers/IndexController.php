@@ -4,6 +4,7 @@ namespace App\Modules\Site\Controllers;
 
 use App\Helpers\Imei as ImeiHelper;
 use App\Models\Question;
+use App\Models\Users;
 
 
 class IndexController extends ControllerBase
@@ -22,6 +23,8 @@ class IndexController extends ControllerBase
         $this->view->setVars([
             'questionList' => $questionList,
         ]);
+
+
     }
 
     public function resultAction(){
