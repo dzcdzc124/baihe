@@ -68,7 +68,7 @@ class Wechat extends HelperBase
             //重定向回来后带code参数
             $code = $request->getQuery('code');
             if (empty($code)) {
-                $redirectUrl = self::parseRedirectUrl($currentUrl);
+                $redirectUrl = self::parseRedirectUrl($currentUrl,['scope'=>$scope]);
                 $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl, 'code', $scope, $scope);
 
                 Url::redirect($authUrl);
@@ -79,12 +79,16 @@ class Wechat extends HelperBase
                 } catch (\Exception $e) {
                     Url::redirect($currentUrl);
                 }
-
+                
                 $session->set($sessionName, $openId);
                 //$cookies->set($cookieName, $openId, TIMESTAMP + 86400 * 180);
                 $cookies->set($cookieName, $crypt->encrypt(self::authToken($openId)), TIMESTAMP + 86400 * 180);
 
-                $userinfo = self::client()->oAuth->getUserInfo();
+                $scope = $request->getQuery('scope');
+                $userinfo = [];
+                if($scope == "snsapi_userinfo"){
+                    $userinfo = self::client()->oAuth->getUserInfo();
+                }
                 
                 return self::login($openId, $uuserinfo, $accessToken);
             }
@@ -92,7 +96,7 @@ class Wechat extends HelperBase
             return self::login($openId);
         }
 
-        return $openId;
+        return NULL;
     }
 
     public static function login($openId, $userInfo = [], $accessToken = []){

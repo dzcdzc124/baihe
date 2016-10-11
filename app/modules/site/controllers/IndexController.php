@@ -2,9 +2,10 @@
 
 namespace App\Modules\Site\Controllers;
 
-use App\Helpers\Imei as ImeiHelper;
 use App\Models\Question;
 use App\Models\Users;
+use App\Helpers\Wechat as WechatHelper;
+
 
 
 class IndexController extends ControllerBase
@@ -19,6 +20,12 @@ class IndexController extends ControllerBase
         $questionList = Question::find([
             'order' => 'sort',
         ]);
+
+        if( $this->isDomain ){
+            $wxConfig = WechatHelper::sign();
+            $this->view->setVar('wxConfig', $wxConfig);
+        }
+
 
         $this->view->setVars([
             'questionList' => $questionList,

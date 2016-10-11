@@ -32,7 +32,7 @@ return new \Phalcon\Config([
         'token' => '',
         'encodingAESKey' => '',
 
-        'mchId' => '',
+        'mchId' => '1396588502',
         'mchKey' => '',
         'certPath' => __DIR__ . '/apiclient_cert.pem',
         'keyPath' => __DIR__ . '/apiclient_key.pem',

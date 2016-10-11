@@ -18,7 +18,7 @@ return new \Phalcon\Config([
         'debug' => true,
         'timezone' => 'Asia/Shanghai',
 
-        'modules' => ['site', 'admin', 'api'],
+        'modules' => ['site', 'admin', 'api', 'pay'],
         'defaultModule' => 'site',
 
         'coreDir' => APP_PATH . 'core/',

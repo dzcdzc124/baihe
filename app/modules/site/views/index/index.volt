@@ -86,7 +86,7 @@
             {% for item in questionList %}
             <div class="questionBox question-{{item.id}} none">
                 <input type="hidden" name="results[{{item.sort}}]" value="0">
-                <div class="sort tc fs32 bold">{{ str_pad(item.sort, 2, "0", STR_PAD_LEFT) }}</div>
+                <div class="sort tc fs32 bold">{{ str_pad(item.sort, 2, "0", 0) }}</div>
                 <div class="question table border-box">
                     <div class="content table-cell va-middle tc">{{item.question}}</div>
                 </div>
@@ -132,7 +132,7 @@
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script>
         wx.config({
-            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: '{{wxConfig["appId"]}}', // 必填，公众号的唯一标识
             timestamp: {{wxConfig["timestamp"]}}, // 必填，生成签名的时间戳
             nonceStr: '{{wxConfig["nonceStr"]}}', // 必填，生成签名的随机串

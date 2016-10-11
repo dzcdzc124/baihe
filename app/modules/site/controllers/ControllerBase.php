@@ -6,7 +6,6 @@ use Phalcon\Mvc\Dispatcher;
 
 use App\Lib\Mvc\Controller;
 use App\Helpers\Wechat as WechatHelper;
-use App\Models\Users;
 
 
 class ControllerBase extends Controller
@@ -23,10 +22,9 @@ class ControllerBase extends Controller
             if( strpos($_SERVER["HTTP_HOST"],".com")!==false ){
                 $this->isDomain = true;
                 $this->user = WechatHelper::loginRequired("snsapi_userinfo");
-                $wxConfig = WechatHelper::sign();
+                
 
                 $this->view->setVar('user', $this->user);
-                $this->view->setVar('wxConfig', $wxConfig);
             }
 
             return true;
