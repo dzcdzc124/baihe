@@ -146,7 +146,7 @@ class IndexController extends ControllerBase
             $order->updated = TIMESTAMP;
             $order->save();
         }
-
+        unset($result['desc']);
         $this->serveJson('OK', 0, $result);
     }
 

@@ -108,10 +108,19 @@
             <span>1</span>/{{count(questionList)}}
         </div>
     </div>
-
+    <div class="preview none opacity-0">
+        <div class="previewBox winscale">
+            <div class="tle tc fs32">测试结果</div>
+            <div class="result-tle tc fs36">- <span></span> -</div>
+            <div class="desc border-box">
+                <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
+                <div class="code btn">百合会员兑换码获取</div>
+            </div>
+        </div>
+    </div>
     <div class="result none opacity-0">
         <div class="resultBox winscale">
-            <div class="tle tc fs36">- <span></span> -</div>
+            <div class="result-tle tc fs36">- <span></span> -</div>
             <div class="desc border-box">
                 <dl>
                    

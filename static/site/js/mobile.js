@@ -204,8 +204,13 @@ var pageControl = (function () {
         var sex = $('.question-0').find('input[type=hidden]').val();
         
         $(".connenting").removeClass("none");
-        getPageApi( apiUrl.submit, {'result': JSON.stringify(result), 'sex': sex}, pageControl.resultCallback);
+        getPageApi( apiUrl.submit, {'result': JSON.stringify(result), 'sex': sex}, pageControl.submitCallback);
        
+      })
+
+      //支付
+      $(".preview .pay").on(eventName.tap, function(){
+          getPageApi( apiUrl.order, {}, pageControl.orderCallback);
       })
     },
     getResult: function(){
@@ -218,10 +223,27 @@ var pageControl = (function () {
       })
       return result;
     },
-    resultCallback: function(data){
+    submitCallback: function(data){
       $(".connenting").addClass("none");
       if(data.errcode == 0){
-        $(".resultBox .tle span").html(data.type);
+        $(".previewBox .result-tle span").html(data.type);
+
+        $(".questions").animate({
+          'opacity': 0,
+        }, 300, function(){
+          $(this).addClass('none');
+          $('.preview').removeClass('none').animate({
+            'opacity': 1
+          }, 300)
+        })
+      }else{
+        viewControl.showMsg(data.errmsg);
+      }
+    },
+    resultCallback: function(data){
+      //$(".connenting").addClass("none");
+      if(data.errcode == 0){
+        $(".resultBox .result-tle span").html(data.type);
         var descHtml = '';
         for(var i in data.desc){
           descHtml += '<dt>'+data.desc[i].title+'</dt>';
@@ -229,7 +251,7 @@ var pageControl = (function () {
         }
         $(".resultBox .desc dl").html(descHtml);
 
-        $(".questions").animate({
+        $(".preview").animate({
           'opacity': 0,
         }, 300, function(){
           $(this).addClass('none');
@@ -242,13 +264,14 @@ var pageControl = (function () {
       }
     },
     orderCallback: function(data){
+      if(debug){
+        pageControl.wxPayCallback({err_msg: "get_brand_wcpay_request:ok"});
+        return;
+      }
+
       if(data.errcode == 0){
         if( typeof data['appId'] != "undefined" ){
-          if(!debug){
             chooseWXPay(data, pageControl.wxPayCallback);
-          }else{
-            pageControl.wxPayCallback({err_msg: "get_brand_wcpay_request:ok"});
-          }
         }else{
           pageControl.resultCallback(data);
         }

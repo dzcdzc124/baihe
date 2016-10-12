@@ -3,7 +3,8 @@
 namespace App\Modules\Site\Controllers;
 
 use App\Models\Question;
-use App\Models\Users;
+use App\Models\User;
+use App\Models\Product;
 use App\Helpers\Wechat as WechatHelper;
 
 
@@ -21,6 +22,7 @@ class IndexController extends ControllerBase
             'order' => 'sort',
         ]);
 
+        $product = Product::findByModule("pdq");
 
         if( $this->isDomain ){
             $wxConfig = WechatHelper::sign();
@@ -30,6 +32,7 @@ class IndexController extends ControllerBase
 
         $this->view->setVars([
             'questionList' => $questionList,
+            'product' => $product
         ]);
 
 
