@@ -58,14 +58,14 @@ class Wxpay extends HelperBase
         //['xml' => $data, 'data' => $result]
         $res = self::client()->unifiedorder($data);
         if($res['data']['return_code'] != "SUCCESS"){
-            return ['errcode'=>-1, 'errmsg'=>$res['data']['return_msg']];
+            return ['errcode'=>-1, 'errmsg'=>$res['data']['return_msg'], 'res' => $res];
         }
 
         if($res['data']['result_code'] != "SUCCESS"){
-            return ['errcode'=>-1, 'errmsg'=>$res['data']['err_code'], 'errdes'=>$res['data']['err_code_des']];
+            return ['errcode'=>-1, 'errmsg'=>$res['data']['err_code'], 'errdes'=>$res['data']['err_code_des'], 'res' => $res];
         }
 
-        return ['errcode'=>0, 'errmsg'=>'', 'prepay_id'=>$res['data']['prepay_id']];
+        return ['errcode'=>0, 'errmsg'=>'', 'prepay_id'=>$res['data']['prepay_id'], 'res' => $res];
     }
 
     public static function parseRedirectUrl($url, $param=[])

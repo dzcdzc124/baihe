@@ -71,6 +71,8 @@ class IndexController extends ControllerBase
                 $order->save();
 
             }else{
+                $order->response = $res['res']['xml'];
+                $order->save();
                 $this->serveJson($res['errmsg'], -1, $res);
             }
         }
