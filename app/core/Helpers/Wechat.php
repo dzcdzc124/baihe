@@ -86,12 +86,12 @@ class Wechat extends HelperBase
 
                 $state = $request->getQuery('state');
                 $userinfo = [];
-                var_dump($state);
+                
                 if($state == "snsapi_userinfo"){
                     $userinfo = self::client()->oAuth->getUserInfo();
                 }
                 
-                return self::login($openId, $uuserinfo, $accessToken);
+                return self::login($openId, $userinfo, $accessToken);
             }
         }else{
             return self::login($openId);
@@ -108,8 +108,7 @@ class Wechat extends HelperBase
             $user->created = TIMESTAMP;
             $user->updated = TIMESTAMP;
         }
-var_dump($userinfo);
-die();
+
         if( isset($userInfo['nickname'])){
             $user->nickname = $userInfo['nickname'];
         }
