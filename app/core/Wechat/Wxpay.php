@@ -101,9 +101,8 @@ class Wxpay extends Base
     
     public static function curlPost($url = '', $postData = '', $options = array())
     {
-        die(var_dump($postData));
-        if (is_array($postData)) {
-          $postData = http_build_query($postData);
+        if (is_array($postData)){
+            $postData = http_build_query($postData);
         }
 
         $ch = curl_init();
@@ -119,7 +118,7 @@ class Wxpay extends Base
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-        curl_setopt($ch, CURLOPT_POST, ture);
+        curl_setopt($ch, CURLOPT_POST, true);
         $data = curl_exec($ch);
         curl_close($ch);
 
@@ -130,7 +129,7 @@ class Wxpay extends Base
     public function sendRedpacket(array $data)
     {
         $xml = $this->createRedpacketRequestData($data);
-
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack');
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
