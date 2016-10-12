@@ -271,7 +271,7 @@ var pageControl = (function () {
 
       if(data.errcode == 0){
         if( typeof data['appId'] != "undefined" ){
-            chooseWXPay(data, pageControl.wxPayCallback);
+            window.chooseWXPay(data, pageControl.wxPayCallback);
         }else{
           pageControl.resultCallback(data);
         }

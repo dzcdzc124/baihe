@@ -11,10 +11,9 @@
         $basePath = App\Helpers\Url::staticUrl('./site/');
         $basePath = substr($basePath , 0 ,strripos($basePath ,"/")+1);
     ?>
-
     <script type="text/javascript"> 
     var ISMOBILE = {{ isMobile ? 1 : 0 }}, ISWEIXIN = {{ isWeiXin ? 1 : 0 }} ;
-    var baseLink = "{{ url('/') }}";
+    var baseLink = "{{ preg_replace('/:\d+/', '', url('/') ) }}";
     var basePath = "<?php echo $basePath; ?>";
     var version = "<?php echo $version; ?>";
 
@@ -135,7 +134,6 @@
 
 <script src="<?php echo $basePath; ?>js/zepto.min.js<?php echo $version; ?>"></script>
 <script src="<?php echo $basePath; ?>js/common.js<?php echo $version; ?>"></script>
-<script src="<?php echo $basePath; ?>js/mobile.js<?php echo $version; ?>"></script>
 
 <?php if (strpos($_SERVER["HTTP_HOST"],".com")!==false) { ?>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -157,5 +155,6 @@
     </script>
     <script src="<?php echo $basePath; ?>js/weixin.js<?php echo $version; ?>"></script>
 <?php }?>
+<script src="<?php echo $basePath; ?>js/mobile.js<?php echo $version; ?>"></script>
 </body>
 </html>
