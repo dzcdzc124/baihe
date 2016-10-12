@@ -43,18 +43,17 @@ class Wxpay extends HelperBase
 
         $data = [
             'body' => $product->name,
-            'detail' => $product->detail,
             'attach' => $product->detail,
             'out_trade_no' => $order->order_id,
             'total_fee' => $order->total_fee,
             'spbill_create_ip' => $request->getClientAddress(),
             'time_start' => date("YmdHis", TIMESTAMP),
             'time_expire' => date("YmdHis", TIMESTAMP+580),
-            'notify_url' => '',
+            'notify_url' => 'www.toucanz.com/pay/index/payCallback',
             'trade_type' => 'JSAPI',
             'openid' => $openId
         ];
-
+        var_dump($data);
         //['xml' => $data, 'data' => $result]
         $res = self::client()->unifiedorder($data);
         if($res['data']['return_code'] != "SUCCESS"){
