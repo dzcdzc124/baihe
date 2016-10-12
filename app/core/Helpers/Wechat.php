@@ -68,7 +68,7 @@ class Wechat extends HelperBase
             //重定向回来后带code参数
             $code = $request->getQuery('code');
             if (empty($code)) {
-                $redirectUrl = self::parseRedirectUrl($currentUrl,['scope'=>$scope]);
+                $redirectUrl = self::parseRedirectUrl($currentUrl);
                 $authUrl = self::client()->oAuth->getAuthorizeURL($redirectUrl, 'code', $scope, $scope);
 
                 Url::redirect($authUrl);
@@ -84,9 +84,10 @@ class Wechat extends HelperBase
                 //$cookies->set($cookieName, $openId, TIMESTAMP + 86400 * 180);
                 $cookies->set($cookieName, $crypt->encrypt(self::authToken($openId)), TIMESTAMP + 86400 * 180);
 
-                $scope = $request->getQuery('scope');
+                $state = $request->getQuery('state');
                 $userinfo = [];
-                if($scope == "snsapi_userinfo"){
+                var_dump($state);
+                if($state == "snsapi_userinfo"){
                     $userinfo = self::client()->oAuth->getUserInfo();
                 }
                 
@@ -107,7 +108,8 @@ class Wechat extends HelperBase
             $user->created = TIMESTAMP;
             $user->updated = TIMESTAMP;
         }
-
+var_dump($userinfo);
+die();
         if( isset($userInfo['nickname'])){
             $user->nickname = $userInfo['nickname'];
         }

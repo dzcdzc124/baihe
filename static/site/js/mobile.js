@@ -1,6 +1,6 @@
 //接口地址
 var apiUrl = {
-  result:      baseLink + "index/result",
+  submit:      baseLink + "api/index/submit",
 }
 
 
@@ -202,7 +202,7 @@ var pageControl = (function () {
         var sex = $('.question-0').find('input[type=hidden]').val();
         
         $(".connenting").removeClass("none");
-        getPageApi( apiUrl.result, {'result': JSON.stringify(result), 'sex': sex}, pageControl.resultCallback);
+        getPageApi( apiUrl.submit, {'result': JSON.stringify(result), 'sex': sex}, pageControl.resultCallback);
        
       })
     },

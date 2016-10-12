@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2016-10-10 17:20:41
+Date: 2016-10-11 19:40:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,9 +46,9 @@ DROP TABLE IF EXISTS `jsapi_ticket`;
 CREATE TABLE `jsapi_ticket` (
   `module` varchar(50) NOT NULL,
   `value` text,
-  `expire_at` timestamp NULL DEFAULT NULL,
-  `created` timestamp NULL DEFAULT NULL,
-  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `expire_at` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
+  `updated` int(11) DEFAULT NULL,
   PRIMARY KEY (`module`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -89,19 +89,41 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `product_id` int(11) DEFAULT NULL,
   `order_id` varchar(20) NOT NULL,
   `prepay_id` varchar(64) DEFAULT NULL,
-  `module` varchar(20) DEFAULT NULL,
+  `transaction_id` varchar(50) DEFAULT NULL COMMENT '微信支付订单号',
   `total_fee` int(11) NOT NULL DEFAULT '0',
-  `ispayed` tinyint(1) DEFAULT '0',
-  `created` timestamp NULL DEFAULT NULL,
-  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) DEFAULT '0' COMMENT '0待支付1已支付2已失效',
+  `data` text COMMENT '测试结果',
+  `response` text COMMENT 'wx返回结果',
+  `expire_at` int(11) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
+  `updated` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for product
+-- ----------------------------
+DROP TABLE IF EXISTS `product`;
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `detail` text,
+  `total_fee` int(11) DEFAULT NULL,
+  `module` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of product
+-- ----------------------------
+INSERT INTO `product` VALUES ('1', '爱情实验室-查看结果', '支付查看完整结果', '1', 'pdq');
 
 -- ----------------------------
 -- Table structure for question
@@ -191,8 +213,8 @@ CREATE TABLE `user` (
   `unionId` varchar(90) DEFAULT NULL,
   `result` text,
   `data` text,
-  `created` timestamp NULL DEFAULT NULL,
-  `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created` int(11) DEFAULT NULL,
+  `updated` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `openId` (`openId`) USING BTREE,
   KEY `nickname` (`nickname`) USING BTREE
