@@ -101,9 +101,11 @@ class Wxpay extends Base
     
     public static function curlPost($url = '', $postData = '', $options = array())
     {
+        die(var_dump($postData));
         if (is_array($postData)) {
           $postData = http_build_query($postData);
         }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30); //设置cURL允许执行的最长秒数
