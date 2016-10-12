@@ -215,7 +215,7 @@ class Base
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
-    protected static function createNonceStr($length = 16) {
+    public static function createNonceStr($length = 16) {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         $str = "";
         for ($i = 0; $i < $length; $i++) {

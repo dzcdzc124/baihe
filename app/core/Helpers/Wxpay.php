@@ -53,7 +53,7 @@ class Wxpay extends HelperBase
             'trade_type' => 'JSAPI',
             'openid' => $openId
         ];
-        var_dump($data);
+        
         //['xml' => $data, 'data' => $result]
         $res = self::client()->unifiedorder($data);
         if($res['data']['return_code'] != "SUCCESS"){
