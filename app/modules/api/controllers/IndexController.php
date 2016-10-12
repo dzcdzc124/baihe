@@ -63,7 +63,7 @@ class IndexController extends ControllerBase
             if(!$product){
                 $this->serveJson('没有找打产品~');   
             }
-            $res = WxpayHelper::createOrder($order, $product);
+            $res = WxpayHelper::createOrder($this->user->openId, $order, $product);
             $order->response = json_encode($res);
             
             if($res['errcode'] == 0){
