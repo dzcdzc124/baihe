@@ -155,6 +155,7 @@
             ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
     </script>
+    <script src="<?php echo $basePath; ?>js/weixin.js<?php echo $version; ?>"></script>
 <?php }?>
 </body>
 </html>
