@@ -51,8 +51,9 @@ class Wxpay extends Base
     public function unifiedorder(array $data){
         $data['appid'] = $this->appId;
         $data['mch_id'] = $this->mchId;
+        $data['nonce_str'] = strtolower(self::createNonceStr());
 
-        $data['sign'] = self::getSign($data, $this->mchKey);
+        $data['sign'] = self::getSign($data, $this->mchKey);    
 
         $res = self::curlPost('https://api.mch.weixin.qq.com/pay/unifiedorder', self::dataToXML($data));
         return $res;

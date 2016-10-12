@@ -23,7 +23,7 @@
     var total_question = {{count(questionList)}};
 
     var debug = true;
-    <?php if(strpos($_SERVER["HTTP_HOST"],"lovelab")!==false ){ ?>
+    <?php if(strpos($_SERVER["HTTP_HOST"],".com")!==false ){ ?>
         debug = false;
     <?php }; ?>
 

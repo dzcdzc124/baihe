@@ -67,5 +67,15 @@ return new \Phalcon\Config([
     ],
 
     'handlers' => ['test'],
+    'wechat' => [
+        'appId' => 'wxcdde906c2ef572c5',
+        'appSecret' => '7252ee70c5b38bf9799c8b74ff71c9e4',
+        'token' => '',
+        'encodingAESKey' => '',
 
+        'mchId' => '1396588502',
+        'mchKey' => 'PWFntjQoWysri6ovCucHEFqgnEq31D4n',
+        'certPath' => __DIR__ . '/apiclient_cert.pem',
+        'keyPath' => __DIR__ . '/apiclient_key.pem',
+    ],
 ]);

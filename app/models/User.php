@@ -49,4 +49,15 @@ class User extends ModelBase
         ]);
         return $user;
     }
+
+    public static function findById($id)
+    {
+        $user = self::findFirst([
+            'conditions' => 'id = :id:',
+            'bind' => array(
+                'id' => $id
+            ),
+        ]);
+        return $user;
+    }
 }

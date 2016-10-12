@@ -42,7 +42,7 @@ class Order extends ModelBase
 
     public static function findByOrderId($order_id)
     {
-        $order = self::find([
+        $order = self::findFirst([
             'conditions' => 'order_id = :order_id:',
             'bind' => array(
                 'order_id' => $order_id
@@ -53,10 +53,9 @@ class Order extends ModelBase
 
      public static function findByNewestOrderByUserId($user_id)
     {
-        $order = self::find([
+        $order = self::findFirst([
             'conditions' => 'user_id = :user_id:',
             'order' => 'created desc',
-            'limit' => 1,
             'bind' => array(
                 'user_id' => $user_id
             ),
@@ -65,6 +64,6 @@ class Order extends ModelBase
     }
 
     public static function createOrderId(){
-        return date("YmdHis")."_".uniqid();
+        return date("YmdHis")."_".uniqid(mt_rand(1,10000));
     }
 }

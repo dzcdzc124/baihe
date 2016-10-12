@@ -1,6 +1,8 @@
 //接口地址
 var apiUrl = {
   submit:      baseLink + "api/index/submit",
+  order:       baseLink + "api/index/order",
+  result:      baseLink + "api/index/result",
 }
 
 
@@ -147,17 +149,17 @@ var pageControl = (function () {
           setTimeout(function(){
             $(".question-"+questionNo).animate({
               "opacity": 0
-            }, 200, function(){
+            }, 30, function(){
               $(this).addClass("none");
               questionNo++;
               $(".count span").html(questionNo);
               $(".question-"+questionNo).removeClass('none').animate({
                 'opacity': 1
-              }, 200, function(){
+              }, 30, function(){
                 selecting = false;
               })
             })
-          }, 500)
+          }, 40)
 
         }else{
           setTimeout(function(){
@@ -238,6 +240,36 @@ var pageControl = (function () {
       }else{
         viewControl.showMsg(data.errmsg);
       }
+    },
+    orderCallback: function(data){
+      if(data.errcode == 0){
+        if( typeof data['appId'] != "undefined" ){
+          if(!debug){
+            chooseWXPay(data, pageControl.wxPayCallback);
+          }else{
+            pageControl.wxPayCallback({err_msg: "get_brand_wcpay_request:ok"});
+          }
+        }else{
+          pageControl.resultCallback(data);
+        }
+      }else{ 
+        viewControl.showMsg(data.errmsg);
+      }
+    },
+    wxPayCallback: function(res){
+      console.log(res);
+      switch(res.err_msg){
+        case "get_brand_wcpay_request:ok":
+          getPageApi( apiUrl.result, {}, pageControl.resultCallback);
+          break;
+        case "get_brand_wcpay_request:fail":
+          viewControl.showMsg("支付失败");
+          break;
+        case "get_brand_wcpay_request:cancel":
+        default:
+          break;
+      }
+
     },
     statSave: function(action,type){
       if(typeof _hmt != "undefined"){

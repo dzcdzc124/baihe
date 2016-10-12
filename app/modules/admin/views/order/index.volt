@@ -49,7 +49,7 @@
                                             <td>{{ item.order_id }}</td>
                                             <td>{{ round( item.total_fee/100, 2) }}</td>
                                             <td>{{ item.ispayed ? '是' : '否' }}</td>
-                                            <td class="text-right">{{ date('Y-m-d H:i:s', item.updated) }}</td>
+                                            <td class="text-right">{{ item.ispayed ? date('Y-m-d H:i:s', item.updated):'' }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

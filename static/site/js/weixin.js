@@ -8,153 +8,81 @@ var WXversion = ua.match(/micromessenger/) ? ua.match(/micromessenger\/([\d.]+)/
 window.shareData = {
 	picUrl: basePath + "/img/400.jpg",
     url: baseLink,
-	title: "vivo暑期超值送-7待你来",
-	desc: "凡在暑期购买vivoX7&X7Plus的用户均可参与购机抽奖活动，每日一台手机大奖等你拿",
-    timelineTitle : 'vivo暑期超值送-7待你来，每日一台X7Plus大奖等你拿',
+	title: "",
+	desc: "",
+    timelineTitle : "",
 	callback: function(type) {
         if(typeof _hmt != "undefined"){
 	       _hmt.push(['_trackEvent', "weixin", type]);
-        }
-        if(typeof _czc != "undefined"){
-            _czc.push(["_trackEvent", "weixin", type]);
         }
 	}
 };
 
 
 function refreshShareData() {
-    if (WXversion >= '6.0.2') {
-        wx.ready(function(){
-            wx.onMenuShareTimeline({
-                title: window.shareData.timelineTitle,
-                link: window.shareData.url,
-                imgUrl: window.shareData.picUrl,
-                success: function () { 
-                    shareData.callback("ShareTimeline");
-                },
-                cancel: function () {}
-            });
-
-            wx.onMenuShareAppMessage({
-                title: window.shareData.title,
-                desc: window.shareData.desc,
-                link: window.shareData.url,
-                imgUrl: window.shareData.picUrl,
-                type: '',
-                dataUrl: '',
-                success: function () { 
-                    shareData.callback("ShareAppMessage");
-                },
-                cancel: function () {}
-            });
-
-            wx.onMenuShareQQ({
-			    title: window.shareData.title,
-			    desc: window.shareData.desc,
-			    link: window.shareData.url,
-			    imgUrl: window.shareData.picUrl,
-			    success: function () { 
-			       shareData.callback("ShareQQ");
-			    },
-			    cancel: function () { 
-			       // 用户取消分享后执行的回调函数
-			    }
-			});
-			wx.onMenuShareWeibo({
-			    title: window.shareData.title,
-			    desc: window.shareData.desc,
-			    link: window.shareData.url,
-			    imgUrl: window.shareData.picUrl,
-			    success: function () { 
-			       shareData.callback("ShareWeibo");
-			    },
-			    cancel: function () { 
-			        // 用户取消分享后执行的回调函数
-			    }
-			});
-
-            window.scanQRCode = function(callback){
-                wx.scanQRCode({
-                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-                    success: function (res) {
-                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                        callback(result);
-                    }
-                });
-            }
+    wx.ready(function(){
+        wx.onMenuShareTimeline({
+            title: window.shareData.timelineTitle,
+            link: window.shareData.url,
+            imgUrl: window.shareData.picUrl,
+            success: function () { 
+                shareData.callback("ShareTimeline");
+            },
+            cancel: function () {}
         });
-    } else {
-        (function() {
-            function onBridgeReady() {
-                WeixinJSBridge.call('hideToolbar');
-                WeixinJSBridge.call('showOptionMenu');
-                WeixinJSBridge.on('menu:share:timeline', function(argv){
-                    WeixinJSBridge.invoke('shareTimeline',{
-                        "img_url"    : window.shareData.picUrl,
-                        "img_width"  : "400",
-                        "img_height" : "400",
-                        "link"       : window.shareData.url,
-                        "desc"       : window.shareData.desc,
-                        "title"      : window.shareData.title
-                    }, function(res){
-                        shareData.callback("ShareTimeline");
-                    });
-                });
 
-                WeixinJSBridge.on('menu:share:appmessage', function(argv){
-                    WeixinJSBridge.invoke('sendAppMessage',{
-                        "appid"      : appId,
-                        "img_url"    : window.shareData.picUrl,
-                        "img_width"  : "400",
-                        "img_height" : "400",
-                        "link"       : window.shareData.url,
-                        "desc"       : window.shareData.desc,
-                        "title"      : window.shareData.title
-                    }, function(res){
-                        shareData.callback("ShareAppMessage");
-                    });
-                });
+        wx.onMenuShareAppMessage({
+            title: window.shareData.title,
+            desc: window.shareData.desc,
+            link: window.shareData.url,
+            imgUrl: window.shareData.picUrl,
+            type: '',
+            dataUrl: '',
+            success: function () { 
+                shareData.callback("ShareAppMessage");
+            },
+            cancel: function () {}
+        });
 
-                WeixinJSBridge.on('menu:share:weibo', function(argv){
-                    WeixinJSBridge.invoke('shareWeibo',{
-                        "content" : window.shareData.desc + window.shareData.url,
-                        "url"     : window.shareData.url
-                    }, function(res){
-                        shareData.callback("ShareWeibo");
-                    });
-                });
+        wx.onMenuShareQQ({
+		    title: window.shareData.title,
+		    desc: window.shareData.desc,
+		    link: window.shareData.url,
+		    imgUrl: window.shareData.picUrl,
+		    success: function () { 
+		       shareData.callback("ShareQQ");
+		    },
+		    cancel: function () { 
+		       // 用户取消分享后执行的回调函数
+		    }
+		});
+		wx.onMenuShareWeibo({
+		    title: window.shareData.title,
+		    desc: window.shareData.desc,
+		    link: window.shareData.url,
+		    imgUrl: window.shareData.picUrl,
+		    success: function () { 
+		       shareData.callback("ShareWeibo");
+		    },
+		    cancel: function () { 
+		        // 用户取消分享后执行的回调函数
+		    }
+		});
 
-                WeixinJSBridge.on('menu:share:facebook', function(argv){
-                    WeixinJSBridge.invoke('shareFB',{
-                          "img_url"    : window.shareData.picUrl,
-                          "img_width"  : "640",
-                          "img_height" : "640",
-                          "link"       : window.shareData.url,
-                          "desc"       : window.shareData.desc,
-                          "title"      : window.shareData.title
-                    }, function(res) {
-                        shareData.callback("ShareFacebook");
-                    });
-                });
-
-                WeixinJSBridge.on('menu:general:share', function(argv){
-                    argv.generalShare({
-                        "appid"      : appId,
-                        "img_url"    : window.shareData.picUrl,
-                        "img_width"  : "640",
-                        "img_height" : "640",
-                        "link"       : window.shareData.url,
-                        "desc"       : window.shareData.desc,
-                        "title"      : window.shareData.title
-                    }, function(res){
-                        shareData.callback("generalShare");
-                    });
-                });
-            };
-
-            document.addEventListener('WeixinJSBridgeReady', onBridgeReady);
-        })();
-    }
+        window.chooseWXPay = function(param, callback){
+            wx.chooseWXPay({
+                timestamp: param["timeStamp"], // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                nonceStr: param["nonceStr"], // 支付签名随机串，不长于 32 位
+                package: param["package"], // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                signType: param["signType"], // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                paySign: param["paySign"], // 支付签名
+                success: function (res) {
+                    // 支付成功后的回调函数
+                    callback(res);
+                }
+            });
+        }
+    });
+    
 }
 refreshShareData();

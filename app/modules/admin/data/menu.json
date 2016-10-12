@@ -23,10 +23,10 @@
                 "url": "/admin/question/"
             },
             {
-                "id": "imei",
-                "label": "IMEI列表",
+                "id": "code",
+                "label": "兑 换 码",
                 "icon": "barcode",
-                "url": "/admin/imei/"
+                "url": "/admin/code/"
             },
             {
                 "id": "district",

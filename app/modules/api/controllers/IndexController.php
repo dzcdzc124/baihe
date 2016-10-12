@@ -5,6 +5,8 @@ namespace App\Modules\Api\Controllers;
 use App\Models\Product;
 use App\Models\Order;
 use App\Helpers\Wxpay as WxpayHelper;
+use App\Wechat\Wxpay;
+
 
 class IndexController extends ControllerBase
 {
@@ -26,9 +28,12 @@ class IndexController extends ControllerBase
 
 
         if( !empty($order->prepay_id) && $order->status == 0 && $order->expire_at > TIMESTAMP){
-            $this->serveJson('Ok', 0, ['prepay_id'=>$order->prepay_id]);   
+            //已有未支付有效订单
+            //$this->serveJson('Ok', 0, ['prepay_id'=>$order->prepay_id]);   
         } elseif ( $order->status == 1 ){
-            $this->serveJson('已完成支付~', 1);    
+            $this->resultAction($order);
+            //直接返回结果
+            //$this->serveJson('已完成支付~', 1);    
         } elseif ( $order->expire_at < TIMESTAMP ){
             if( $order->status == 0){
                 $order->status = 2;
@@ -48,26 +53,38 @@ class IndexController extends ControllerBase
             if($newOrder->save()){
                 $order = $newOrder;
             }else{
-                $this->serveJson('创建新订单出错~');   
+                $this->serveJson('创建新订单出错~');
             }
         }
 
-        $product = Product::findById($order->product_id);
-        if(!$product){
-            $this->serveJson('没有找打产品~');   
+        
+        if( empty($order->prepay_id) ){
+            $product = Product::findById($order->product_id);
+            if(!$product){
+                $this->serveJson('没有找打产品~');   
+            }
+            $res = WxpayHelper::createOrder($order, $product);
+            $order->response = json_encode($res);
+            
+            if($res['errcode'] == 0){
+                $order->prepay_id = $res['prepay_id'];
+                $order->save();
+
+            }else{
+                $this->serveJson($res['errmsg'], -1, $res);
+            }
         }
 
-        $res = WxpayHelper::createOrder($order, $product);
-        $order->response = json_encode($res);
-        if($res['errcode'] == 0){
-            $order->prepay_id = $res['prepay_id'];
-            $order->save();
-            $this->serveJson('ok', 0, ['prepay_id'=>$res['prepay_id']]);
-        }else{
-            $this->serveJson($res['errmsg'], -1, $res);
-        }
+        $data = [
+            "appId" => $this->config->wechat->appId,     //公众号名称，由商户传入     
+            "timeStamp" => TIMESTAMP,         //时间戳，自1970年以来的秒数     
+            "nonceStr" => Wxpay::createNonceStr(), //随机串
+            "package" => "prepay_id=".$order->prepay_id,     
+            "signType" => "MD5"         //微信签名方式：     
+        ];
+        $data["paySign"] = Wxpay::getSign($data,$this->config->wechat->appSecret);     //微信签名 
 
-        return $prepay_id;
+        $this->serveJson('ok', 0, $data);
     }
 
     public function submitAction(){
@@ -77,6 +94,9 @@ class IndexController extends ControllerBase
         if( !isset($answer) ){
             $this->serveJson('请先答题~');
         }
+
+        $totalAvoid = 0;
+        $totalAnxious = 0;
 
         $answerArray = json_decode($answer);
         //计分规则：奇数项为回避量表，偶数项为焦虑量表。3,15,19,25,29,31,33,35反向计分。22反向计分。
@@ -113,7 +133,6 @@ class IndexController extends ControllerBase
         $result = $this->getResult($zAvoid, $zAnxious);
 
 
-
         $product = Product::findByModule("pdq");
         if($product){
             $order = new Order;
@@ -131,6 +150,29 @@ class IndexController extends ControllerBase
         $this->serveJson('OK', 0, $result);
     }
 
+    public function resultAction(Order $order){
+        if( !isset($order) ){
+            if( !$this->user || empty($this->user->id) ){
+                $this->serveJson('请先登录~');
+            }
+
+            $order = Order::findByNewestOrderByUserId($this->user->id);
+
+            if(!$order || empty($order->data) ){
+                $this->serveJson('请先完成测试~');
+            }
+
+            if( $order->status != 1 ){
+                $this->serveJson('请先完成支付~');
+            }
+        }
+
+        $data = json_decode($order->data, true);
+
+        $result = $this->getResult( $data['zAvoid'], $data['zAnxious'] );
+
+        $this->serveJson('ok', 0, $result);
+    }
 
     public function getResult($zAvoid, $zAnxious){
         // 四个成人依恋的类型: 安全型、倾注型、轻视型、害怕型。
@@ -290,5 +332,24 @@ class IndexController extends ControllerBase
         }
 
         return $result;
+    }
+
+    public function getSign($data, $key)
+    {
+        ksort($data, SORT_STRING);
+
+        $signData = urldecode(http_build_query($data, null, '&', PHP_QUERY_RFC3986));
+        $signData .= '&key=' . $key;
+        $signStr = strtoupper(md5($signData));
+        return $signStr;
+    }
+
+    public function createNonceStr($length = 16) {
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        $str = "";
+        for ($i = 0; $i < $length; $i++) {
+            $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+        }
+        return $str;
     }
 }
