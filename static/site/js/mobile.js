@@ -282,14 +282,14 @@ var pageControl = (function () {
     },
     wxPayCallback: function(res){
       console.log(res);
-      switch(res.err_msg){
-        case "get_brand_wcpay_request:ok":
+      switch(res.errMsg){
+        case "chooseWXPay:ok":
           getPageApi( apiUrl.result, {}, pageControl.resultCallback);
           break;
-        case "get_brand_wcpay_request:fail":
+        case "chooseWXPay:fail":
           viewControl.showMsg("支付失败");
           break;
-        case "get_brand_wcpay_request:cancel":
+        case "chooseWXPay:cancel":
         default:
           break;
       }
