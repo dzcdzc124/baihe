@@ -84,7 +84,7 @@ class IndexController extends ControllerBase
             "package" => "prepay_id=".$order->prepay_id,     
             "signType" => "MD5"         //微信签名方式：     
         ];
-        $data["paySign"] = Wxpay::getSign($data,$this->config->wechat->appSecret);     //微信签名 
+        $data["paySign"] = Wxpay::getSign($data, $this->config->wechat->mchKey);     //微信签名 
 
         $this->serveJson('ok', 0, $data);
     }
