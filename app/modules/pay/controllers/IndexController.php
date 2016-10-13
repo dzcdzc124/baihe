@@ -29,8 +29,9 @@ class IndexController extends ControllerBase
                 $order_id = $data['out_trade_no'];
 
                 $order = Order::findByOrderId($order_id);
-                if($order && $order->transaction_id == ""){
+                if( $order && ($order->transaction_id == "" || $order->status != 1) ) {
                     $order->transaction_id = $data['transaction_id'];
+                    $order->status = 1;
                     $order->save();
                 }
             }else{
