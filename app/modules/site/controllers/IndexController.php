@@ -37,4 +37,31 @@ class IndexController extends ControllerBase
 
 
     }
+
+    public function testAction()
+    {
+        $this->view->setVars([
+            'isWeiXin' => $this->userAgent->isWeixin(),
+            'isMobile' => $this->userAgent->isMobile()
+        ]);
+
+        $questionList = Question::find([
+            'order' => 'sort',
+        ]);
+
+        $product = Product::findByModule("pdq");
+
+        if( $this->isDomain ){
+            $wxConfig = WechatHelper::sign();
+            $this->view->setVar('wxConfig', $wxConfig);
+        }
+
+
+        $this->view->setVars([
+            'questionList' => $questionList,
+            'product' => $product
+        ])->pick('index/index');
+
+
+    }
 }
