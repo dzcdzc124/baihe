@@ -21,6 +21,8 @@ class Order extends ModelBase
 
     public $status = 0;
 
+    public $type;
+
     public $data;
 
     public $expire_at;

@@ -65,11 +65,26 @@
     </div>
 </div>
 
+<div class="exchange-layer bounceBox ">
+    <div class="exchage-box page winscale">
+        <div class="layer-box">
+            <div class="close absolute">X</div>
+            <div class="full absolute table">
+                <div class="exchange-form table-cell">
+                    <div class="relative border-box info-item code-item">
+                        <input type="text" name="code" necessary placeholder="请输入兑换码">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn btn-submit fs-lg">提交</div>
+    </div>
+</div>
 
 <div class="main">
     <div class="page questions winscale">
         <img src="<?php echo $basePath; ?>img/image1.png" class="poster">
-        <div class="questionList  none opacity-0">
+        <div class="questionList">
             <div class="questionBox question-0 none">
                 <input type="hidden" name="sex" value="0">
                 <div class="sort tc fs32 bold">　</div>
@@ -102,9 +117,10 @@
             </div>
             {% endfor %}
         </div>
-        <div class="submit btn">提　交</div>
+        <div class="submit btn none opacity-0">提　交</div>
+        <div class="prev btn none opacity-0">上 一 题</div>
         <div class="count">
-            <span>1</span>/{{count(questionList)}}
+            <span>0</span>/{{count(questionList)}}
         </div>
     </div>
     <div class="preview none opacity-0">

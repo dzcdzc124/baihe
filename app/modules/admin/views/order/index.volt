@@ -24,9 +24,9 @@
                         'title': '订单列表',
                         'navs': [
                             ['index', '全部订单', url('/admin/order/')],
-                            ['payed', '已付订单', url('/admin/order/payed/')]
+                            ['payed', '已付订单', url('/admin/order/', ['pay': 1])]
                         ],
-                        'current_nav': current_nav is not empty ? current_nav : 'index'
+                        'current_nav': pay == '1' ? 'payed' : 'index'
                     ]) }}
                     <div class="tab-content no-padding">
                         <div class="tab-pane clearfix active">
@@ -43,13 +43,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for item in orderList %}
+                                        {% for item in page.items %}
                                         <tr>
                                             <td>{{ item.id }}</td>
                                             <td>{{ item.order_id }}</td>
                                             <td>{{ round( item.total_fee/100, 2) }}</td>
-                                            <td>{{ item.ispayed ? '是' : '否' }}</td>
-                                            <td class="text-right">{{ item.ispayed ? date('Y-m-d H:i:s', item.updated):'' }}</td>
+                                            <td>{{ item.status==1 ? '是' : '否' }}</td>
+                                            <td class="text-right">{{ item.status==1 ? date('Y-m-d H:i:s', item.updated):'' }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

@@ -2,16 +2,27 @@
 
 namespace App\Modules\Admin\Controllers;
 
-use App\Helpers\System as SystemHelper;
-use App\Models\Question;
-use App\Modules\Admin\Forms\Question as QuestionForm;
+use App\Lib\Paginator;
+use App\Models\Code;
 
 
-class QuestionController extends ControllerBase
-{
+class CodeController extends ControllerBase
+{   
+    protected $createNum = 10;
+
     public function indexAction()
     {
-        $query = Imei::query();
+        if ($this->request->isPost()) {
+            $givens = $this->request->getPost('givens');
+
+            if (is_array($givens)) {
+                Code::updateData($givens);
+            }
+
+            $this->serveJson('设置已更新', 0);
+        }
+
+        $query = Code::query()->order("created desc");
 
         $currentPage = $this->request->getQuery('page', 'int');
         $paginator = new Paginator([
@@ -24,33 +35,23 @@ class QuestionController extends ControllerBase
 
         $this->view->setVars([
             'page' => $page,
+            'createNum' => $this->createNum
         ]);
-        if ($this->request->isPost()) {
-            $questions = $this->request->getPost('questions');
-            $sorts = $this->request->getPost('sorts');
-            $reverses = $this->request->getPost('reverses');
-
-            if (is_array($questions)) {
-                Question::updateData($questions, $sorts, $reverses);
-            }
-
-            //SystemHelper::clearCache('Question_');
-            $this->serveJson('设置已更新', 0);
-        }
-
-        $questionList = Question::find([
-            'order' => 'sort',
-        ]);
-
-        $this->view->setVars([
-            'questionList' => $questionList,
-        ]);
+       
     }
 
     public function createAction()
-    {
+    {   
+        for( $i = 0; $i < $this->createNum; $i++ ){
+            $code = new Code;
+            $code->code = Code::createCode();
+            $code->module = 'pdq';
+            $code->created = TIMESTAMP;
+            $code->save();
+        }
+
         $this->dispatcher->forward([
-            'action' => 'update',
+            'action' => 'index'
         ]);
     }
 

@@ -32,6 +32,7 @@ class IndexController extends ControllerBase
                 if( $order && ($order->transaction_id == "" || $order->status != 1) ) {
                     $order->transaction_id = $data['transaction_id'];
                     $order->status = 1;
+                    $order->type = 'wxpay';
                     $order->save();
                 }
             }else{

@@ -15,80 +15,6 @@ class IndexController extends ControllerBase
         exitmsg('Access Denied.');
     }
 
-    public function orderAction(){
-        if( !$this->user || empty($this->user->id) ){
-            $this->serveJson('请先登录~');
-        }
-
-        $order = Order::findByNewestOrderByUserId($this->user->id);
-
-        if(!$order || empty($order->order_id) ){
-            $this->serveJson('请先完成测试~');    
-        }
-
-
-        if( !empty($order->prepay_id) && $order->status == 0 && $order->expire_at > TIMESTAMP){
-            //已有未支付有效订单
-            //$this->serveJson('Ok', 0, ['prepay_id'=>$order->prepay_id]);   
-        } elseif ( $order->status == 1 ){
-            $this->resultAction($order);
-            //直接返回结果
-            //$this->serveJson('已完成支付~', 1);    
-        } elseif ( $order->expire_at < TIMESTAMP ){
-            if( $order->status == 0){
-                $order->status = 2;
-                $order->save();
-            }
-
-            $newOrder = new Order;
-            $newOrder->user_id = $order->user_id;
-            $newOrder->product_id = $order->product_id;
-            $newOrder->order_id = Order::createOrderId();
-            $newOrder->total_fee = $order->total_fee;
-            $newOrder->status = 0;
-            $newOrder->data = $order->data;
-            $newOrder->created = TIMESTAMP;
-            $newOrder->updated = TIMESTAMP;
-
-            if($newOrder->save()){
-                $order = $newOrder;
-            }else{
-                $this->serveJson('创建新订单出错~');
-            }
-        }
-
-        
-        if( empty($order->prepay_id) ){
-            $product = Product::findById($order->product_id);
-            if(!$product){
-                $this->serveJson('没有找打产品~');   
-            }
-            $res = WxpayHelper::createOrder($this->user->openId, $order, $product);
-            $order->response = json_encode($res);
-            
-            if($res['errcode'] == 0){
-                $order->prepay_id = $res['prepay_id'];
-                $order->expire_at = TIMESTAMP+580;
-                $order->save();
-            }else{
-                $order->response = $res['res']['xml'];
-                $order->save();
-                $this->serveJson($res['errmsg'], -1, $res);
-            }
-        }
-
-        $data = [
-            "appId" => $this->config->wechat->appId,     //公众号名称，由商户传入     
-            "timeStamp" => TIMESTAMP,         //时间戳，自1970年以来的秒数     
-            "nonceStr" => Wxpay::createNonceStr(), //随机串
-            "package" => "prepay_id=".$order->prepay_id,     
-            "signType" => "MD5"         //微信签名方式：     
-        ];
-        $data["paySign"] = Wxpay::getSign($data, $this->config->wechat->mchKey);     //微信签名 
-
-        $this->serveJson('ok', 0, $data);
-    }
-
     public function submitAction(){
         $answer = $this->request->get('result');
         $sex = (int) $this->request->get('sex');
@@ -150,6 +76,148 @@ class IndexController extends ControllerBase
         }
         unset($result['desc']);
         $this->serveJson('OK', 0, $result);
+    }
+
+    public function orderAction(){
+        if( !$this->user || empty($this->user->id) ){
+            $this->serveJson('请先登录~');
+        }
+
+        $order = Order::findByNewestOrderByUserId($this->user->id);
+
+        if(!$order || empty($order->order_id) ){
+            $this->serveJson('请先完成测试~');    
+        }
+
+        if ( $order->status == 1 ){
+            //直接返回结果
+            //$this->serveJson('已完成支付~', 1);    
+            $this->resultAction($order);
+        }
+
+        if( $order->status == 0 && $order->expire_at > TIMESTAMP){
+            //已有未支付有效订单
+            //$this->serveJson('Ok', 0, ['prepay_id'=>$order->prepay_id]);   
+        } else {
+            //订单失效
+            if( $order->status != 2){
+                $order->status = 2;
+                $order->updated = TIMESTAMP;
+                $order->save();
+            }
+
+            $newOrder = new Order;
+            $newOrder->user_id = $order->user_id;
+            $newOrder->product_id = $order->product_id;
+            $newOrder->order_id = Order::createOrderId();
+            $newOrder->total_fee = $order->total_fee;
+            $newOrder->status = 0;
+            $newOrder->data = $order->data;
+            $newOrder->created = TIMESTAMP;
+            $newOrder->updated = TIMESTAMP;
+
+            if($newOrder->save()){
+                $order = $newOrder;
+            }else{
+                $this->serveJson('创建新订单出错~');
+            }
+        }
+
+        
+        if( empty($order->prepay_id) ){
+            $product = Product::findById($order->product_id);
+            if(!$product){
+                $this->serveJson('没有找打产品~');   
+            }
+            $res = WxpayHelper::createOrder($this->user->openId, $order, $product);
+            $order->response = json_encode($res);
+            
+            if($res['errcode'] == 0){
+                $order->prepay_id = $res['prepay_id'];
+                $order->expire_at = TIMESTAMP+580;
+                $order->updated = TIMESTAMP;
+                $order->save();
+            }else{
+                $order->response = $res['res']['xml'];
+                $order->updated = TIMESTAMP;
+                $order->save();
+                $this->serveJson($res['errmsg'], -1, $res);
+            }
+        }
+
+        $data = [
+            "appId" => $this->config->wechat->appId,     //公众号名称，由商户传入     
+            "timeStamp" => TIMESTAMP,         //时间戳，自1970年以来的秒数     
+            "nonceStr" => Wxpay::createNonceStr(), //随机串
+            "package" => "prepay_id=".$order->prepay_id,     
+            "signType" => "MD5"         //微信签名方式：     
+        ];
+        $data["paySign"] = Wxpay::getSign($data, $this->config->wechat->mchKey);     //微信签名 
+
+        $this->serveJson('ok', 0, $data);
+    }
+
+    public function exchangeAction(){
+        if( !$this->user || empty($this->user->id) ){
+            $this->serveJson('请先登录~');
+        }
+
+        $code = trim( $this->request->get('code') );
+        $record = Code::findByCode($code);
+        if(!$recode){
+            $this->serveJson('无效的兑换码~');
+        }elseif($recode->status == 1){
+            $this->serveJson('兑换码已被使用~');
+        }
+
+        $order = Order::findByNewestOrderByUserId($this->user->id);
+
+        if(!$order || empty($order->order_id) ){
+            $this->serveJson('请先完成测试~');    
+        }
+
+        if ( $order->status == 1 ){
+            //直接返回结果
+            //$this->serveJson('已完成支付或兑换~', 1);    
+            $this->resultAction($order);
+        }
+
+        if( $order->status == 2 ){
+            //订单失效
+            if( $order->status != 2){
+                $order->status = 2;
+                $order->updated = TIMESTAMP;
+                $order->save();
+            }
+
+            $newOrder = new Order;
+            $newOrder->user_id = $order->user_id;
+            $newOrder->product_id = $order->product_id;
+            $newOrder->order_id = Order::createOrderId();
+            $newOrder->total_fee = $order->total_fee;
+            $newOrder->status = 0;
+            $newOrder->data = $order->data;
+            $newOrder->created = TIMESTAMP;
+            $newOrder->updated = TIMESTAMP;
+
+            if($newOrder->save()){
+                $order = $newOrder;
+            }else{
+                $this->serveJson('创建新订单出错~');
+            }
+        }
+
+        $order->status = 1;
+        $order->type = 'code';
+        $order->updated = TIMESTAMP;
+        $order->save();
+
+        $record->status = 1;
+        $record->user_id = $this->user->id;
+        $record->updated = TIMESTAMP;
+        $record->save();
+
+        $this->resultAction($order);
     }
 
     public function resultAction($order = NULL){

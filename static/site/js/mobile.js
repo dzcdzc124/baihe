@@ -134,18 +134,61 @@ var pageControl = (function () {
       //viewControl.alert("<p>兑奖成功</p>奖品将在20个工作日内寄出<br>请耐心等待");
     },
     handleEvent: function(){
+      //上一题
+      $('.prev').on(eventName.tap, function(){
+        if( selecting ) return;
+        selecting = true;
+
+        if(questionNo > total_question){
+          questionNo --;
+          $(".submit").animate({
+            'opacity': 0
+          }, 200, function(){
+            $(this).addClass("none");
+            $(".questionList").removeClass('none').animate({
+              'opacity': 1
+            }, 200, function(){
+              selecting = false;
+            })
+          })
+
+        }else if(questionNo > 0){
+          $(".question-"+questionNo).animate({
+            "opacity": 0
+          }, 200, function(){
+            $(this).addClass("none");
+            questionNo--;
+            $(".count span").html(questionNo);
+            $(".question-"+questionNo).removeClass('none').animate({
+              'opacity': 1
+            }, 200, function(){
+              selecting = false;
+            })
+            console.log(questionNo);
+            if( questionNo == 0 && !$('.prev').hasClass('none') ){
+              $('.prev').animate({
+                'opacity': 0
+              }, 200, function(){
+                $(this).addClass("none");
+              })
+            }
+          })
+        }
+      })
+
       //答题
       $(".questionBox .answer").on(eventName.tap, function(){
         if( selecting ) return;
-
         selecting = true;
+
         $(this).addClass("selected").siblings().removeClass("selected");
         var score = $(this).attr("data-value");
         $(this).parents(".questionBox").find('input[type=hidden]').val(score);
         console.log(pageControl.getResult());
 
-        if(questionNo < total_question){
+        pageControl.iconRotate();
 
+        if(questionNo < total_question){
           setTimeout(function(){
             $(".question-"+questionNo).animate({
               "opacity": 0
@@ -158,29 +201,44 @@ var pageControl = (function () {
               }, 30, function(){
                 selecting = false;
               })
+
+              if(questionNo > 0 && $('.prev').hasClass('none')){
+                $('.prev').removeClass('none').animate({
+                  'opacity': 1
+                }, 200)
+              }
             })
-          }, 40)
+          }, 50)
 
         }else{
+          questionNo++;
           setTimeout(function(){
             $(".questionList").animate({
               'opacity': 0
-            }, 300, function(){
+            }, 200, function(){
               $(this).addClass("none");
               $(".submit").removeClass('none').animate({
                 'opacity': 1
-              }, 300, function(){
+              }, 200, function(){
                 selecting = false;
               })
             })
-          }, 400)
+          }, 500)
         }
       })
 
      //提交结果
       $(".submit").on(eventName.tap, function(){
+        if( !$('.prev').hasClass('none') ){
+          $('.prev').animate({
+            'opacity': 0
+          }, 200, function(){
+            $(this).addClass("none");
+          })
+        }
+
         var result = pageControl.getResult();
-        result = ["1", "1", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "6", "6", "6", "6", "6"];
+        //result = ["1", "1", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "6", "6", "6", "6", "6"];
         for(var i = 0; i < result.length; i++){
           if(result[i] == 0){
             $(".submit").animate({
@@ -213,6 +271,19 @@ var pageControl = (function () {
       $(".preview .pay").on(eventName.tap, function(){
           getPageApi( apiUrl.order, {}, pageControl.orderCallback);
       })
+
+      //兑换码
+      $(".preview .code").on(eventName.tap, function(){
+          
+      })
+    },
+    iconRotate: function(){
+      if( !$('.main .icon').hasClass('rotateY') ){
+        $('.main .icon').addClass('rotateY');
+        setTimeout(function(){
+          $('.main .icon').removeClass('rotateY');
+        }, 1000)
+      }
     },
     getResult: function(){
       var result = [];
