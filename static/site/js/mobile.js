@@ -180,6 +180,7 @@ var pageControl = (function () {
      //提交结果
       $(".submit").on(eventName.tap, function(){
         var result = pageControl.getResult();
+        result = ["1", "1", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "2", "6", "6", "6", "6", "6"];
         for(var i = 0; i < result.length; i++){
           if(result[i] == 0){
             $(".submit").animate({

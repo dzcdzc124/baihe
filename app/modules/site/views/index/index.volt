@@ -69,7 +69,7 @@
 <div class="main">
     <div class="page questions winscale">
         <img src="<?php echo $basePath; ?>img/image1.png" class="poster">
-        <div class="questionList">
+        <div class="questionList  none opacity-0">
             <div class="questionBox question-0 none">
                 <input type="hidden" name="sex" value="0">
                 <div class="sort tc fs32 bold">　</div>
@@ -102,7 +102,7 @@
             </div>
             {% endfor %}
         </div>
-        <div class="submit btn none opacity-0">提　交</div>
+        <div class="submit btn">提　交</div>
         <div class="count">
             <span>1</span>/{{count(questionList)}}
         </div>
@@ -113,7 +113,7 @@
             <div class="result-tle tc fs36">- <span></span> -</div>
             <div class="desc border-box">
                 <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
-                <div class="code btn">百合会员兑换码获取</div>
+                <!-- <div class="code btn">百合会员兑换码获取</div> -->
             </div>
         </div>
     </div>
