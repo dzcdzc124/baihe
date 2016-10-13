@@ -64,6 +64,6 @@ class Order extends ModelBase
     }
 
     public static function createOrderId(){
-        return date("YmdHis")."_".uniqid(mt_rand(1,10000));
+        return date("YmdHis") . str_pad(mt_rand(1,10000), 5, '0', STR_PAD_LEFT);
     }
 }

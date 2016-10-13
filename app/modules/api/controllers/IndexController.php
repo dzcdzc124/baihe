@@ -68,8 +68,8 @@ class IndexController extends ControllerBase
             
             if($res['errcode'] == 0){
                 $order->prepay_id = $res['prepay_id'];
+                $order->expire_at = TIMESTAMP+580;
                 $order->save();
-
             }else{
                 $order->response = $res['res']['xml'];
                 $order->save();
