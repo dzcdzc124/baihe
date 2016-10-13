@@ -152,7 +152,7 @@ class IndexController extends ControllerBase
         $this->serveJson('OK', 0, $result);
     }
 
-    public function resultAction(Order $order){
+    public function resultAction($order = NULL){
         if( !isset($order) ){
             if( !$this->user || empty($this->user->id) ){
                 $this->serveJson('请先登录~');
