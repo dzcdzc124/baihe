@@ -79,6 +79,13 @@ function refreshShareData() {
                 success: function (res) {
                     // 支付成功后的回调函数
                     callback(res);
+                },
+                fail: function(res){
+                    callback(res);
+                },
+                cancel: function (res) { 
+                    // 用户取消分享后执行的回调函数
+                    callback(res);
                 }
             });
         }
