@@ -3,6 +3,9 @@ var apiUrl = {
   submit:      baseLink + "api/index/submit",
   order:       baseLink + "api/index/order",
   result:      baseLink + "api/index/result",
+  exchange:    baseLink + "api/index/exchange",
+  info:        baseLink + "api/index/info",
+  getOrder:    baseLink + "api/index/getOrder"
 }
 
 
@@ -264,7 +267,6 @@ var pageControl = (function () {
         
         $(".connenting").removeClass("none");
         getPageApi( apiUrl.submit, {'result': JSON.stringify(result), 'sex': sex}, pageControl.submitCallback);
-       
       })
 
       //支付
@@ -274,7 +276,52 @@ var pageControl = (function () {
 
       //兑换码
       $(".preview .code").on(eventName.tap, function(){
-          
+        viewControl.layerShow($(".exchange-layer"));
+      })
+      //兑换
+      $(".exchange-layer .btn-submit").on(eventName.tap, function(){
+        var result = $('.exchange-form').checkForm();
+        if(result.errcode != 0){
+          viewControl.showMsg(result.errmsg);
+          return;
+        }else{
+          getPageApi( apiUrl.exchange, result.data, pageControl.exchangeCallback);
+        }
+      })
+
+      //会员中心
+      $('.user-center').on(eventName.tap, function(){
+        $(".connenting").removeClass("none");
+        getPageApi( apiUrl.info, {}, pageControl.infoCallback);
+
+        $(this).parent().animate({
+          'opacity': 0,
+        }, 300, function(){
+          $(this).addClass('none');
+          $('.userinfo').removeClass('none').animate({
+            'opacity': 1
+          }, 300)
+        })
+      })
+
+      //返回测试
+      $('.back-test').on(eventName.tap, function(){
+        questionNo = 0;
+        $(".questionBox").find('input[type=hidden]').val(0);
+        $(".question-"+questionNo).removeClass('none').css({'opacity': 1}).siblings().addClass("none opacity-0");
+
+        $(".submit").addClass("none opacity-0");
+        $(".questionList").removeClass('none').css({'opacity': 1});
+        $(".questionList .answer").removeClass('selected');
+
+        $(".userinfo").animate({
+          'opacity': 0,
+        }, 300, function(){
+          $(this).addClass('none');
+          $('.questions').removeClass('none').animate({
+            'opacity': 1
+          }, 300)
+        })
       })
     },
     iconRotate: function(){
@@ -336,18 +383,60 @@ var pageControl = (function () {
       }
     },
     orderCallback: function(data){
-      if(debug){
-        pageControl.wxPayCallback({err_msg: "get_brand_wcpay_request:ok"});
-        return;
-      }
 
       if(data.errcode == 0){
         if( typeof data['appId'] != "undefined" ){
-            window.chooseWXPay(data, pageControl.wxPayCallback);
+            if(debug){
+              pageControl.wxPayCallback({errMsg: "chooseWXPay:ok"});
+              return;
+            }else{
+              window.chooseWXPay(data, pageControl.wxPayCallback);
+            }
         }else{
+          viewControl.showMsg('已完成支付~');
           pageControl.resultCallback(data);
         }
       }else{ 
+        viewControl.showMsg(data.errmsg);
+      }
+    },
+    infoCallback: function(data){
+      $(".connenting").addClass("none");
+      if(data.errcode == 0){
+        $('.userinfo .order-list li').not('.temp').remove();
+        for(var i in data.list){
+          var order = data.list[i];
+          var item = $('.userinfo .order-list li.temp').clone();
+          item.find('.result-tle').html(order['data']);
+          item.find('.time').html(order['created']);
+          if(order['type']){
+            item.addClass(order['type']);
+          }
+          item.attr('order_id', order['order_id']);
+          $('.userinfo .order-list ul').append(item.removeClass('temp none'));
+        }
+
+        $('.userinfo .order-list li').off().on(eventName.tap, function(){
+          var order_id = $(this).attr('order_id');
+          if(!order_id){
+            viewControl.showMsg('无效测试~');
+            return;
+          }
+
+          $(".connenting").removeClass("none");
+          getPageApi(apiUrl.getOrder, {"order_id": order_id}, function(data){
+            $(".connenting").addClass("none");
+            if(data.errcode == 0){
+              pageControl.resultCallback(data);
+            }else if(data.errcode == 1){
+              //未支付或兑换
+
+            }else{
+              viewControl.showMsg(data.errmsg);
+            }
+          })
+        })
+      }else{  
         viewControl.showMsg(data.errmsg);
       }
     },
@@ -364,7 +453,15 @@ var pageControl = (function () {
         default:
           break;
       }
-
+    },
+    exchangeCallback: function(data){
+      if(data.errcode == 0){
+        viewControl.showMsg("兑换成功");
+        viewControl.layerHide($(".exchange-layer"));
+        pageControl.resultCallback(data);
+      }else{
+        viewControl.showMsg(data.errmsg);
+      }
     },
     statSave: function(action,type){
       if(typeof _hmt != "undefined"){

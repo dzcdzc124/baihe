@@ -22,7 +22,23 @@ class CodeController extends ControllerBase
             $this->serveJson('设置已更新', 0);
         }
 
-        $query = Code::query()->order("created desc");
+        $given = $this->request->getQuery('given');
+        $status = $this->request->getQuery('status');
+
+        if( isset($given) ){
+            $query = Code::query()
+                ->where("given = :given: and status = :status:")
+                ->bind(["given" => (int)$given, "status" => 0])
+                ->order("created desc");
+        }elseif( isset($status) ){
+            $query = Code::query()
+                ->where("status = :status:")
+                ->bind(["status" => (int)$status])
+                ->order("created desc");
+        }else{
+            $query = Code::query()->order("created desc");
+        }
+
 
         $currentPage = $this->request->getQuery('page', 'int');
         $paginator = new Paginator([
@@ -35,7 +51,9 @@ class CodeController extends ControllerBase
 
         $this->view->setVars([
             'page' => $page,
-            'createNum' => $this->createNum
+            'createNum' => $this->createNum,
+            'given' => $given,
+            'status' => $status
         ]);
        
     }

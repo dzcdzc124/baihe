@@ -45,7 +45,7 @@ class Code extends ModelBase
             $id = intval($id);
             if ($id > 0) {
                 $given = intval($given);
-                $sql = "UPDATE {$tableName} SET  `given` = '{$given}' WHERE `id` = \"{$id}\"";
+                $sql = "UPDATE {$tableName} SET  `given` = {$given} WHERE `id` = \"{$id}\"";
                 $connection->execute($sql);
             }
         }

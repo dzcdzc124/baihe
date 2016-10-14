@@ -4,6 +4,7 @@ namespace App\Modules\Api\Controllers;
 
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Code;
 use App\Helpers\Wxpay as WxpayHelper;
 use App\Wechat\Wxpay;
 
@@ -16,6 +17,10 @@ class IndexController extends ControllerBase
     }
 
     public function submitAction(){
+        if( !$this->user || empty($this->user->id) ){
+            $this->serveJson('请先登录~');
+        }
+
         $answer = $this->request->get('result');
         $sex = (int) $this->request->get('sex');
 
@@ -60,19 +65,32 @@ class IndexController extends ControllerBase
 
         $result = $this->getResult($zAvoid, $zAnxious);
 
-
         $product = Product::findByModule("pdq");
+
         if($product){
-            $order = new Order;
+            $order = Order::findByNewestOrderByUserId($this->user->id);
+
+            //覆盖多余订单
+            if(!$order || $order->status == 1 || $order->status == 3){
+                $order = new Order;
+            }
             $order->user_id = $this->user->id;
             $order->product_id = $product->id;
             $order->order_id = Order::createOrderId();
+            $order->prepay_id = '';
+            $order->transaction_id = '';
             $order->total_fee = $product->total_fee;
             $order->status = 0;
-            $order->data = json_encode(["zAvoid"=>$zAvoid, "zAnxious"=>$zAnxious]);
+            $order->type = '';
+            $order->data = $result['type'];
+            $order->response = '';
+            $order->expire_at = 0;
             $order->created = TIMESTAMP;
             $order->updated = TIMESTAMP;
             $order->save();
+
+            $this->user->result = $result['type'];
+            $this->user->save();
         }
         unset($result['desc']);
         $this->serveJson('OK', 0, $result);
@@ -95,31 +113,31 @@ class IndexController extends ControllerBase
             $this->resultAction($order);
         }
 
-        if( $order->status == 0 && $order->expire_at > TIMESTAMP){
+        if( $order->status == 0 && !empty($order->prepay_id) && $order->expire_at > TIMESTAMP){
             //已有未支付有效订单
             //$this->serveJson('Ok', 0, ['prepay_id'=>$order->prepay_id]);   
         } else {
-            //订单失效
-            if( $order->status != 2){
-                $order->status = 2;
-                $order->updated = TIMESTAMP;
-                $order->save();
-            }
+            if( $order->status == 3){
+                $newOrder = new Order;
+                $newOrder->user_id = $order->user_id;
+                $newOrder->product_id = $order->product_id;
+                $newOrder->order_id = Order::createOrderId();
+                $newOrder->total_fee = $order->total_fee;
+                $newOrder->status = 0;
+                $newOrder->data = $order->data;
+                $newOrder->created = TIMESTAMP;
+                $newOrder->updated = TIMESTAMP;
+                $newOrder->save();
 
-            $newOrder = new Order;
-            $newOrder->user_id = $order->user_id;
-            $newOrder->product_id = $order->product_id;
-            $newOrder->order_id = Order::createOrderId();
-            $newOrder->total_fee = $order->total_fee;
-            $newOrder->status = 0;
-            $newOrder->data = $order->data;
-            $newOrder->created = TIMESTAMP;
-            $newOrder->updated = TIMESTAMP;
-
-            if($newOrder->save()){
                 $order = $newOrder;
             }else{
-                $this->serveJson('创建新订单出错~');
+                //订单失效,覆盖
+                $order->status = 0;
+                $order->prepay_id = '';
+                $order->expire_at = 0;
+                $order->created = TIMESTAMP;
+                $order->updated = TIMESTAMP;
+                $order->save();
             }
         }
 
@@ -138,6 +156,8 @@ class IndexController extends ControllerBase
                 $order->updated = TIMESTAMP;
                 $order->save();
             }else{
+                //出错订单
+                $order->status = 3;
                 $order->response = $res['res']['xml'];
                 $order->updated = TIMESTAMP;
                 $order->save();
@@ -162,11 +182,11 @@ class IndexController extends ControllerBase
             $this->serveJson('请先登录~');
         }
 
-        $code = trim( $this->request->get('code') );
+        $code = strtolower( trim( $this->request->get('code') ) );
         $record = Code::findByCode($code);
-        if(!$recode){
+        if(!$record){
             $this->serveJson('无效的兑换码~');
-        }elseif($recode->status == 1){
+        }elseif($record->status == 1){
             $this->serveJson('兑换码已被使用~');
         }
 
@@ -182,14 +202,7 @@ class IndexController extends ControllerBase
             $this->resultAction($order);
         }
 
-        if( $order->status == 2 ){
-            //订单失效
-            if( $order->status != 2){
-                $order->status = 2;
-                $order->updated = TIMESTAMP;
-                $order->save();
-            }
-
+        if( $order->status == 3){
             $newOrder = new Order;
             $newOrder->user_id = $order->user_id;
             $newOrder->product_id = $order->product_id;
@@ -199,12 +212,17 @@ class IndexController extends ControllerBase
             $newOrder->data = $order->data;
             $newOrder->created = TIMESTAMP;
             $newOrder->updated = TIMESTAMP;
+            $newOrder->save();
 
-            if($newOrder->save()){
-                $order = $newOrder;
-            }else{
-                $this->serveJson('创建新订单出错~');
-            }
+            $order = $newOrder;
+        }else{
+            //订单失效,覆盖
+            $order->status = 0;
+            $order->prepay_id = '';
+            $order->expire_at = 0;
+            $order->created = TIMESTAMP;
+            $order->updated = TIMESTAMP;
+            $order->save();
         }
 
         $order->status = 1;
@@ -237,11 +255,64 @@ class IndexController extends ControllerBase
             }
         }
 
-        $data = json_decode($order->data, true);
-
-        $result = $this->getResult( $data['zAvoid'], $data['zAnxious'] );
+        $result['type'] = $order->data;
+        $result['desc'] = $this->getResultDetail($order->data);
 
         $this->serveJson('ok', 0, $result);
+    }
+
+    public function infoAction(){
+        if( !$this->user || empty($this->user->id) ){
+            $this->serveJson('请先登录~');
+        }
+
+        $orders = Order::findByUserId($this->user->id);
+
+        $result = [];
+        foreach($orders as $order){
+            if( $order->status == 3){
+                continue;
+            }
+
+            $result[] = [
+                'created' => date('m月d日', $order->created),
+                'data' => $order->data,
+                'type' => $order->type,
+                'order_id' => $order->order_id
+            ];
+        }
+
+        $this->serveJson('ok', 0 , ['list' => $result]);
+    }
+
+    public function getOrderAction(){
+        if( !$this->user || empty($this->user->id) ){
+            $this->serveJson('请先登录~');
+        }
+
+        $order_id = $this->request->get('order_id');
+
+        $order = Order::findByOrderId($order_id);
+        if(!$order){
+            $this->serveJson('找不到该测试记录~');   
+        }
+        if( $order->user_id != $this->user->id ){
+            $this->serveJson('无权查看该测试记录~');      
+        }
+
+        if( $order->status == 3 ){
+            $this->serveJson('无效测试记录~');      
+        }
+
+        if( $order->status == 0 && $order->status == 2 ){
+            $this->serveJson('请先完成支付或兑换', 1);
+        }
+
+        if( $order->status == 1 ){
+            $this->resultAction($order);
+        }
+        
+        $this->serveJson('未知错误');
     }
 
     public function getResult($zAvoid, $zAnxious){
@@ -267,10 +338,16 @@ class IndexController extends ControllerBase
             }
         }
         $result['type'] = $attachmentType;
-        $result['desc'] = [];
-        switch ($attachmentType) {
+        $result['desc'] = $this->getResultDetail($attachmentType);
+
+        return $result;
+    }
+
+    public function getResultDetail($type){
+        $desc;
+        switch ($type) {
             case '安全型':
-                $result['desc'] = [
+                $desc = [
                     [
                         'title' => '类型综述',
                         'intro' => '安全型的人本能地都能信任恋人，相信恋人爱他们，关怀他们，而且从来都不忧心忡忡、害怕失去恋情。他们享受亲密感，有非凡的沟通能力，善于满足恋人的需求。安全型对负面信息没有那么敏感，所以比较容易保持镇静。善于缓解冲突、态度温和、善于交流、享受亲密感，不设界限，相信自己能够改善恋情。安全型应该发扬的优点：支持恋人、不干涉、鼓励恋人。安全型的人会积极地表达自己的真实需要。他们懂得抚慰和关怀恋人。他们也会袒露自己的想法和感受看恋人如何回应。安全型的人能够帮助不安全的伴侣获得安全型的行为习惯，从而改变不安全伴侣的依恋风格。安全型的缺点就是显得普通，甚至有点无聊。'
@@ -302,7 +379,7 @@ class IndexController extends ControllerBase
                 ];
                 break;
             case '倾注型':
-                $result['desc'] = [
+                $desc = [
                     [
                         'title' => '类型综述',
                         'intro' => '对情绪的反应敏感。比一般人更快速地感知一个人的情绪变化。但与此同时，容易过快地下结论，造成误解他人的情绪感受。当依恋系统被启动后，倾注型的人会无法集中精力做别的事。不断回忆对方的好处。不安和焦虑，只要在与对方取得联系后才能缓解。倾注型的人容易察觉到对方情绪的波动，并热衷于猜测对方言行背后的态度。如果不能被及时地安抚，他们会不断放大自己的想象到自己难以承受的状况。在这个过程中，倾注型的人会采取不同的防御行为，包括所有试图吸引恋人注意，与其重建联系的行为。只要是利用周围状况，使对方不得不注意自己的行为都是防御行为：拼命联系恋人、假装不理对方、比较双方的付出、表示反感和敌意、提出分手威胁，故意让恋人吃醋。'
@@ -334,7 +411,7 @@ class IndexController extends ControllerBase
                 ];
                 break;
             case '轻视型':
-                $result['desc'] = [
+                $desc = [
                     [
                         'title' => '类型综述',
                         'intro' => '轻视型的人对待感情的态度并不直截了当。他们倾向于压抑真实的感受不表达出来。只有在当忙于应付其它问题的时候，真实的情感才能流露出来。轻视型的人常常在面对现实生活中比较大的压力或者难以轻松处理的困境的时候就会希望能够有个可以依恋的对象，而当现实生活中的问题被解决之后，他们就会认为自己不需要依恋的对象。轻视的人会把自我依靠当成独立，认为所有人都应该依靠自己而不应该依赖他人。甚至认为情感依赖也是软弱的表现。他们会更多地注意到伴侣的缺点。认为伴侣应该这样或那样地提升自我。而且认为伴侣的问题的改进应该是伴侣的责任而不是自己也应该投身其中。轻视型的人不容易察觉到伴侣的感受。他们强调自我依靠，也避免去关心伴侣的心理感受。因此，作为轻视型的伴侣常常感觉得不到情感支持以及恋爱的亲密和满足。轻视型的人对于伴侣的情绪变化不会主动沟通，常常会自我防御地揣测伴侣情绪变化的理由。'
@@ -366,7 +443,7 @@ class IndexController extends ControllerBase
                 ];
                 break;
             case '害怕型':
-                $result['desc'] = [
+                $desc = [
                     [
                         'title' => '类型综述',
                         'intro' => '害怕型的人会选择性地表现倾注和轻视型的特点。当与倾注型的人在一起时，会表现出回避的特点，需要更多的空间，会挑剔对方的缺点，不愿意沟通，会去揣测对方的情绪变化的理由，并进行自我防御，选择用疏离来对抗。但当与轻视型的人在一起时则会表现出焦虑，担心亲密关系受到威胁，对于对方的疏离会感到不安。一方面很希望有人可以依赖，另一方面又害怕太接近。害怕型的人难以找到一个恰当的方式和恋人相处。因为类型的冲突，常常会陷入两难的困境。同时，害怕型的人常常会因为回避思维的启动而难以进入亲密关系，虽然可能会有喜欢的人，但是往往不会主动进行接触和表示。如果是被别人追求的情况下，也可能是以一种不是很情愿的情况进入亲密关系，在亲密关系中就容易挑剔和显得疏离，但一旦亲密关系面临风险，又会觉得伤心难过。'
@@ -401,7 +478,7 @@ class IndexController extends ControllerBase
                 break;
         }
 
-        return $result;
+        return $desc;
     }
 
     public function getSign($data, $key)

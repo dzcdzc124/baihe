@@ -23,9 +23,12 @@
                     {{ partial('partial/nav', [
                         'title': '兑换码',
                         'navs': [
-                            ['index', '全部', url('/admin/code/'), '#ajax-content']
+                            ['index', '全部', url('/admin/code/')],
+                            ['given-0', '未给出', url('/admin/code/',['given': 0])],
+                            ['status-0', '未使用', url('/admin/code/',['status': 0])],
+                            ['status-1', '已使用', url('/admin/code/',['status': 1])]
                         ],
-                        'current_nav': 'index'
+                        'current_nav': status == '0' or status == '1' ? 'status-'~status : (given == '0' ? 'given-'~given : 'index')
                     ]) }}
 
                     <div class="tab-content no-padding">
@@ -47,10 +50,12 @@
                                                 <td>{{ item.id }}</td>
                                                 <td>{{ item.code }}</td>
                                                 <td>
+                                                    {% if item.status == 0 %}
                                                     <input type="hidden" name="givens[{{ item.id }}]" value="0">
                                                     <!-- <input type="checkbox" name="reverses[{{ item.id }}]" value="1">  -->
                                                     <input type="checkbox" name="givens[{{ item.id }}]" value="1" {{ item.given?'checked':'' }} > 
-                                                </td>
+                                                    {%endif%}
+                                                </td>  
                                                 <td>{{ item.status ? '已使用' : '未使用' }}</td>
                                                 <td class="text-right">{{  item.status ? date('Y-m-d H:i:s', item.updated) : '' }}</td>
                                             </tr>

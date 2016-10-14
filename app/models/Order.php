@@ -35,6 +35,7 @@ class Order extends ModelBase
     {
         $orders = self::find([
             'conditions' => 'user_id = :user_id:',
+            'order' => 'created desc',
             'bind' => array(
                 'user_id' => $user_id
             ),
@@ -57,7 +58,7 @@ class Order extends ModelBase
     {
         $order = self::findFirst([
             'conditions' => 'user_id = :user_id:',
-            'order' => 'created desc',
+            'order' => 'updated desc',
             'bind' => array(
                 'user_id' => $user_id
             ),

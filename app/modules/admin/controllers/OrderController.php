@@ -3,22 +3,49 @@
 namespace App\Modules\Admin\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
 use App\Lib\Paginator;
 
 class OrderController extends ControllerBase
 {
     public function indexAction()
     {
-        $pay = $this->request->getQuery('pay', 'int');
+        $wxpay = $this->request->getQuery('wxpay', 'int');
+        $code = $this->request->getQuery('code', 'int');
 
 
-        if( $pay ){
+        if( $wxpay || $code){
+            $type = $wxpay?"wxpay":"code";
             $query = Order::query()
-                ->where("status = :status:")
-                ->bind(["status" => 1])
-                ->order("created desc");
+                        ->leftJoin('App\Models\User', 'u.id = user_id', 'u')
+                        ->where("App\Models\Order.type = :type:")
+                        ->bind(["type" => $type])
+                        ->columns([
+                                    'App\Models\Order.id',
+                                    'App\Models\Order.order_id',
+                                    'App\Models\Order.total_fee',
+                                    'App\Models\Order.status',
+                                    'App\Models\Order.type',
+                                    'App\Models\Order.data',
+                                    'App\Models\Order.updated',
+                                    'u.nickname',
+                        ])
+                        ->order("App\Models\Order.created desc")
+                ;
         }else{
-            $query = Order::query()->order("created desc");
+            $query = Order::query()
+                        ->leftJoin('App\Models\User', 'u.id = user_id', 'u')
+                        ->columns([
+                            'App\Models\Order.id',
+                            'App\Models\Order.order_id',
+                            'App\Models\Order.total_fee',
+                            'App\Models\Order.status',
+                            'App\Models\Order.type',
+                            'App\Models\Order.data',
+                            'App\Models\Order.updated',
+                            'u.nickname',
+                        ])
+                        ->order("App\Models\Order.created desc");
         }
 
         $currentPage = $this->request->getQuery('page', 'int');
@@ -32,7 +59,8 @@ class OrderController extends ControllerBase
 
         $this->view->setVars([
             'page' => $page,
-            'pay' => $pay
+            'wxpay' => $wxpay,
+            'code' => $code,
         ]);
 
 

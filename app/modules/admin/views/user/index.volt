@@ -6,11 +6,11 @@
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
-            测试列表
+            用户列表
             <small>Order</small>
         </h1>
         {{ partial('partial/breadcrumbs', ['breadcrumbs' : [
-            ['测试列表']
+            ['用户列表']
         ]]) }}
     </section>
 
@@ -21,13 +21,11 @@
             <div class="col-md-12">
                 <div class="nav-tabs-custom">
                     {{ partial('partial/nav', [
-                        'title': '测试列表',
+                        'title': '用户列表',
                         'navs': [
-                            ['index', '全部测试', url('/admin/order/')],
-                            ['wxpay', '已付款测试', url('/admin/order/', ['wxpay': 1])],
-                            ['code', '已兑换测试', url('/admin/order/', ['code': 1])]
+                            ['index', '全部用户', url('/admin/order/')]
                         ],
-                        'current_nav': wxpay == '1' ? 'wxpay' : (code == '1' ? 'code' : 'index')
+                        'current_nav': 'index'
                     ]) }}
                     <div class="tab-content no-padding">
                         <div class="tab-pane clearfix active">
@@ -36,27 +34,24 @@
                                     <thead>
                                         <tr>
                                             <th style="width:40px;">#</th>
-                                            <th class="col-md-2">测试号</th>
-                                            <th style="width:80px;">金额</th>
-                                            <th>是否付款/兑换</th>
-                                            <th>付款/兑换方式</th>
-                                            <th>测试结果</th>
-                                            <th class="col-md-2">用户</th>
-                                            <th>付款/兑换时间</th>
-                                            <!-- <th class="text-right" style="width:50px;">操作</th> -->
+                                            <th class="col-md-3">openId</th>
+                                            <th class="col-md-2">用户昵称</th>
+                                            <th class="col-md-1">用户头像</th>
+                                            <th>性别</th>
+                                            <th>最新测试结果</th>
+                                            <th>加入时间</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for item in page.items %}
                                         <tr>
                                             <td>{{ item.id }}</td>
-                                            <td>{{ item.order_id }}</td>
-                                            <td>{{ round( item.total_fee/100, 2) }}</td>
-                                            <td>{{ item.status==1 ? '是' : '否' }}</td>
-                                            <td>{{ item.type=='wxpay' ? '微信支付' : item.type=='code' ? '兑换码' : '' }}</td>
-                                            <td>{{ item.data }}</td>
+                                            <td>{{ item.openId }}</td>
                                             <td>{{ item.nickname }}</td>
-                                            <td>{{ item.status==1 ? date('Y-m-d H:i:s', item.updated):'' }}</td>
+                                            <td><img style="width:50px;" src="{{ item.avatar }}"></td>
+                                            <td>{{ item.sex == 2 ? '女': (item.sex == 1 ? '男' : '未知') }}</td>
+                                            <td>{{ item.result }}</td>
+                                            <td>{{ date('Y-m-d H:i:s', item.created) }}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

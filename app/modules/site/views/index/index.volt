@@ -65,7 +65,7 @@
     </div>
 </div>
 
-<div class="exchange-layer bounceBox ">
+<div class="exchange-layer bounceBox none">
     <div class="exchage-box page winscale">
         <div class="layer-box">
             <div class="close absolute">X</div>
@@ -82,6 +82,7 @@
 </div>
 
 <div class="main">
+    
     <div class="page questions winscale">
         <img src="<?php echo $basePath; ?>img/image1.png" class="poster">
         <div class="questionList">
@@ -124,16 +125,19 @@
         </div>
     </div>
     <div class="preview none opacity-0">
+        <div class="user-center btn">会员中心</div>
         <div class="previewBox winscale">
             <div class="tle tc fs32">测试结果</div>
             <div class="result-tle tc fs36">- <span></span> -</div>
             <div class="desc border-box">
+                <input type="hidden" name="order_id" value="">
                 <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
-                <!-- <div class="code btn">百合会员兑换码获取</div> -->
+                <div class="code btn">百合会员兑换码获取</div>
             </div>
         </div>
     </div>
     <div class="result none opacity-0">
+        <div class="user-center btn">会员中心</div>
         <div class="resultBox winscale">
             <div class="result-tle tc fs36">- <span></span> -</div>
             <div class="desc border-box">
@@ -143,7 +147,23 @@
             </div>
         </div>
     </div>
-    
+    <div class="userinfo none opacity-0">
+        <div class="back-test btn">返回测试</div>
+        <div class="page winscale">
+            <div class="history border-box">
+                <div class="tle tc">历史记录</div>
+                <div class="order-list">
+                    <ul>
+                        <li class="temp tc none">
+                            <span class="time"></span>测试：
+                            <span class="result-tle"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <img src="<?php echo $basePath; ?>img/qrcode.png" class="qrcode">
+        </div>
+    </div>
     <div class="icon"></div>
 </div>
 

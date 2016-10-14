@@ -11,10 +11,10 @@
                 "url": "/admin/"
             },
             {
-                "id": "order",
-                "label": "订单列表",
-                "icon": "list",
-                "url": "/admin/order/"
+                "id": "product",
+                "label": "产品设置",
+                "icon": "gift",
+                "url": "/admin/product/"
             },
             {
                 "id": "question",
@@ -23,16 +23,22 @@
                 "url": "/admin/question/"
             },
             {
+                "id": "order",
+                "label": "测试列表",
+                "icon": "list",
+                "url": "/admin/order/"
+            },
+            {
                 "id": "code",
                 "label": "兑 换 码",
                 "icon": "barcode",
                 "url": "/admin/code/"
             },
             {
-                "id": "district",
-                "label": "地区设置",
-                "icon": "globe",
-                "url": "/admin/district/"
+                "id": "user",
+                "label": "用户列表",
+                "icon": "user",
+                "url": "/admin/user/"
             }
         ]
     },

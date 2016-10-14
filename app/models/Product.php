@@ -37,5 +37,20 @@ class Product extends ModelBase
         return $p;
     }
 
-    
+    public static function updateData(array $names, array $details, array $total_fees)
+    {
+        $obj = new self;
+        $connection = $obj->getWriteConnection();
+        $tableName = $obj->getSource();
+        foreach ($names as $id => $name) {
+            $id = intval($id);
+            if ($id > 0) {
+                $name = $name;
+                $detail = $details[$id];
+                $total_fee = (int) $total_fees[$id];
+                $sql = "UPDATE {$tableName} SET  `total_fee` = {$total_fee}, `name` = '{$name}', `detail` = '{$detail}' WHERE `id` = \"{$id}\"";
+                $connection->execute($sql);
+            }
+        }
+    }
 }
