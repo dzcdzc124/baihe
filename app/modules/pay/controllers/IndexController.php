@@ -33,6 +33,7 @@ class IndexController extends ControllerBase
                     $order->transaction_id = $data['transaction_id'];
                     $order->status = 1;
                     $order->type = 'wxpay';
+                    $order->updated = TIMESTAMP;
                     $order->save();
                 }
             }else{
