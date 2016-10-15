@@ -586,6 +586,11 @@ img {
 .userinfo .history .order-list li.code::before {
   content: "已兑换";
 }
+.userinfo .history .order-list li.tips {
+  background-color: rgba(255, 255, 255, 0);
+  text-align: center;
+  line-height: 50px;
+}
 .userinfo .history::before {
   content: "";
   background-image: url(../img/shape1.png);
@@ -617,6 +622,7 @@ img {
   background-color: #ae4e49;
   border: none;
   border-radius: 0;
+  line-height: 70px;
   position: absolute;
   top: 60px;
   right: 50px;

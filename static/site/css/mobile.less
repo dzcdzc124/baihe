@@ -295,6 +295,9 @@ img{ position: absolute; }
         &.code::before{
           content: "已兑换";
         }
+        &.tips{
+          background-color: rgba(255, 255, 255, 0); text-align: center; line-height: 50px;
+        }
       }
     }
     &::before{
@@ -312,7 +315,7 @@ img{ position: absolute; }
 }
 
 .user-center,.back-test{ 
-  background-color: #ae4e49; border: none; border-radius: 0;
+  background-color: #ae4e49; border: none; border-radius: 0; line-height: 70px;
   position: absolute; top: 60px; right: 50px; z-index: 99; 
   .transform(scale(0.8));
 }

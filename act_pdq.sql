@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2016-10-11 19:40:31
+Date: 2016-10-15 16:58:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,6 +38,37 @@ CREATE TABLE `administrator` (
 -- Records of administrator
 -- ----------------------------
 INSERT INTO `administrator` VALUES ('2', 'baihe', null, '57f85e$476b4b3324395ac09d46da2d20a37c882320b85a', null, null, '1475894966', '1475894966');
+
+-- ----------------------------
+-- Table structure for code
+-- ----------------------------
+DROP TABLE IF EXISTS `code`;
+CREATE TABLE `code` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `module` varchar(50) DEFAULT NULL,
+  `given` tinyint(1) DEFAULT '0' COMMENT '是否给出',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0未使用1已使用',
+  `user_id` int(11) DEFAULT NULL COMMENT '使用用户ID',
+  `order_id` varchar(50) DEFAULT NULL,
+  `created` int(11) DEFAULT NULL,
+  `updated` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`,`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of code
+-- ----------------------------
+INSERT INTO `code` VALUES ('1', 'c51874398c36424ced53560cfe921935', 'pdq', '1', '1', '1', null, '1476354036', '1476413461');
+INSERT INTO `code` VALUES ('2', 'a998bc2b18910c8cbc1932caf6d908e8', 'pdq', '0', '0', null, null, '1476354036', '1476354036');
+INSERT INTO `code` VALUES ('3', 'c0cc3efa891e83982b99e7a6abc5aa4c', 'pdq', '0', '0', null, null, '1476354036', '1476354036');
+INSERT INTO `code` VALUES ('4', '3587f35f0e0a0bae90ef2ab896a8430c', 'pdq', '1', '0', null, null, '1476354036', '1476354036');
+INSERT INTO `code` VALUES ('5', '023cfa737e00d46d2f33a4344dabfc2f', 'pdq', '0', '0', null, null, '1476354036', '1476354036');
+INSERT INTO `code` VALUES ('6', '3115b0500f5b82e3fb45ac7211ec678d', 'pdq', '1', '0', null, null, '1476354036', '1476354036');
+INSERT INTO `code` VALUES ('7', '0affcb319d93209ba30c48ffbbf11aae', 'pdq', '0', '1', '1', null, '1476354036', '1476501984');
+INSERT INTO `code` VALUES ('8', '9e69975634c2c354130fb42c35d3959c', 'pdq', '1', '1', '1', null, '1476354036', '1476441345');
+INSERT INTO `code` VALUES ('9', '4f7ecdc15acdfe303019aee52169ce7d', 'pdq', '0', '1', '1', null, '1476354036', '1476429553');
+INSERT INTO `code` VALUES ('10', 'bd48127721ae3255b70555eb0951a669', 'pdq', '0', '0', null, null, '1476354036', '1476354036');
 
 -- ----------------------------
 -- Table structure for jsapi_ticket
@@ -90,22 +121,32 @@ CREATE TABLE `order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL,
-  `order_id` varchar(20) NOT NULL,
-  `prepay_id` varchar(64) DEFAULT NULL,
-  `transaction_id` varchar(50) DEFAULT NULL COMMENT '微信支付订单号',
+  `order_id` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `prepay_id` varchar(64) CHARACTER SET utf8 DEFAULT NULL,
+  `transaction_id` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '微信支付订单号',
   `total_fee` int(11) NOT NULL DEFAULT '0',
-  `status` tinyint(1) DEFAULT '0' COMMENT '0待支付1已支付2已失效',
-  `data` text COMMENT '测试结果',
+  `status` tinyint(1) DEFAULT '0' COMMENT '0待支付1已支付2已失效3出错订单',
+  `type` varchar(20) CHARACTER SET utf8 DEFAULT NULL COMMENT '支付或兑换码 wxpay or code',
+  `data` text CHARACTER SET utf8 COMMENT '测试结果',
   `response` text COMMENT 'wx返回结果',
-  `expire_at` int(11) DEFAULT NULL,
+  `expire_at` int(11) DEFAULT '0',
   `created` int(11) DEFAULT NULL,
   `updated` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
+INSERT INTO `order` VALUES ('3', '1', '1', '2016101415184409434', '', '', '1', '1', 'code', '害怕型', null, '0', '1476429524', '1476429553');
+INSERT INTO `order` VALUES ('4', '1', '1', '2016101415232003789', '', '', '1', '0', null, '害怕型', null, '0', '1476429800', '1476429800');
+INSERT INTO `order` VALUES ('5', '1', '1', '2016101415521901643', '', '', '1', '1', 'wxpay', '轻视型', null, '0', '1476431538', '1476431538');
+INSERT INTO `order` VALUES ('6', '1', '1', '2016101415553003857', '', '', '1', '2', null, '害怕型', null, '0', '1476431730', '1476431731');
+INSERT INTO `order` VALUES ('7', '1', '1', '2016101415553102076', 'wx20161014155527630c0388600495316570', '', '1', '1', null, '害怕型', '{\"errcode\":0,\"errmsg\":\"\",\"prepay_id\":\"wx20161014155527630c0388600495316570\",\"res\":{\"xml\":\"<xml><return_code><![CDATA[SUCCESS]]><\\/return_code>\\n<return_msg><![CDATA[OK]]><\\/return_msg>\\n<appid><![CDATA[wxcdde906c2ef572c5]]><\\/appid>\\n<mch_id><![CDATA[1396588502]]><\\/mch_id>\\n<nonce_str><![CDATA[1PMQVX7a79gfanog]]><\\/nonce_str>\\n<sign><![CDATA[02F35BBA081455329D8C7AC0AFC09C0E]]><\\/sign>\\n<result_code><![CDATA[SUCCESS]]><\\/result_code>\\n<prepay_id><![CDATA[wx20161014155527630c0388600495316570]]><\\/prepay_id>\\n<trade_type><![CDATA[JSAPI]]><\\/trade_type>\\n<\\/xml>\",\"data\":{\"return_code\":\"SUCCESS\",\"return_msg\":\"OK\",\"appid\":\"wxcdde906c2ef572c5\",\"mch_id\":\"1396588502\",\"nonce_str\":\"1PMQVX7a79gfanog\",\"sign\":\"02F35BBA081455329D8C7AC0AFC09C0E\",\"result_code\":\"SUCCESS\",\"prepay_id\":\"wx20161014155527630c0388600495316570\",\"trade_type\":\"JSAPI\"}}}', '1476432311', '1476431731', '1476431731');
+INSERT INTO `order` VALUES ('8', '1', '1', '2016101416175003530', '', '', '1', '0', null, '害怕型', null, '0', '1476433070', '1476433070');
+INSERT INTO `order` VALUES ('9', '1', '1', '2016101418352302363', '', '', '1', '1', 'code', '害怕型', '', '0', '1476441323', '1476441345');
+INSERT INTO `order` VALUES ('10', '1', '1', '2016101511254000922', '', '', '1', '1', 'code', '轻视型', '', '0', '1476501984', '1476501984');
+INSERT INTO `order` VALUES ('11', '1', '1', '2016101516505400530', '', '', '1', '0', '', '害怕型', '', '0', '1476521454', '1476521454');
 
 -- ----------------------------
 -- Table structure for product
@@ -123,7 +164,7 @@ CREATE TABLE `product` (
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES ('1', '爱情实验室-查看结果', '支付查看完整结果', '1', 'pdq');
+INSERT INTO `product` VALUES ('1', '爱情实验室-查看结果', '百合网·爱情实验室', '1', 'pdq');
 
 -- ----------------------------
 -- Table structure for question
@@ -202,24 +243,25 @@ CREATE TABLE `user` (
   `openId` varchar(90) NOT NULL DEFAULT '',
   `nickname` varchar(90) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
-  `sex` varchar(1) DEFAULT NULL,
+  `sex` tinyint(1) DEFAULT NULL,
   `country` varchar(32) DEFAULT NULL,
   `province` varchar(32) DEFAULT NULL,
   `city` varchar(32) DEFAULT NULL,
-  `isPayed` tinyint(4) NOT NULL DEFAULT '0',
+  `isPayed` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否付款用户',
   `accessToken` varchar(255) DEFAULT NULL,
-  `tokenExpires` timestamp NULL DEFAULT NULL,
+  `tokenExpires` int(11) DEFAULT NULL,
   `refreshToken` varchar(255) DEFAULT NULL,
   `unionId` varchar(90) DEFAULT NULL,
-  `result` text,
+  `result` text COMMENT '最新测试结果',
   `data` text,
   `created` int(11) DEFAULT NULL,
   `updated` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `openId` (`openId`) USING BTREE,
   KEY `nickname` (`nickname`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', 'oxdAfs-xVXu3JHJS72AycL3UkEPY', 'Dantis', 'http://wx.qlogo.cn/mmopen/XnhvPOTqibkB957my628r5wb2wHlhddyTqsIbAEn1KUUSqogu4WWDF6RsdVHGTqt3IJWewcc1wTqvR7GHEDl9HhrmqWFRwVNu/0', '1', '中国', '广东', '深圳', '0', 'hZCUS-y6EgCoV9odQlBO62TpTdFur_Cz9FMunigaJDi2yIT-4LLXvMXv_ZYtxM536va4dLfP9lcH5fmmdcX08pgMoKMsHq78xvw3tUmjMgk', '1476249020', '013oyJxp47wFTU6k2KWcAl6iDFjXX1xmhGRRXbcExPN3T2XyKA2snaoEJAIcdFkRx1_7AalRknvbRtcBL1wk0CtGRngMfv6K0aGJBxESfXs', '', '害怕型', '{\"openid\":\"oxdAfs-xVXu3JHJS72AycL3UkEPY\",\"nickname\":\"Dantis\",\"sex\":1,\"language\":\"zh_CN\",\"city\":\"\\u6df1\\u5733\",\"province\":\"\\u5e7f\\u4e1c\",\"country\":\"\\u4e2d\\u56fd\",\"headimgurl\":\"http:\\/\\/wx.qlogo.cn\\/mmopen\\/XnhvPOTqibkB957my628r5wb2wHlhddyTqsIbAEn1KUUSqogu4WWDF6RsdVHGTqt3IJWewcc1wTqvR7GHEDl9HhrmqWFRwVNu\\/0\",\"privilege\":[]}', '1476241262', '1476521454');

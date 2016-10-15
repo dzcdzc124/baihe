@@ -439,16 +439,21 @@ var pageControl = (function () {
       $(".connenting").addClass("none");
       if(data.errcode == 0){
         $('.userinfo .order-list li').not('.temp').remove();
-        for(var i in data.list){
-          var order = data.list[i];
-          var item = $('.userinfo .order-list li.temp').clone();
-          item.find('.result-tle').html(order['data']);
-          item.find('.time').html(order['created']);
-          if(order['type']){
-            item.addClass(order['type']);
+
+        if(data.list.length > 0){
+          for(var i in data.list){
+            var order = data.list[i];
+            var item = $('.userinfo .order-list li.temp').clone();
+            item.find('.result-tle').html(order['data']);
+            item.find('.time').html(order['created']);
+            if(order['type']){
+              item.addClass(order['type']);
+            }
+            item.attr('order_id', order['order_id']);
+            $('.userinfo .order-list ul').append(item.removeClass('temp none'));
           }
-          item.attr('order_id', order['order_id']);
-          $('.userinfo .order-list ul').append(item.removeClass('temp none'));
+        }else{
+          $('.userinfo .order-list ul').append('<li class="tips">还没有测试记录<br>赶快去测试吧~</li>');
         }
 
         $('.userinfo .order-list li').off().on(eventName.tap, function(){

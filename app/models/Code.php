@@ -17,6 +17,8 @@ class Code extends ModelBase
 
     public $user_id;
 
+    public $order_id;
+    
     public $created;
 
     public $updated;

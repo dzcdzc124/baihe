@@ -236,6 +236,7 @@ class IndexController extends ControllerBase
 
         $record->status = 1;
         $record->user_id = $this->user->id;
+        $record->order_id = $order->order_id;
         $record->updated = TIMESTAMP;
         $record->save();
 
