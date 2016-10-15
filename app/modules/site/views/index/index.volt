@@ -138,9 +138,11 @@
         <div class="resultBox winscale">
             <div class="result-tle tc fs36">- <span></span> -</div>
             <div class="desc border-box">
-                <dl>
-                   
-                </dl>
+                <div class="content">
+                    <dl>
+                       
+                    </dl>
+                </div>
             </div>
         </div>
     </div>
