@@ -287,6 +287,7 @@ var pageControl = (function () {
       $(".preview .pay").on(eventName.tap, function(){
         var order_id = $(".preview input[name=order_id]").val();
         if(order_id){
+          $(".connenting").removeClass("none");
           getPageApi( apiUrl.order, {"order_id": order_id}, pageControl.orderCallback);
         }else{
           viewControl.showMsg('无效的测试号~');
@@ -308,6 +309,7 @@ var pageControl = (function () {
           var order_id = $(".preview input[name=order_id]").val();
           if(order_id){
             postData["order_id"] = order_id;
+            $(".connenting").removeClass("none");
             getPageApi( apiUrl.exchange, postData, pageControl.exchangeCallback);
           }else{
             viewControl.showMsg('无效的测试号~');
@@ -388,7 +390,7 @@ var pageControl = (function () {
       }
     },
     resultCallback: function(data){
-      //$(".connenting").addClass("none");
+      $(".connenting").addClass("none");
       if(data.errcode == 0){
         $(".resultBox .result-tle span").html(data.type);
         var descHtml = '';
@@ -420,6 +422,7 @@ var pageControl = (function () {
       }
     },
     orderCallback: function(data){
+      $(".connenting").addClass("none");
       if(data.errcode == 0){
         if( typeof data['appId'] != "undefined" ){
             if(debug){
@@ -497,6 +500,7 @@ var pageControl = (function () {
       switch(res.errMsg){
         case "chooseWXPay:ok":
           var order_id = $(".preview input[name=order_id]").val();
+          $(".connenting").removeClass("none");
           getPageApi( apiUrl.result, {'order_id': order_id}, pageControl.resultCallback);
           break;
         case "chooseWXPay:fail":
@@ -508,6 +512,7 @@ var pageControl = (function () {
       }
     },
     exchangeCallback: function(data){
+      $(".connenting").addClass("none");
       if(data.errcode == 0){
         viewControl.showMsg("兑换成功");
         viewControl.layerHide($(".exchange-layer"));
