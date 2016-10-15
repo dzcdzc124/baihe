@@ -60,6 +60,7 @@ body {
   background-color: #ae9bed;
   background-image: url(../img/loading.jpg);
   background-size: 100% 100%;
+  .start{ width: 300px; position: absolute; bottom: 10%; margin-left: -150px; left: 50%; }
 }
 .showMsg{
   position: fixed; line-height: 28px; overflow: hidden; opacity: 0;
@@ -67,7 +68,7 @@ body {
   .content{
     color: #eee; background-color: rgba(0, 0, 0, 0.8); display: inline-block;
     margin: 0 auto; padding: 10px 30px; max-width: 480px; border-radius: 4px;
-  }  
+  }
 }
 .icon{
   width: 56px; height: 93px; background-image: url(../img/icon.png); position: absolute; left: 50%; bottom: 1%; margin-left: -28px;
@@ -80,7 +81,9 @@ body {
   //.aniTimingFunction( cubic-bezier(0.7, 0, 0.3, 1); );
   .aniTimingFunction( ease-in-out );
 }
-
+.infinite{
+  .aniIterationCount( infinite );
+}
 
 
 /** connecting **/
@@ -276,10 +279,21 @@ img{ position: absolute; }
       -webkit-overflow-scrolling: touch;
       overflow: scroll; text-align: justify;
       li{
-        margin: 25px auto; .border-box; color: #fff; font-size: 30px;
-        width: 380px; overflow: hidden; line-height: 90px; background-color: #ae4e49;   
+        margin: 25px auto; .border-box; color: #fff; font-size: 30px; padding: 0 10px;
+        width: 420px; line-height: 90px; background-color: #ae4e49;
+        position: relative;
         &.wxpay,&.code{
           background-color: #8f71d6;
+          &::before{
+            line-height: 26px; width: 40px; height: 100%; background-color: #a4dd6c; .border-box; padding: 6px;
+            position: absolute; right: -20px; top: 0; font-size: 20px; 
+          }
+        }
+        &.wxpay::before{
+          content: "已支付";
+        }
+        &.code::before{
+          content: "已兑换";
         }
       }
     }

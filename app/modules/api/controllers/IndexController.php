@@ -90,10 +90,15 @@ class IndexController extends ControllerBase
             $order->save();
 
             $this->user->result = $result['type'];
+            $this->user->updated = TIMESTAMP;
             $this->user->save();
+
+            unset($result['desc']);
+            $result['order_id'] = $order->order_id;
+            $this->serveJson('OK', 0, $result);
+        }else{
+            $this->serveJson('找不到产品设置~');
         }
-        unset($result['desc']);
-        $this->serveJson('OK', 0, $result);
     }
 
     public function orderAction(){
@@ -101,11 +106,21 @@ class IndexController extends ControllerBase
             $this->serveJson('请先登录~');
         }
 
-        $order = Order::findByNewestOrderByUserId($this->user->id);
+        $order_id = $this->request->get('order_id');
 
+        $order = Order::findByOrderId($order_id);
         if(!$order || empty($order->order_id) ){
             $this->serveJson('请先完成测试~');    
         }
+        
+        if( $order->user_id != $this->user->id ){
+            $this->serveJson('抱歉，你无权查看该测试记录~');      
+        }
+
+        if( $order->status == 3 ){
+            $this->serveJson('无效测试记录~');      
+        }
+
 
         if ( $order->status == 1 ){
             //直接返回结果
@@ -113,39 +128,18 @@ class IndexController extends ControllerBase
             $this->resultAction($order);
         }
 
-        if( $order->status == 0 && !empty($order->prepay_id) && $order->expire_at > TIMESTAMP){
-            //已有未支付有效订单
-            //$this->serveJson('Ok', 0, ['prepay_id'=>$order->prepay_id]);   
-        } else {
-            if( $order->status == 3){
-                $newOrder = new Order;
-                $newOrder->user_id = $order->user_id;
-                $newOrder->product_id = $order->product_id;
-                $newOrder->order_id = Order::createOrderId();
-                $newOrder->total_fee = $order->total_fee;
-                $newOrder->status = 0;
-                $newOrder->data = $order->data;
-                $newOrder->created = TIMESTAMP;
-                $newOrder->updated = TIMESTAMP;
-                $newOrder->save();
-
-                $order = $newOrder;
-            }else{
-                //订单失效,覆盖
-                $order->status = 0;
-                $order->prepay_id = '';
-                $order->expire_at = 0;
-                $order->created = TIMESTAMP;
-                $order->updated = TIMESTAMP;
-                $order->save();
-            }
-        }
-
+        if( empty($order->prepay_id) || $order->expire_at < TIMESTAMP){
+            //更新订单
+            $order->status = 0;
+            $order->prepay_id = '';
+            $order->expire_at = 0;
+            $order->created = TIMESTAMP;
+            $order->updated = TIMESTAMP;
+            $order->save();
         
-        if( empty($order->prepay_id) ){
             $product = Product::findById($order->product_id);
             if(!$product){
-                $this->serveJson('没有找打产品~');   
+                $this->serveJson('没有找产品设置~');   
             }
             $res = WxpayHelper::createOrder($this->user->openId, $order, $product);
             $order->response = json_encode($res);
@@ -190,11 +184,21 @@ class IndexController extends ControllerBase
             $this->serveJson('兑换码已被使用~');
         }
 
-        $order = Order::findByNewestOrderByUserId($this->user->id);
+        $order_id = $this->request->get('order_id');
 
+        $order = Order::findByOrderId($order_id);
         if(!$order || empty($order->order_id) ){
             $this->serveJson('请先完成测试~');    
         }
+        
+        if( $order->user_id != $this->user->id ){
+            $this->serveJson('抱歉，你无权查看该测试记录~');      
+        }
+
+        if( $order->status == 3 ){
+            $this->serveJson('无效测试记录~');      
+        }
+
 
         if ( $order->status == 1 ){
             //直接返回结果
@@ -244,14 +248,23 @@ class IndexController extends ControllerBase
                 $this->serveJson('请先登录~');
             }
 
-            $order = Order::findByNewestOrderByUserId($this->user->id);
+            $order_id = $this->request->get('order_id');
 
-            if(!$order || empty($order->data) ){
-                $this->serveJson('请先完成测试~');
+            $order = Order::findByOrderId($order_id);
+            if(!$order || empty($order->order_id) ){
+                $this->serveJson('找不到该测试记录~');   
+            }
+            
+            if( $order->user_id != $this->user->id ){
+                $this->serveJson('抱歉，你无权查看该测试记录~');      
+            }
+
+            if( $order->status == 3 ){
+                $this->serveJson('无效测试记录~');      
             }
 
             if( $order->status != 1 ){
-                $this->serveJson('请先完成支付~');
+                $this->serveJson('请先完成支付或兑换~');
             }
         }
 
@@ -297,15 +310,15 @@ class IndexController extends ControllerBase
             $this->serveJson('找不到该测试记录~');   
         }
         if( $order->user_id != $this->user->id ){
-            $this->serveJson('无权查看该测试记录~');      
+            $this->serveJson('抱歉，你无权查看该测试记录~');      
         }
 
         if( $order->status == 3 ){
             $this->serveJson('无效测试记录~');      
         }
 
-        if( $order->status == 0 && $order->status == 2 ){
-            $this->serveJson('请先完成支付或兑换', 1);
+        if( $order->status == 0 || $order->status == 2 ){
+            $this->serveJson('请先完成支付或兑换', 1, ['order_id' => $order_id, 'type' => $order->data]);
         }
 
         if( $order->status == 1 ){

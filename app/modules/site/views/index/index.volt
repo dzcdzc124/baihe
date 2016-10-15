@@ -29,20 +29,13 @@
     
     </script>
     <link rel="stylesheet" type="text/css" href="<?php echo $basePath; ?>css/mobile.css"/>
-    <title>PDQ</title>
+    <title>百合网·爱情实验室</title>
 </head>
 
 <body>
 <div class="refresh"></div>
 <div class="fullmask none"></div>
 
-
-<div class="pageloading">
-    <div class="loader wincover none">
-        
-    </div>
-    <div class="icon"></div>
-</div>
 <div class="connenting none">
     <div class="connentloading">
         <div class="spinner">
@@ -82,8 +75,12 @@
 </div>
 
 <div class="main">
-    
-    <div class="page questions winscale">
+    <div class="pageloading">
+        <div class="user-center btn none opacity-0">会员中心</div>
+        <div class="start btn none opacity-0">点击开始测试</div>
+    </div>
+
+    <div class="page questions winscale none opacity-0">
         <img src="<?php echo $basePath; ?>img/image1.png" class="poster">
         <div class="questionList">
             <div class="questionBox question-0 none">
@@ -164,7 +161,7 @@
             <img src="<?php echo $basePath; ?>img/qrcode.png" class="qrcode">
         </div>
     </div>
-    <div class="icon"></div>
+    <div class="icon rotateY infinite"></div>
 </div>
 
 
