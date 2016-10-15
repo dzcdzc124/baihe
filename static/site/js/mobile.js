@@ -17,6 +17,7 @@ var img_list = [
     basePath + "img/icon.png",
     basePath + "img/image1.png",
     basePath + "img/loading.jpg",
+    basePath + "img/qrcode.png",
     basePath + "img/shape1.png",
     basePath + "img/shape2.png",
 ];
