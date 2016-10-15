@@ -68,12 +68,13 @@ class IndexController extends ControllerBase
         $product = Product::findByModule("pdq");
 
         if($product){
-            $order = Order::findByNewestOrderByUserId($this->user->id);
+            //$order = Order::findByNewestOrderByUserId($this->user->id);
 
             //覆盖多余订单
-            if(!$order || $order->status == 1 || $order->status == 3){
-                $order = new Order;
-            }
+            //if(!$order || $order->status == 1 || $order->status == 3){
+            //}
+
+            $order = new Order;
             $order->user_id = $this->user->id;
             $order->product_id = $product->id;
             $order->order_id = Order::createOrderId();
