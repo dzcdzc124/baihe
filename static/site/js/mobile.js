@@ -12,14 +12,23 @@ var apiUrl = {
 var sending = false;
 
 var img_list = [
+    basePath + "img/arrow.png",
+    basePath + "img/back-test.png",
     basePath + "img/bg.jpg",
     basePath + "img/bg2.jpg",
+    basePath + "img/btn.png",
     basePath + "img/icon.png",
     basePath + "img/image1.png",
+    basePath + "img/image2.png",
     basePath + "img/loading.jpg",
+    basePath + "img/music_on.png",
+    basePath + "img/music_off.png",
+    basePath + "img/prev.png",
     basePath + "img/qrcode.png",
     basePath + "img/shape1.png",
     basePath + "img/shape2.png",
+    basePath + "img/start.png",
+    basePath + "img/user-center.png"
 ];
 
 /*var imgs = document.images;
@@ -534,4 +543,5 @@ var pageControl = (function () {
 
 $(document).ready(function() {
   pageControl.init();
+  musicControl.init();
 })

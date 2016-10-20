@@ -33,7 +33,7 @@
 </head>
 
 <body>
-<div class="refresh"></div>
+<!-- <div class="refresh"></div> -->
 <div class="fullmask none"></div>
 
 <div class="connenting none">
@@ -75,9 +75,9 @@
 </div>
 
 <div class="main">
-    <div class="pageloading">
-        <div class="user-center btn none opacity-0">会员中心</div>
-        <div class="start btn none opacity-0">点击开始测试</div>
+    <div class="pageloading none opacity-0">
+        <div class="user-center none opacity-0"></div>
+        <div class="start none opacity-0"></div>
     </div>
 
     <div class="page questions winscale none opacity-0">
@@ -116,38 +116,46 @@
             {% endfor %}
         </div>
         <div class="submit btn none opacity-0">提　交</div>
-        <div class="prev btn none opacity-0">上 一 题</div>
+        <div class="prev none opacity-0"></div>
         <div class="count">
             <span>0</span>/{{count(questionList)}}
         </div>
     </div>
     <div class="preview none opacity-0">
-        <div class="user-center btn">会员中心</div>
+        <div class="user-center"></div>
+        <img src="<?php echo $basePath; ?>img/image2.png" class="poster winscale">
         <div class="previewBox winscale">
-            <div class="tle tc fs32">测试结果</div>
             <div class="result-tle tc fs36">- <span></span> -</div>
             <div class="desc border-box">
                 <input type="hidden" name="order_id" value="">
+                <div class="tips fs24 tc">- 想了解更多更详细的内容吗？您可以 -</div>
                 <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
                 <div class="code btn">百合会员兑换码获取</div>
             </div>
         </div>
     </div>
-    <div class="result none opacity-0">
-        <div class="user-center btn">会员中心</div>
-        <div class="resultBox winscale">
-            <div class="result-tle tc fs36">- <span></span> -</div>
-            <div class="desc border-box">
-                <div class="content">
-                    <dl>
-                       
-                    </dl>
+    <div class="result">
+        <div class="result-content">
+            <div class="user-center"></div>
+            <img src="<?php echo $basePath; ?>img/image2.png" class="poster winscale">
+            <div class="resultBox winscale">
+                <div class="result-tle tc fs36">- <span></span> -</div>
+                <div class="desc border-box">
+                    <div class="content">
+                        <dl>
+                           
+                        </dl>
+                    </div>
                 </div>
+            </div>
+            <div class="operate tc">
+                <div class="connect btn">联系我们</div>
+                <div class="share btn">分享给朋友</div>
             </div>
         </div>
     </div>
     <div class="userinfo none opacity-0">
-        <div class="back-test btn">返回测试</div>
+        <div class="back-test"></div>
         <div class="page winscale">
             <div class="history border-box">
                 <div class="tle tc">历史记录</div>
@@ -166,6 +174,13 @@
     <div class="icon rotateY infinite"></div>
 </div>
 
+
+<div class="icon_audio on">
+    <div class="earphone"></div>
+</div>
+<div class="audio-box none">
+    <audio src="<?php echo $basePath; ?>music.mp3" autoplay="autoplay" loop="loop"></audio>
+</div> 
 
 <script src="<?php echo $basePath; ?>js/zepto.min.js<?php echo $version; ?>"></script>
 <script src="<?php echo $basePath; ?>js/common.js<?php echo $version; ?>"></script>

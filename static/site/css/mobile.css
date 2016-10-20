@@ -142,11 +142,13 @@ body {
   background-size: 100% 100%;
 }
 .pageloading .start {
-  width: 300px;
+  width: 172px;
+  height: 172px;
   position: absolute;
-  bottom: 10%;
-  margin-left: -150px;
-  left: 50%;
+  bottom: 24%;
+  margin-left: -86px;
+  left: 20%;
+  background-image: url(../img/start.png);
 }
 .showMsg {
   position: fixed;
@@ -300,9 +302,8 @@ img {
   font-size: 35px;
   color: #fff;
   cursor: pointer;
-  background-color: rgba(117, 19, 228, 0.3);
-  border: 2px solid #fff;
-  border-radius: 12px;
+  background-image: url(../img/btn.png);
+  background-size: 100% 100%;
 }
 .questions .poster {
   top: 70px;
@@ -381,15 +382,9 @@ img {
   position: absolute;
   bottom: 50px;
   left: 80px;
-  width: 155px;
-  height: 55px;
-  text-align: center;
-  line-height: 50px;
-  font-size: 22px;
-  box-sizing: border-box;
-  border: 2px solid #fff;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
+  width: 128px;
+  height: 57px;
+  background-image: url(../img/prev.png);
 }
 .questions .count {
   position: absolute;
@@ -405,23 +400,30 @@ img {
   position: absolute;
   top: 0;
   left: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow: scroll;
+}
+.result .result-content {
   background-image: url(../img/bg2.jpg);
-  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  min-height: 100%;
+  position: relative;
+}
+.result .poster {
+  top: 95px;
+  left: 184px;
 }
 .result .resultBox {
   width: 480px;
-  height: 780px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -390px 0 0 -240px;
+  margin: 0 auto;
+  padding-top: 420px;
 }
 .result .resultBox .result-tle {
   color: #46018d;
   line-height: 80px;
 }
 .result .resultBox .desc {
-  height: 700px;
   position: relative;
   padding: 25px 0 16px 0;
   text-align: justify;
@@ -449,11 +451,6 @@ img {
   width: 100%;
   height: 16px;
 }
-.result .resultBox .desc .content {
-  -webkit-overflow-scrolling: touch;
-  overflow: scroll;
-  height: 100%;
-}
 .result .resultBox .desc dt:not(:first-child) {
   margin-top: 40px;
 }
@@ -461,6 +458,28 @@ img {
   box-sizing: border-box;
   margin-left: 30px;
   width: 450px;
+}
+.result .operate {
+  position: relative;
+  padding-top: 80px;
+}
+.result .operate::before {
+  content: "";
+  background-image: url(../img/arrow.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+}
+.result .btn {
+  width: auto;
+  padding: 0 35px;
+  margin: 0 auto;
+  display: inline-block;
+  margin: 20px 100px 0;
 }
 .preview {
   width: 100%;
@@ -471,13 +490,12 @@ img {
   background-image: url(../img/bg2.jpg);
   background-size: 100% 100%;
 }
+.preview .poster {
+  top: 95px;
+  left: 184px;
+}
 .preview .previewBox {
-  width: 480px;
-  height: 380px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -190px 0 0 -240px;
+  margin-top: 420px;
 }
 .preview .previewBox .tle,
 .preview .previewBox .result-tle {
@@ -485,9 +503,8 @@ img {
   line-height: 80px;
 }
 .preview .previewBox .desc {
-  height: 300px;
   position: relative;
-  padding: 25px 0 16px 0;
+  padding: 100px 0 0px 0;
   -webkit-overflow-scrolling: touch;
   overflow: scroll;
   text-align: justify;
@@ -495,7 +512,7 @@ img {
 }
 .preview .previewBox .desc::before {
   content: "";
-  background-image: url(../img/shape1.png);
+  background-image: url(../img/shape2.png);
   background-position: center center;
   background-repeat: no-repeat;
   position: absolute;
@@ -506,26 +523,21 @@ img {
 }
 .preview .previewBox .desc::after {
   content: "";
-  background-image: url(../img/shape2.png);
+  background-image: url(../img/arrow.png);
   background-position: center center;
   background-repeat: no-repeat;
   position: absolute;
-  bottom: 0;
+  top: 50px;
   left: 0;
   width: 100%;
-  height: 16px;
+  height: 47px;
 }
-.preview .previewBox .desc dt:not(:first-child) {
-  margin-top: 40px;
-}
-.preview .previewBox .desc dd {
-  box-sizing: border-box;
-  margin-left: 30px;
-  width: 450px;
+.preview .previewBox .desc .tips {
+  margin-top: 20px;
 }
 .preview .previewBox .btn {
   width: 420px;
-  margin: 30px auto 0;
+  margin: 20px auto 0;
 }
 .userinfo {
   width: 100%;
@@ -622,16 +634,20 @@ img {
 }
 .user-center,
 .back-test {
-  background-color: #ae4e49;
-  border: none;
-  border-radius: 0;
-  line-height: 70px;
+  width: 199px;
+  height: 79px;
   position: absolute;
-  top: 60px;
-  right: 50px;
+  top: 50px;
+  right: 25px;
   z-index: 99;
   transform: scale(0.8);
   -webkit-transform: scale(0.8);
+}
+.user-center {
+  background-image: url(../img/user-center.png);
+}
+.back-test {
+  background-image: url(../img/back-test.png);
 }
 input,
 select {
@@ -763,6 +779,31 @@ select {
   left: 220px;
   top: 750px;
   background-color: #ab9bf3;
+}
+.icon_audio {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  z-index: 99;
+  top: 5%;
+  left: 6%;
+}
+.icon_audio .earphone {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: url("../img/music_off.png") no-repeat;
+  background-size: 100% 100%;
+}
+.icon_audio.on .earphone {
+  width: 100%;
+  height: 100%;
+  background: url("../img/music_on.png") no-repeat;
+  background-size: 100% 100%;
+  -webkit-animation: rotate 1.4s linear infinite;
+  animation: rotate 1.4s linear infinite;
 }
 /*----------animation------------*/
 /*------- animation-duration  ------*/

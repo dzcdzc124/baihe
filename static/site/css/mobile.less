@@ -60,7 +60,7 @@ body {
   background-color: #ae9bed;
   background-image: url(../img/loading.jpg);
   background-size: 100% 100%;
-  .start{ width: 300px; position: absolute; bottom: 10%; margin-left: -150px; left: 50%; }
+  .start{ width: 172px; height: 172px; position: absolute; bottom: 24%; margin-left: -86px; left: 20%; background-image: url(../img/start.png); }
 }
 .showMsg{
   position: fixed; line-height: 28px; overflow: hidden; opacity: 0;
@@ -161,7 +161,8 @@ img{ position: absolute; }
 .btn { 
   width: 200px; height: 70px;
   line-height: 66px; text-align: center; font-size: 35px; color: #fff; cursor: pointer;
-  background-color: rgba(117, 19, 228, 0.3); border: 2px solid #fff; border-radius: 12px;
+  //background-color: rgba(117, 19, 228, 0.3); border: 2px solid #fff; border-radius: 12px;
+  background-image: url(../img/btn.png); background-size: 100% 100%;
 }
 
 
@@ -201,9 +202,8 @@ img{ position: absolute; }
   }
   .prev{   
     position: absolute; bottom: 50px; left: 80px; 
-    width: 155px; height: 55px; text-align: center; line-height: 50px; font-size: 22px;
-    box-sizing: border-box; border: 2px solid #fff;
-    background-color: rgba(255, 255, 255, 0.2); border-radius: 8px;
+    width: 128px; height: 57px; 
+    background-image: url(../img/prev.png);
   }  
   .count{   
     position: absolute; bottom: 50px; right: 80px; 
@@ -212,11 +212,13 @@ img{ position: absolute; }
 }
 .result{
   .full; position: absolute; top: 0; left: 0;
-  background-image: url(../img/bg2.jpg); background-size: 100% 100%;
+  -webkit-overflow-scrolling: touch; overflow: scroll; 
+  .result-content{ background-image: url(../img/bg2.jpg); background-repeat: no-repeat; background-position: bottom; min-height: 100%; position: relative;}
+  .poster{ top: 95px; left: 184px; }
   .resultBox{
-    .center(480px, 780px); 
+    width: 480px; margin: 0 auto; padding-top: 420px;
     .result-tle{ color: #46018d; line-height: 80px;}
-    .desc{ height: 700px; position: relative; padding: 25px 0 16px 0; 
+    .desc{ position: relative; padding: 25px 0 16px 0; 
      text-align: justify;
       line-height: 45px;
       
@@ -231,43 +233,50 @@ img{ position: absolute; }
         width: 100%; height: 16px;  
       }
       .content{
-        -webkit-overflow-scrolling: touch;
-        overflow: scroll; 
-        height: 100%;
       }
       dt:not(:first-child){ margin-top: 40px;}
       dd{ box-sizing: border-box; margin-left: 30px; width: 450px; }
     }
   }
+  .operate{
+    position: relative; padding-top: 80px;
+    &::before{
+      content: ""; background-image: url(../img/arrow.png); background-position: center center; background-repeat: no-repeat;
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 80px;  
+    }
+  }
+  .btn{ width: auto; padding: 0 35px; margin: 0 auto; display: inline-block; margin: 20px 100px 0;}
 }
 
 .preview{
   .full; position: absolute; top: 0; left: 0;
   background-image: url(../img/bg2.jpg); background-size: 100% 100%;
+  .poster{ top: 95px; left: 184px; }
   .previewBox{
-    .center(480px, 380px); 
+    margin-top: 420px;
     .tle,.result-tle{ color: #46018d; line-height: 80px;}
-    .desc{ height: 300px; position: relative; padding: 25px 0 16px 0; 
+    .desc{ 
+      position: relative; padding: 100px 0 0px 0; 
       -webkit-overflow-scrolling: touch;
       overflow: scroll; text-align: justify;
       line-height: 45px;
       
       &::before{
-        content: ""; background-image: url(../img/shape1.png); background-position: center center; background-repeat: no-repeat;
+        content: ""; background-image: url(../img/shape2.png); background-position: center center; background-repeat: no-repeat;
         position: absolute; top: 0; left: 0;
         width: 100%; height: 25px; 
       }
       &::after{
-        content: ""; background-image: url(../img/shape2.png); background-position: center center; background-repeat: no-repeat;
-        position: absolute; bottom: 0; left: 0;
-        width: 100%; height: 16px;  
+        content: ""; background-image: url(../img/arrow.png); background-position: center center; background-repeat: no-repeat;
+        position: absolute; top: 50px; left: 0;
+        width: 100%; height: 47px;  
       }
 
-      dt:not(:first-child){ margin-top: 40px;}
-      dd{ box-sizing: border-box; margin-left: 30px; width: 450px; }
+      .tips{ margin-top: 20px;}
     }
 
-    .btn{ width: 420px; margin: 30px auto 0;}
+    .btn{ width: 420px; margin: 20px auto 0;}
   }
 }
 
@@ -318,9 +327,15 @@ img{ position: absolute; }
 }
 
 .user-center,.back-test{ 
-  background-color: #ae4e49; border: none; border-radius: 0; line-height: 70px;
-  position: absolute; top: 60px; right: 50px; z-index: 99; 
+  width: 199px; height: 79px;
+  position: absolute; top: 50px; right: 25px; z-index: 99; 
   .transform(scale(0.8));
+}
+.user-center{
+  background-image: url(../img/user-center.png);
+}
+.back-test{
+  background-image: url(../img/back-test.png);
 }
 
 
@@ -375,6 +390,22 @@ select{ width: 100%;}
     }
   }
   .btn-submit{ position: absolute; left: 220px; top: 750px; background-color: #ab9bf3;}
+}
+
+
+.icon_audio{
+  width: 50px; height: 50px; position:absolute; z-index: 99; top:5%; left:6%; 
+}
+.icon_audio .earphone{
+  width: 100%; height: 100%;
+  position: absolute; top: 0;left: 0;
+  background: url("../img/music_off.png") no-repeat; background-size: 100% 100%; 
+}
+.icon_audio.on .earphone{
+  width: 100%; height: 100%;
+  background: url("../img/music_on.png") no-repeat; background-size: 100% 100%; 
+  -webkit-animation:rotate 1.4s linear infinite;
+          animation:rotate 1.4s linear infinite; 
 }
 
 
