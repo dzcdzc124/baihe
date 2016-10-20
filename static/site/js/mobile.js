@@ -332,7 +332,7 @@ var pageControl = (function () {
         getPageApi( apiUrl.info, {}, pageControl.infoCallback);
 
 
-        $(this).parent().animate({
+        $(this).parents('.part').animate({
           'opacity': 0,
         }, 300, function(){
           $(this).addClass('none');

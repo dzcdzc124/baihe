@@ -75,12 +75,12 @@
 </div>
 
 <div class="main">
-    <div class="pageloading none opacity-0">
+    <div class="pageloading part none opacity-0">
         <div class="user-center none opacity-0"></div>
         <div class="start none opacity-0"></div>
     </div>
 
-    <div class="page questions winscale none opacity-0">
+    <div class="page questions part winscale none opacity-0">
         <img src="<?php echo $basePath; ?>img/image1.png" class="poster">
         <div class="questionList">
             <div class="questionBox question-0 none">
@@ -121,7 +121,7 @@
             <span>0</span>/{{count(questionList)}}
         </div>
     </div>
-    <div class="preview none opacity-0">
+    <div class="preview part none opacity-0">
         <div class="user-center"></div>
         <img src="<?php echo $basePath; ?>img/image2.png" class="poster winscale">
         <div class="previewBox winscale">
@@ -134,7 +134,7 @@
             </div>
         </div>
     </div>
-    <div class="result">
+    <div class="result part">
         <div class="result-content">
             <div class="user-center"></div>
             <img src="<?php echo $basePath; ?>img/image2.png" class="poster winscale">
@@ -154,7 +154,7 @@
             </div>
         </div>
     </div>
-    <div class="userinfo none opacity-0">
+    <div class="userinfo part none opacity-0">
         <div class="back-test"></div>
         <div class="page winscale">
             <div class="history border-box">

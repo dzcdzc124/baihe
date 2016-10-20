@@ -451,6 +451,9 @@ img {
   width: 100%;
   height: 16px;
 }
+.result .resultBox .desc .content {
+  font-size: 18px;
+}
 .result .resultBox .desc dt:not(:first-child) {
   margin-top: 40px;
 }
