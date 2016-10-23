@@ -219,13 +219,13 @@ var pageControl = (function () {
           setTimeout(function(){
             $(".question-"+questionNo).animate({
               "opacity": 0
-            }, 20, function(){
+            }, 100, function(){
               $(this).addClass("none");
               questionNo++;
               $(".count span").html(questionNo);
               $(".question-"+questionNo).removeClass('none').animate({
                 'opacity': 1
-              }, 20, function(){
+              }, 100, function(){
                 selecting = false;
               })
 
@@ -235,7 +235,7 @@ var pageControl = (function () {
                 }, 200)
               }
             })
-          }, 50)
+          }, 400)
 
         }else{
           questionNo++;
