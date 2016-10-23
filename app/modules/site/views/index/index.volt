@@ -65,7 +65,7 @@
             <div class="full absolute table">
                 <div class="exchange-form table-cell">
                     <div class="relative border-box info-item code-item">
-                        <input type="text" name="code" necessary placeholder="请输入兑换码">
+                        <input type="text" name="code" necessary placeholder="请输入兑换码" errmsg="请输入兑换码~">
                     </div>
                 </div>
             </div>

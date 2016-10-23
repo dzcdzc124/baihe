@@ -512,8 +512,6 @@ img {
 .preview .previewBox .desc {
   position: relative;
   padding: 100px 0 0px 0;
-  -webkit-overflow-scrolling: touch;
-  overflow: scroll;
   text-align: justify;
   line-height: 45px;
 }
@@ -571,7 +569,8 @@ img {
   height: 690px;
   background-color: rgba(255, 255, 255, 0.1);
   -webkit-overflow-scrolling: touch;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   text-align: justify;
 }
 .userinfo .history .order-list li {

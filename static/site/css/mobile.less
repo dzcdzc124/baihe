@@ -263,8 +263,7 @@ img{ position: absolute; }
     .tle,.result-tle{ color: #46018d; line-height: 80px;}
     .desc{ 
       position: relative; padding: 100px 0 0px 0; 
-      -webkit-overflow-scrolling: touch;
-      overflow: scroll; text-align: justify;
+      text-align: justify;
       line-height: 45px;
       
       &::before{
@@ -294,7 +293,7 @@ img{ position: absolute; }
     .order-list{ height: 690px;
       background-color: rgba(255, 255, 255, 0.1);
       -webkit-overflow-scrolling: touch;
-      overflow: scroll; text-align: justify;
+      overflow-y: scroll; overflow-x: hidden; text-align: justify;
       li{
         margin: 25px auto; .border-box; color: #fff; font-size: 30px; padding: 0 10px;
         width: 420px; line-height: 90px; background-color: #ae4e49;
