@@ -74,8 +74,20 @@
     </div>
 </div>
 
+<div class="qrcode-layer bounceBox none">
+    <div class="qrcode-box page winscale">
+        <div class="close absolute"></div>
+        <img src="<?php echo $basePath; ?>img/qrcode2.png" class="qrcode">
+    </div>
+</div>
+
+<div class="share-layer bounceBox none">
+    <div class="close absolute"></div>
+    <img src="<?php echo $basePath; ?>img/share.png" class="share">
+</div>
+
 <div class="main">
-    <div class="pageloading part none opacity-0">
+    <div class="pageloading part">
         <div class="user-center none opacity-0"></div>
         <div class="start none opacity-0"></div>
     </div>
@@ -134,23 +146,25 @@
             </div>
         </div>
     </div>
-    <div class="result part">
-        <div class="result-content">
-            <div class="user-center"></div>
-            <img src="<?php echo $basePath; ?>img/image2.png" class="poster winscale">
-            <div class="resultBox winscale">
-                <div class="result-tle tc fs36">- <span></span> -</div>
-                <div class="desc border-box">
-                    <div class="content">
-                        <dl>
-                           
-                        </dl>
+    <div class="result border-box part none opacity-0">
+        <div class="page  winscale">
+            <div class="result-content">
+                <div class="user-center"></div>
+                <img src="<?php echo $basePath; ?>img/image2.png" class="poster">
+                <div class="resultBox">
+                    <div class="result-tle tc fs36">- <span></span> -</div>
+                    <div class="desc border-box">
+                        <div class="content">
+                            <dl>
+                               
+                            </dl>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="operate tc">
-                <div class="connect btn">联系我们</div>
-                <div class="share btn">分享给朋友</div>
+                <div class="operate tc">
+                    <div class="connect btn">联系我们</div>
+                    <div class="share btn">分享给朋友</div>
+                </div>
             </div>
         </div>
     </div>
@@ -168,7 +182,7 @@
                     </ul>
                 </div>
             </div>
-            <img src="<?php echo $basePath; ?>img/qrcode.png" class="qrcode">
+            <!-- <img src="<?php echo $basePath; ?>img/qrcode.png" class="qrcode"> -->
         </div>
     </div>
     <div class="icon rotateY infinite"></div>

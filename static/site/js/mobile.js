@@ -24,9 +24,10 @@ var img_list = [
     basePath + "img/music_on.png",
     basePath + "img/music_off.png",
     basePath + "img/prev.png",
-    basePath + "img/qrcode.png",
+    basePath + "img/qrcode2.png",
     basePath + "img/shape1.png",
     basePath + "img/shape2.png",
+    basePath + "img/share.png",
     basePath + "img/start.png",
     basePath + "img/user-center.png"
 ];
@@ -360,6 +361,15 @@ var pageControl = (function () {
             'opacity': 1
           }, 300)
         })
+      })
+
+      //联系我们
+      $('.result .connect').on(eventName.tap, function(){
+        viewControl.layerShow($('.qrcode-layer'));
+      })
+      //分享
+      $('.result .share').on(eventName.tap, function(){
+        viewControl.layerShow($('.share-layer'));
       })
     },
     iconRotate: function(){
