@@ -49,7 +49,7 @@ class Wxpay extends HelperBase
             'spbill_create_ip' => $request->getClientAddress(),
             'time_start' => date("YmdHis", TIMESTAMP),
             'time_expire' => date("YmdHis", TIMESTAMP+580),
-            'notify_url' => 'www.toucanz.com/pay/index/payCallback',
+            'notify_url' => self::getShared('config')->application->domain . '/pay/index/payCallback',
             'trade_type' => 'JSAPI',
             'openid' => $openId
         ];

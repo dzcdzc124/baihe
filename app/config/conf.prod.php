@@ -15,7 +15,7 @@ return new \Phalcon\Config([
         'debug' => false,
 
         'host' => '127.0.0.1',
-
+        'domain' => 'www.toucanz.com',
         'cache' => [
             'lifeTime' => 86400,
             'server' => [
