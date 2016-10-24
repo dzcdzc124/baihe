@@ -53,7 +53,7 @@
                                             <td>{{ item.order_id }}</td>
                                             <td>{{ round( item.total_fee/100, 2) }}</td>
                                             <td>{{ item.status==1 ? '是' : '否' }}</td>
-                                            <td>{{ item.type=='wxpay' ? '微信支付' : item.type=='code' ? '兑换码' : '' }}</td>
+                                            <td>{{ item.type=='wxpay' ? '微信支付' : (item.type=='code' ? '兑换码' : '') }}</td>
                                             <td>{{ item.data }}</td>
                                             <td>{{ item.nickname }}</td>
                                             <td>{{ item.status==1 ? date('Y-m-d H:i:s', item.updated):'' }}</td>
@@ -61,11 +61,16 @@
                                         {% endfor %}
                                     </tbody>
                                     <tfoot>
-                                        <tr>
+                                        <!-- <tr>
                                             <td colspan="8">
-                                                <!-- <a href="#" data-remote="{{ url('/admin/order/index/create/') }}" data-trigger="dialog" class="btn btn-sm btn-default pull-left"><i class="glyphicon glyphicon-plus"></i> 新增奖品</a> -->
-
-                                                <!-- <button type="submit" class="btn btn-sm btn-primary pull-right"><i class="glyphicon glyphicon-floppy-disk"></i> 保存设置</button> -->
+                                                <a href="#" data-remote="{{ url('/admin/order/index/create/') }}" data-trigger="dialog" class="btn btn-sm btn-default pull-left"><i class="glyphicon glyphicon-plus"></i> 新增奖品</a>
+                                                <button type="submit" class="btn btn-sm btn-primary pull-right"><i class="glyphicon glyphicon-floppy-disk"></i> 保存设置</button>
+                                            </td>
+                                        </tr> -->
+                                        <tr>
+                                            <td colspan="6">
+                                                <span class="pull-left">共 <span class="text-danger">{{ page.total_items }}</span> 条记录，当前页码：<span class="text-info">{{ page.current }}</span> / {{ max(1, page.total_pages) }}</span>
+                                                <ul class="pagination pagination-sm no-margin pull-right" data-toggle="ajax" data-target="#ajax-content">{{ partial('partial/pagination', ['page': page]) }}</ul>
                                             </td>
                                         </tr>
                                     </tfoot>
