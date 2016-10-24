@@ -29,14 +29,14 @@ class CodeController extends ControllerBase
             $query = Code::query()
                 ->where("given = :given: and status = :status:")
                 ->bind(["given" => (int)$given, "status" => 0])
-                ->order("created desc");
+                ->order("id desc");
         }elseif( isset($status) ){
             $query = Code::query()
                 ->where("status = :status:")
                 ->bind(["status" => (int)$status])
-                ->order("created desc");
+                ->order("id desc");
         }else{
-            $query = Code::query()->order("created desc");
+            $query = Code::query()->order("id desc");
         }
 
 
