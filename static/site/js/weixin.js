@@ -8,9 +8,9 @@ var WXversion = ua.match(/micromessenger/) ? ua.match(/micromessenger\/([\d.]+)/
 window.shareData = {
 	picUrl: basePath + "/img/400.jpg",
     url: baseLink,
-	title: "百合网·爱情实验室",
-	desc: "PDQ测试",
-    timelineTitle : "百合网·爱情实验室-PDQ测试",
+	title: "读懂恋人心",
+	desc: "权威测试题，让你读懂彼此的心，避开爱情陷阱，找到那个对的人。",
+    timelineTitle : "权威测试题，让你读懂彼此的心，避开爱情陷阱，找到那个对的人。",
 	callback: function(type) {
         if(typeof _hmt != "undefined"){
 	       _hmt.push(['_trackEvent', "weixin", type]);
