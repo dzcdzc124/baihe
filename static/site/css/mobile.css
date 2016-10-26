@@ -455,7 +455,7 @@ img {
 .result .resultBox .desc .content {
   font-size: 28px;
 }
-.result .resultBox .desc dt:not(:first-child) {
+.result .resultBox .desc dt {
   margin-top: 40px;
 }
 .result .resultBox .desc dd {
@@ -498,22 +498,28 @@ img {
   background-size: 100% 100%;
 }
 .preview .poster {
-  top: 95px;
-  left: 184px;
+  top: 75px;
+  left: 220px;
+  width: 200px;
 }
 .preview .previewBox {
-  margin-top: 420px;
+  margin-top: 330px;
 }
 .preview .previewBox .tle,
 .preview .previewBox .result-tle {
   color: #46018d;
-  line-height: 80px;
+  line-height: 70px;
 }
 .preview .previewBox .desc {
   position: relative;
-  padding: 100px 0 0px 0;
+  padding: 25px 0 47px 0;
   text-align: justify;
   line-height: 45px;
+}
+.preview .previewBox .desc .content {
+  width: 600px;
+  margin: 0 auto;
+  text-align: justify;
 }
 .preview .previewBox .desc::before {
   content: "";
@@ -532,17 +538,17 @@ img {
   background-position: center center;
   background-repeat: no-repeat;
   position: absolute;
-  top: 50px;
+  bottom: 0px;
   left: 0;
   width: 100%;
   height: 47px;
 }
 .preview .previewBox .desc .tips {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .preview .previewBox .btn {
   width: 420px;
-  margin: 20px auto 0;
+  margin: 15px auto 0;
 }
 .userinfo {
   width: 100%;
@@ -579,7 +585,7 @@ img {
   color: #fff;
   font-size: 30px;
   padding: 0 10px;
-  width: 420px;
+  width: 450px;
   line-height: 90px;
   background-color: #ae4e49;
   position: relative;

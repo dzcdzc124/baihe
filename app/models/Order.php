@@ -25,6 +25,10 @@ class Order extends ModelBase
 
     public $data;
 
+    public $avoid;
+
+    public $anxious;
+
     public $expire_at;
     
     public $created;

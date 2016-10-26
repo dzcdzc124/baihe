@@ -29,7 +29,6 @@ class IndexController extends ControllerBase
             $this->view->setVar('wxConfig', $wxConfig);
         }
 
-
         $this->view->setVars([
             'questionList' => $questionList,
             'product' => $product

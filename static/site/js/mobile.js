@@ -394,6 +394,7 @@ var pageControl = (function () {
       $(".connenting").addClass("none");
       if(data.errcode == 0){
         $(".previewBox .result-tle span").html(data.type);
+        $(".previewBox .content").html(data.desc);
         $(".preview input[name=order_id]").val(data.order_id);
 
         $(".questions").animate({
@@ -412,6 +413,11 @@ var pageControl = (function () {
       $(".connenting").addClass("none");
       if(data.errcode == 0){
         $(".resultBox .result-tle span").html(data.type);
+        $(".resultBox .avoid span").html(data.avoid);
+        $(".resultBox .anxious span").html(data.anxious);
+        $(".resultBox .avoid-compare span").html(data.avoid>0?'高于':(data.avoid<0?'低于':'持平'));
+        $(".resultBox .anxious-compare span").html(data.anxious>0?'高于':(data.anxious<0?'低于':'持平'));
+
         var descHtml = '';
         for(var i in data.desc){
           descHtml += '<dt>'+data.desc[i].title+'</dt>';
@@ -495,6 +501,7 @@ var pageControl = (function () {
               //未支付或兑换
               viewControl.showMsg(data.errmsg);
               $(".previewBox .result-tle span").html(data.type);
+              $(".previewBox .content").html(data.desc);
               $(".preview input[name=order_id]").val(data.order_id);
 
               $('.userinfo').animate({
