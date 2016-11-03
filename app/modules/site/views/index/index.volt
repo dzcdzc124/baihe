@@ -133,19 +133,21 @@
             <span>0</span>/{{count(questionList)}}
         </div>
     </div>
-    <div class="preview part none opacity-0">
+    <div class="preview part border-box none opacity-0">
         <div class="page winscale">
-            <div class="user-center"></div>
-            <img src="<?php echo $basePath; ?>img/image2.png" class="poster">
-            <div class="previewBox">
-                <div class="result-tle tc fs36">- <span></span> -</div>
-                <div class="desc border-box">
-                    <input type="hidden" name="order_id" value="">
-                    <div class="fs28 tc content"></div>
+            <div class="preview-content">
+                <div class="user-center"></div>
+                <img src="<?php echo $basePath; ?>img/image2.png" class="poster">
+                <div class="previewBox">
+                    <div class="result-tle tc fs36 bold">- <span></span> -</div>
+                    <div class="desc border-box">
+                        <input type="hidden" name="order_id" value="">
+                        <div class="fs28 tc content"></div>
+                    </div>
                     <div class="tips fs24 tc">- 想知道你的依恋类型与什么样的异性最合适吗？ -<br>- 请购买详细测试报告 -</div>
+                    <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
+                    <div class="code btn">百合会员兑换码获取</div>
                 </div>
-                <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
-                <div class="code btn">百合会员兑换码获取</div>
             </div>
         </div>
     </div>

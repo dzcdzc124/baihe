@@ -221,7 +221,7 @@ img{ position: absolute; }
   .resultBox{
     width: 480px; margin: 0 auto; padding-top: 450px;
     .result-tle{ color: #46018d; line-height: 80px;}
-    .desc{ position: relative; padding: 25px 0 16px 0; 
+    .desc{ position: relative; padding: 35px 0 16px 0; 
      text-align: justify;
       line-height: 45px;
       
@@ -231,16 +231,75 @@ img{ position: absolute; }
         width: 100%; height: 25px; 
       }
       &::after{
-        content: ""; background-image: url(../img/shape2.png); background-position: center center; background-repeat: no-repeat;
+        /* content: ""; background-image: url(../img/shape2.png); background-position: center center; background-repeat: no-repeat;
         position: absolute; bottom: 0; left: 0;
-        width: 100%; height: 16px;  
+        width: 100%; height: 16px;   */
       }
       .content{
         font-size: 28px;
       }
       
-      dt{ margin-top: 40px; }
-      dd{ box-sizing: border-box; margin-left: 30px; width: 450px; }
+      dt{ 
+        margin-top: 30px; 
+        text-align: center;
+        padding-bottom: 40px;
+        line-height: 60px;
+        position: relative;
+        &::before{
+          content: "";
+          width: 30px;
+          height: 8px;
+          position: absolute;
+          margin: -4px 0 0 -15px;
+          top: 80px;
+          left: 50%;
+          background-color: #fff;
+        }
+        .tle-icon{
+          display: inline-block;
+          width: 60px;
+          height: 60px;
+          background-image: url(../img/icons.png);
+          vertical-align: middle;
+        }
+
+        .icon2{
+          background-position: 0 -60px;
+        }
+        .icon3{
+          background-position: 0 -120px;
+        }
+        .icon4{
+          background-position: 0 -180px;
+        }
+        .icon5{
+          background-position: 0 -240px;
+        }
+        .icon6{
+          background-position: 0 -300px;
+        }
+        .icon7{
+          background-position: 0 -360px;
+        }
+
+      }
+      dd{ 
+        box-sizing: border-box; 
+        margin: 0; 
+        text-align: justify;
+        padding-bottom: 40px;
+        position: relative;
+        &::after{
+          content: ""; 
+          background-image: url(../img/shape2.png); 
+          background-position: center center; 
+          background-repeat: no-repeat;
+          position: absolute; 
+          bottom: 0; left: 0;
+          width: 100%; height: 16px;
+          background-size: 100% 100%;
+        }
+      }
     }
   }
   .operate{
@@ -257,32 +316,38 @@ img{ position: absolute; }
 
 .preview{
   .full; position: absolute; top: 0; left: 0;
-  background-image: url(../img/bg2.jpg); background-size: 100% 100%;
-  .poster{ top: 75px; left: 220px; width: 200px; }
+  border-width: 50px 0 100px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0);
+  -webkit-overflow-scrolling: touch; overflow: scroll; 
+  /* background-image: url(../img/bg2.jpg); background-size: 100% 100%; */
+  .poster{ top: 95px; left: 184px; }
+  .preview-content{ padding-bottom: 80px; min-height: 100%; position: relative;}
   .previewBox{
-    margin-top: 330px;
+    padding-top: 450px;
     .tle,.result-tle{ color: #46018d; line-height: 70px;}
     .desc{ 
-      position: relative; padding: 25px 0 47px 0; 
+      position: relative; padding: 50px 0 90px 0; 
       text-align: justify;
       line-height: 45px;
-      .content{ width: 540px; margin: 0 auto; text-align: justify; }
+      .content{ width: 440px; margin: 0 auto; text-align: center; }
       &::before{
         content: ""; background-image: url(../img/shape2.png); background-position: center center; background-repeat: no-repeat;
         position: absolute; top: 0; left: 0;
-        width: 100%; height: 25px; 
+        width: 100%; height: 50px; 
       }
       &::after{
         content: ""; background-image: url(../img/arrow.png); background-position: center center; background-repeat: no-repeat;
         position: absolute; bottom: 0px; left: 0;
-        width: 100%; height: 47px;  
+        width: 100%; height: 90px;  
       }
 
-      .tips{ margin-top: 10px;}
     }
 
+    .tips{ margin-top: 10px; color: #46018d; line-height: 40px;}
     .btn{ width: 420px; margin: 15px auto 0;}
   }
+  .user-center{ top: 80px;}
 }
 
 .userinfo{
