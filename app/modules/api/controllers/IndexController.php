@@ -87,6 +87,7 @@ class IndexController extends ControllerBase
             $order->status = 0;
             $order->type = '';
             $order->data = $result['type'];
+            $order->sex = $sex;
             $order->avoid = $zAvoid;
             $order->anxious = $zAnxious;
             $order->response = '';
@@ -100,12 +101,14 @@ class IndexController extends ControllerBase
             $this->user->save();
 
             $result['order_id'] = $order->order_id;
+            $result['sex'] = $sex;
             $this->serveJson('OK', 0, $result);
         }else{
             $this->serveJson('找不到产品设置~');
         }
     }
 
+    //微信下单
     public function orderAction(){
         if( !$this->user || empty($this->user->id) ){
             $this->serveJson('请先登录~');
@@ -275,6 +278,7 @@ class IndexController extends ControllerBase
         }
 
         $result = $this->getResult($order->avoid, $order->anxious, true);
+        $result['sex'] = $order->sex;
         $this->serveJson('ok', 0, $result);
     }
 
@@ -324,6 +328,7 @@ class IndexController extends ControllerBase
         if( $order->status == 0 || $order->status == 2 ){
             $result = $this->getResult($order->avoid, $order->anxious);
             $result['order_id'] = $order_id;
+            $result['sex'] = $order->sex;
             $this->serveJson('请先完成支付或兑换', 1, $result);
         }
 

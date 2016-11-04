@@ -25,6 +25,8 @@ class Order extends ModelBase
 
     public $data;
 
+    public $sex;
+    
     public $avoid;
 
     public $anxious;

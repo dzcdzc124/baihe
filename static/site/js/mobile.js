@@ -95,7 +95,7 @@ var pageControl = (function () {
       }
 
       if(IsPC()){
-        $("body,.pageloading").width(designWidth).height(designHeight).css({
+        $("body").width(designWidth).height(designHeight).css({
           '-webkit-transform-origin':'top center',
                   'transform-origin':'top center',
           '-webkit-transform': "scale("+winscale+")",
@@ -393,18 +393,7 @@ var pageControl = (function () {
     submitCallback: function(data){
       $(".connenting").addClass("none");
       if(data.errcode == 0){
-        $(".previewBox .result-tle span").html(data.type);
-        $(".previewBox .content").html(data.desc);
-        $(".preview input[name=order_id]").val(data.order_id);
-
-        $(".questions").animate({
-          'opacity': 0,
-        }, 300, function(){
-          $(this).addClass('none');
-          $('.preview').removeClass('none').animate({
-            'opacity': 1
-          }, 300)
-        })
+        pageControl.setPreview( $(".questions"), data );
       }else{
         viewControl.showMsg(data.errmsg);
       }
@@ -500,18 +489,7 @@ var pageControl = (function () {
             }else if(data.errcode == 1){
               //未支付或兑换
               viewControl.showMsg(data.errmsg);
-              $(".previewBox .result-tle span").html(data.type);
-              $(".previewBox .content").html(data.desc);
-              $(".preview input[name=order_id]").val(data.order_id);
-
-              $('.userinfo').animate({
-                'opacity': 0,
-              }, 300, function(){
-                $(this).addClass('none');
-                $('.preview').removeClass('none').animate({
-                  'opacity': 1
-                }, 300)
-              })
+              pageControl.setPreview( $(".userinfo"), data );
             }else{
               viewControl.showMsg(data.errmsg);
             }
@@ -520,6 +498,20 @@ var pageControl = (function () {
       }else{  
         viewControl.showMsg(data.errmsg);
       }
+    },
+    setPreview: function( prevObj, data ){
+      $(".previewBox .result-tle span").html(data.type);
+      $(".previewBox .content").html(data.desc);
+      $(".preview input[name=order_id]").val(data.order_id);
+
+      prevObj.animate({
+        'opacity': 0,
+      }, 300, function(){
+        $(this).addClass('none');
+        $('.preview').removeClass('none').animate({
+          'opacity': 1
+        }, 300)
+      })
     },
     wxPayCallback: function(res){
       console.log(res);
