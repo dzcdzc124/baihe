@@ -8,7 +8,7 @@ var WXversion = ua.match(/micromessenger/) ? ua.match(/micromessenger\/([\d.]+)/
 window.shareData = {
 	picUrl: basePath + "/img/400.jpg",
     url: baseLink,
-	title: "读懂恋人心",
+	title: "爱情实验室",
 	desc: "权威测试题，让你读懂彼此的心，避开爱情陷阱，找到那个对的人。",
     timelineTitle : "权威测试题，让你读懂彼此的心，避开爱情陷阱，找到那个对的人。",
 	callback: function(type) {

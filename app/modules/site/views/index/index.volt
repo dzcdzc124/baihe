@@ -67,6 +67,7 @@
                     <div class="relative border-box info-item code-item">
                         <input type="text" name="code" necessary placeholder="请输入兑换码" errmsg="请输入兑换码~">
                     </div>
+                    <div class="tips">* 若有兑换码请此处粘贴，若退出复制兑换码，再次进入后请点击右上方会员中心继续兑换支付。</div>
                 </div>
             </div>
         </div>
@@ -144,7 +145,7 @@
                         <input type="hidden" name="order_id" value="">
                         <div class="fs28 tc content"></div>
                     </div>
-                    <div class="tips fs24 tc">- 想知道你的依恋类型与什么样的异性最合适吗？ -<br>- 请购买详细测试报告 -</div>
+                    <div class="tips fs24 tc">- 想知道你的依恋类型与什么样的异性最合适吗？ -<br>- 请购买详细测试报告{% if product.total_fee < 500 %}[原价¥<span class='origin-price'>16.60</span>]{% endif %}-</div>
                     <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
                     <div class="code btn">百合会员兑换码获取</div>
                 </div>
@@ -171,7 +172,7 @@
                     </div>
                 </div>
                 <div class="operate tc">
-                    <div class="connect btn">联系我们</div>
+                    <div class="connect btn">关注我们</div>
                     <div class="share btn">分享给朋友</div>
                 </div>
             </div>

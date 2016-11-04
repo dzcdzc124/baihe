@@ -344,7 +344,13 @@ img{ position: absolute; }
 
     }
 
-    .tips{ margin-top: 10px; color: #46018d; line-height: 40px;}
+    .tips{ margin-top: 10px; color: #46018d; line-height: 40px;
+      
+      .origin-price{
+        text-decoration: line-through;
+      }
+    
+    }
     .btn{ width: 420px; margin: 15px auto 0;}
   }
   .user-center{ top: 80px;}
@@ -445,7 +451,7 @@ select{ width: 100%;}
 }
 .exchange-layer{
   .layer-box{
-    width: 540px; height: 200px; margin: -100px 0 0 -270px;
+    width: 540px; height: 300px; margin: -100px 0 0 -270px; padding-top: 5px;
     background-image: url(../img/bg.jpg); background-size: 100% auto;
     .exchange-form{ vertical-align: middle; }
     .info-item{ border: 2px solid #f2769b; width: 480px; height: 77px; margin: 0 auto; background-color: #fff; padding-left: 50px;
@@ -458,6 +464,7 @@ select{ width: 100%;}
         &::-webkit-input-placeholder{ color: #f2769b; }
       }
     }
+    .tips{ margin: 20px 50px 0; font-size: 24px;}
   }
   .btn-submit{ position: absolute; left: 220px; top: 750px; background-color: #ab9bf3;}
 }

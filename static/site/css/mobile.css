@@ -603,6 +603,9 @@ img {
   color: #46018d;
   line-height: 40px;
 }
+.preview .previewBox .tips .origin-price {
+  text-decoration: line-through;
+}
 .preview .previewBox .btn {
   width: 420px;
   margin: 15px auto 0;
@@ -813,8 +816,9 @@ select {
 }
 .exchange-layer .layer-box {
   width: 540px;
-  height: 200px;
+  height: 300px;
   margin: -100px 0 0 -270px;
+  padding-top: 5px;
   background-image: url(../img/bg.jpg);
   background-size: 100% auto;
 }
@@ -845,6 +849,10 @@ select {
 }
 .exchange-layer .layer-box .info-item input::-webkit-input-placeholder {
   color: #f2769b;
+}
+.exchange-layer .layer-box .tips {
+  margin: 20px 50px 0;
+  font-size: 24px;
 }
 .exchange-layer .btn-submit {
   position: absolute;
