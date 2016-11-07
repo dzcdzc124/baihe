@@ -20,6 +20,7 @@ var img_list = [
     basePath + "img/icon.png",
     basePath + "img/image1.png",
     basePath + "img/image2.png",
+    basePath + "img/image3.png",
     basePath + "img/loading.jpg",
     basePath + "img/music_on.png",
     basePath + "img/music_off.png",
@@ -407,6 +408,12 @@ var pageControl = (function () {
         $(".resultBox .avoid-compare span").html(data.avoid>0?'高于':(data.avoid<0?'低于':'持平'));
         $(".resultBox .anxious-compare span").html(data.anxious>0?'高于':(data.anxious<0?'低于':'持平'));
 
+        if(data.sex == 1){
+          $(".result .poster").attr("src", basePath + "img/image3.png");
+        }else{
+          $(".result .poster").attr("src", basePath + "img/image2.png");
+        }
+
         var descHtml = '';
         for(var i in data.desc){
           descHtml += '<dt><span class="tle-icon icon'+ (Number(i)+1) +'"></span><span>'+data.desc[i].title+'</span></dt>';
@@ -503,6 +510,12 @@ var pageControl = (function () {
       $(".previewBox .result-tle span").html(data.type);
       $(".previewBox .content").html(data.desc);
       $(".preview input[name=order_id]").val(data.order_id);
+
+      if(data.sex == 1){
+        $(".preview .poster").attr("src", basePath + "img/image3.png");
+      }else{
+        $(".preview .poster").attr("src", basePath + "img/image2.png");
+      }
 
       prevObj.animate({
         'opacity': 0,
