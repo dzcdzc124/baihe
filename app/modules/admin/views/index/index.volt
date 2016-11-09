@@ -38,7 +38,7 @@
                         <p>总测试数</p>
                     </div>
                     <div class="icon">
-                        <i class="fa fa-trash"></i>
+                        <i class="fa fa-list"></i>
                     </div>
                     <!-- <a href="{{ url('/admin/order/', ['deleted': 1]) }}" class="small-box-footer">查看详情 <i class="fa fa-arrow-circle-right"></i></a> -->
                 </div>

@@ -39,6 +39,12 @@
                 "label": "用户列表",
                 "icon": "user",
                 "url": "/admin/user/"
+            },
+            {
+                "id": "stat",
+                "label": "统计",
+                "icon": "table",
+                "url": "/admin/stat/"
             }
         ]
     },
