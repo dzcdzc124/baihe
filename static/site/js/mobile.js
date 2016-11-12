@@ -236,7 +236,7 @@ var pageControl = (function () {
                 }, 200)
               }
             })
-          }, 400)
+          }, 40)
 
         }else{
           questionNo++;

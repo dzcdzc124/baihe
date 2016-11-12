@@ -143,9 +143,9 @@
                     <div class="result-tle tc fs36 bold">- <span></span> -</div>
                     <div class="desc border-box">
                         <input type="hidden" name="order_id" value="">
-                        <div class="fs28 tc content"></div>
+                        <div class="fs28 tc content none"></div>
                     </div>
-                    <div class="tips fs24 tc">- 想知道你的依恋类型与什么样的异性最合适吗？ -<br>- 请购买详细测试报告{% if product.total_fee < 500 %}[原价¥<span class='origin-price'>16.60</span>]{% endif %}-</div>
+                    <div class="tips fs24 tc">- 为你的爱情祈福，并获得详细报告！-<br>{% if product.total_fee < 500 %}- [原价¥<span class='origin-price'>16.60</span>]-{% endif %}</div>
                     <div class="pay btn">支付{{ product.total_fee/100 }}元购买详细报告</div>
                     <div class="code btn">百合会员兑换码获取</div>
                 </div>

@@ -22,7 +22,8 @@ class StatController extends ControllerBase
 
         $stat = Order::find([
             'columns' => 'data, sex, count(*) as total',
-            'group' => 'data,sex'
+            'group' => 'data,sex',
+            'order' => "SUBSTRING(data,1,3), FIELD(SUBSTRING(data,5,2),'轻度','典型','重度')"
         ]);
 
 
