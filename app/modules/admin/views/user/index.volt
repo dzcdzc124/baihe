@@ -1,13 +1,13 @@
 {% extends "layouts/main.volt" %}
 
 {% block content %}
-{{ partial('partial/header', ['current_nav': 'index/order']) }}
+{{ partial('partial/header', ['current_nav': 'index/user']) }}
 
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
             用户列表
-            <small>Order</small>
+            <small>User</small>
         </h1>
         {{ partial('partial/breadcrumbs', ['breadcrumbs' : [
             ['用户列表']
@@ -23,7 +23,7 @@
                     {{ partial('partial/nav', [
                         'title': '用户列表',
                         'navs': [
-                            ['index', '全部用户', url('/admin/order/')]
+                            ['index', '全部用户', url('/admin/user/')]
                         ],
                         'current_nav': 'index'
                     ]) }}
