@@ -60,7 +60,12 @@ body {
   background-color: #ae9bed;
   background-image: url(../img/loading.jpg);
   background-size: 100% 100%;
-  .start{ width: 172px; height: 172px; position: absolute; bottom: 24%; margin-left: -86px; left: 20%; background-image: url(../img/start.png); }
+  .start{ width: 172px; height: 172px; position: absolute; bottom: 24%; margin-left: -86px; left: 20%; background-image: url(../img/start.png); 
+    .aniName(pulse);
+    .aniDuration(1.5s);
+    .aniIterationCount(infinite);
+    .aniTimingFunction(ease-in-out);
+  }
 }
 .showMsg{
   position: fixed; line-height: 28px; overflow: hidden; opacity: 0;
@@ -714,4 +719,43 @@ select{ width: 100%;}
 @keyframes flash { .flashFrames; }
 .flash {
   .aniName( flash );
+}
+
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15);
+    transform: scale3d(1.15, 1.15, 1.15);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15);
+    transform: scale3d(1.15, 1.15, 1.15);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.pulse {
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
 }

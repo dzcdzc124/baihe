@@ -149,6 +149,14 @@ body {
   margin-left: -86px;
   left: 20%;
   background-image: url(../img/start.png);
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-timing-function: ease-in-out;
 }
 .showMsg {
   position: fixed;
@@ -1196,4 +1204,36 @@ select {
 .flash {
   -webkit-animation-name: flash;
   animation-name: flash;
+}
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15);
+    transform: scale3d(1.15, 1.15, 1.15);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15);
+    transform: scale3d(1.15, 1.15, 1.15);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+.pulse {
+  -webkit-animation-name: pulse;
+  animation-name: pulse;
 }
