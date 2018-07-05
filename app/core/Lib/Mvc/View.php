@@ -72,7 +72,7 @@ class View extends PhView
         parent::__construct($options);
 
         $this->registerEngines(array(
-            '.volt' => function ($this) {
+            '.volt' => function () {
                 $di = DI::getDefault();
                 $config = $di->getShared('config');
                 $volt = new Volt($this, $di);
