@@ -2,7 +2,7 @@
     //三分钟
     set_time_limit(180);
     //ini_set("memory_limit", "150M");
-    $www_folder = "/var/www/baihe"; 
+    $www_folder = "/var/www/html/baihe"; 
     //$git = "/usr/bin/git"; 
       
     //在这里获取到了用户提交的内容, 以及提交者等等, 可以记录到数据库中供以后使用  
