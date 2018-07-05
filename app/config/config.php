@@ -16,8 +16,7 @@ include __DIR__ . '/functions.php';
 // Read the configuration
 $config = include __DIR__ . '/conf.dev.php';
 $env = getenv('PHP_ENV');
-$isBaihe = getenv('baihe');
-if ($isBaihe || $env == 'production'){
+if ($env == 'production'){
 	error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE );
     $env = 'prod';
 }
