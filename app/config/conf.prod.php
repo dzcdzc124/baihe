@@ -4,8 +4,8 @@ return new \Phalcon\Config([
     'database' => [
         'adapter' => 'Mysql',
         'host' => '127.0.0.1',
-        'username' => 'root',
-        'password' => 'gd0508210',
+        'username' => 'act_pdq',
+        'password' => 'dwyyqNn0LWnDFr7I',
         'dbname' => 'act_pdq',
         'charset' => 'utf8',
         'persistent' => false,
