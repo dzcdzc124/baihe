@@ -12,7 +12,7 @@ return new \Phalcon\Config([
     ],
 
     'application' => [
-        'debug' => true,
+        'debug' => false,
 
         'host' => '127.0.0.1',
         'domain' => 'pdq.lovelab.com.cn',
