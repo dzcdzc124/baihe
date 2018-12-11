@@ -3,7 +3,7 @@
 return new \Phalcon\Config([
     'database' => [
         'adapter' => 'Mysql',
-        'host' => '127.0.0.1',
+        'host' => 'localhost',
         'username' => 'act_pdq',
         'password' => 'dwyyqNn0LWnDFr7I',
         'dbname' => 'act_pdq',
@@ -12,7 +12,7 @@ return new \Phalcon\Config([
     ],
 
     'application' => [
-        'debug' => false,
+        'debug' => true,
 
         'host' => '127.0.0.1',
         'domain' => 'pdq.lovelab.com.cn',

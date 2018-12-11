@@ -16,6 +16,7 @@ include __DIR__ . '/functions.php';
 // Read the configuration
 $config = include __DIR__ . '/conf.dev.php';
 $env = getenv('PHP_ENV');
+
 if ($env == 'production'){
 	error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE );
     $env = 'prod';
@@ -34,6 +35,5 @@ defined('TODAY_START') || define('TODAY_START', mktime(0, 0, 0));
 defined('TODAY_END') || define('TODAY_END', mktime(23, 59, 59));
 defined('DATE_STR') || define('DATE_STR', date('Ymd', TIMESTAMP));
 defined('TIME_STR') || define('TIME_STR', date('r', TIMESTAMP));
-
 
 return $config;

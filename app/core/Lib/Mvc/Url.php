@@ -7,7 +7,7 @@ use Phalcon\DI;
 
 class Url extends PhUrl
 {
-    function get($uri = null, $args = null, $local = null)
+    function get($uri = null, $args = null, $local = null, $baseUri = NULL)
     {
         if (is_string($uri) && strpos($uri, '?') !== false) {
             $tmpArr = explode('?', $uri);
